@@ -1,0 +1,271 @@
+{
+	"info": {
+		"_postman_id": "32c8e056-39cf-43c7-b145-a546481c887b",
+		"name": "CS307",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Parse Get List",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Parse-Application-Id",
+						"value": "HjKymbNGAhUhWwGSAmMDevlJJzVQPgworMQ9Fbud",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:1337/parse/classes/ReviewTest",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"parse",
+						"classes",
+						"ReviewTest"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Parse Save 1",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Parse-Application-Id",
+						"value": "HjKymbNGAhUhWwGSAmMDevlJJzVQPgworMQ9Fbud",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"userId\": \"user1\",\n\t\"artist\": \"Pink Floyd\",\n\t\"song\": \"Brain Damage\",\n\t\"rating\": 8,\n\t\"review\": \"Great song!\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:1337/parse/classes/ReviewTest",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"parse",
+						"classes",
+						"ReviewTest"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Parse Save 2",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Parse-Application-Id",
+						"value": "HjKymbNGAhUhWwGSAmMDevlJJzVQPgworMQ9Fbud",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"userId\": \"user1\",\n\t\"artist\": \"Pink Floyd\",\n\t\"song\": \"Wish you were here\",\n\t\"rating\": 8,\n\t\"review\": \"Nice!\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:1337/parse/classes/ReviewTest",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"parse",
+						"classes",
+						"ReviewTest"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Parse Save 3",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Parse-Application-Id",
+						"value": "HjKymbNGAhUhWwGSAmMDevlJJzVQPgworMQ9Fbud",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"userId\": \"user1\",\n\t\"artist\": \"AC/DC\",\n\t\"song\": \"Back In Black\",\n\t\"rating\": 9,\n\t\"review\": \"Oustanding\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:1337/parse/classes/ReviewTest",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"parse",
+						"classes",
+						"ReviewTest"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Parse Get Item",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Parse-Application-Id",
+						"value": "HjKymbNGAhUhWwGSAmMDevlJJzVQPgworMQ9Fbud",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:1337/parse/classes/ReviewTest/wvDJAr1u5N",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"parse",
+						"classes",
+						"ReviewTest",
+						"wvDJAr1u5N"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Parse Get by Artist",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Parse-Application-Id",
+						"value": "HjKymbNGAhUhWwGSAmMDevlJJzVQPgworMQ9Fbud",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:1337/parse/classes/ReviewTest?where={\"artist\":\"Pink Floyd\"}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"parse",
+						"classes",
+						"ReviewTest"
+					],
+					"query": [
+						{
+							"key": "where",
+							"value": "{\"artist\":\"Pink Floyd\"}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Parse Update Object",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "X-Parse-Application-Id",
+						"value": "HjKymbNGAhUhWwGSAmMDevlJJzVQPgworMQ9Fbud",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"rating\":5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:1337/parse/classes/ReviewTest/wvDJAr1u5N",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"parse",
+						"classes",
+						"ReviewTest",
+						"wvDJAr1u5N"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Parse Delete Object",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-Parse-Application-Id",
+						"value": "HjKymbNGAhUhWwGSAmMDevlJJzVQPgworMQ9Fbud",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:1337/parse/classes/ReviewTest/wvDJAr1u5N",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"parse",
+						"classes",
+						"ReviewTest",
+						"wvDJAr1u5N"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
