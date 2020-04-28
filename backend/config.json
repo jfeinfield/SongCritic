@@ -1,0 +1,7 @@
+{
+  "appId": "HjKymbNGAhUhWwGSAmMDevlJJzVQPgworMQ9Fbud",
+  "masterKey": "SmezUtSvpF9wcwhdTh92wqkIMsFZggACtGp8CGHy",
+  "appName": "parse-test",
+  "cloud": "./cloud/main",
+  "databaseURI": "mongodb://127.0.0.1:27017/parse"
+}
