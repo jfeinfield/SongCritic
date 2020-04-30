@@ -1,5 +1,10 @@
 import React, { useState, useCallback } from 'react';
 import Parse from 'parse';
+
+import Review from "./Review";
+import AddItem from "./AddItem";
+import ArtistList from "./ArtistList";
+
 import './App.css';
 
 function App() {
@@ -28,19 +33,6 @@ function App() {
     };
 
     fetchData();
-  }, []);
-
-  const [addedId, setAddedId] = useState("");
-  const addItem = useCallback((item) => {
-    const sendData = async () => {
-      const Test = Parse.Object.extend("test");
-      const test = new Test();
-      const result = await test.save(JSON.parse(item));
-
-      setAddedId(result.id);
-    };
-
-    sendData();
   }, []);
 
   return (
@@ -74,34 +66,16 @@ function App() {
             />
           </label>
         </div>
-        {targetData.artist &&
-          <div>
-            <h3>{targetData.song}</h3>
-            <p>Artist: {targetData.artist}</p>
-            <p>By user: {targetData.userId}</p>
-            <p>Rating: {targetData.rating}</p>
-            <p>Review: {targetData.review}</p>
-          </div>}
+        <Review
+          artist={targetData.artist}
+          song={targetData.song}
+          userId={targetData.userId}
+          rating={targetData.rating}
+          review={targetData.review}
+        />
       </div>
-      <div>
-        <h2>Add Item to Database</h2>
-        <p>Expected JSON:</p>
-        <pre>
-          {"{\n  \"userId\": string,\n  \"artist\": string,\n  \"song\": string,\n  \"rating\": number,\n  \"review\": string\n}"}
-        </pre>
-        <div>
-          <label htmlFor="jIn">
-            JSON:
-            <input
-              type="text"
-              id="jIn"
-              name="jIn"
-              onKeyPress={event => (event.key === "Enter") && addItem(event.target.value)}
-            />
-          </label>
-        </div>
-        {(addedId !== "") && <p>Added id: {addedId}</p>}
-      </div>
+      <AddItem />
+      <ArtistList />
     </div>
   );
 }
