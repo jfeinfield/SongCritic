@@ -51,11 +51,11 @@ function App() {
         <h2>Items in Database</h2>
         <button type="button" onClick={fetchItems}>Fetch Items</button>
         {items.map(item => (
-          <div key={item["id"]}>
-            <p>{item["id"]}</p>
+          <div key={item.id}>
+            <p>{item.id}</p>
             <ul>
               {Object.entries(item).map(([key, value]) => (
-                <li key={`${item["id"]}-${key}`}>{key}: {value}</li>
+                <li key={`${item.id}-${key}`}>{key}: {value}</li>
               ))}
             </ul>
           </div> 
@@ -64,21 +64,23 @@ function App() {
       <div>
         <h2>View Item from Database</h2>
         <div>
-          <label htmlFor="oId">Object Id: </label>
-          <input
-            type="text"
-            id="oId"
-            name="oId"
-            onKeyPress={event => (event.key === "Enter") && fetchItem(event.target.value)}
-          />
+          <label htmlFor="oId">
+            Object Id:
+            <input
+              type="text"
+              id="oId"
+              name="oId"
+              onKeyPress={event => (event.key === "Enter") && fetchItem(event.target.value)}
+            />
+          </label>
         </div>
-        {targetData["artist"] &&
+        {targetData.artist &&
           <div>
-            <h3>{targetData["song"]}</h3>
-            <p>Artist: {targetData["artist"]}</p>
-            <p>By user: {targetData["userId"]}</p>
-            <p>Rating: {targetData["rating"]}</p>
-            <p>Review: {targetData["review"]}</p>
+            <h3>{targetData.song}</h3>
+            <p>Artist: {targetData.artist}</p>
+            <p>By user: {targetData.userId}</p>
+            <p>Rating: {targetData.rating}</p>
+            <p>Review: {targetData.review}</p>
           </div>}
       </div>
       <div>
@@ -88,13 +90,15 @@ function App() {
           {"{\n  \"userId\": string,\n  \"artist\": string,\n  \"song\": string,\n  \"rating\": number,\n  \"review\": string\n}"}
         </pre>
         <div>
-          <label htmlFor="jIn">JSON: </label>
-          <input
-            type="text"
-            id="jIn"
-            name="jIn"
-            onKeyPress={event => (event.key === "Enter") && addItem(event.target.value)}
-          />
+          <label htmlFor="jIn">
+            JSON:
+            <input
+              type="text"
+              id="jIn"
+              name="jIn"
+              onKeyPress={event => (event.key === "Enter") && addItem(event.target.value)}
+            />
+          </label>
         </div>
         {(addedId !== "") && <p>Added id: {addedId}</p>}
       </div>
