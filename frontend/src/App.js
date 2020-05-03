@@ -4,6 +4,7 @@ import Parse from 'parse';
 import Review from "./Review";
 import AddItem from "./AddItem";
 import ArtistList from "./ArtistList";
+import SubmitReview from "./SubmitReview";
 import RecentReviews from "./RecentReviews";
 
 import './App.css';
@@ -77,6 +78,7 @@ function App() {
       </div>
       <AddItem />
       <ArtistList />
+      <SubmitReview userId={1} />
       <RecentReviews />
     </div>
   );
