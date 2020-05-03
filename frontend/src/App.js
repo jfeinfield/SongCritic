@@ -4,6 +4,7 @@ import Parse from 'parse';
 import Review from "./Review";
 import AddItem from "./AddItem";
 import ArtistList from "./ArtistList";
+import RecentReviews from "./RecentReviews";
 
 import './App.css';
 
@@ -14,7 +15,7 @@ function App() {
   const [items, setItems] = useState([]);
   const fetchItems = useCallback(() => {
     const fetchData = async () => {
-      const query = new Parse.Query(Parse.Object.extend("test"));
+      const query = new Parse.Query(Parse.Object.extend("review"));
       const result = await query.find();
 
       setItems(result);
@@ -26,7 +27,7 @@ function App() {
   const [targetData, setTargetData] = useState({});
   const fetchItem = useCallback((id) => {
     const fetchData = async () => {
-      const query = new Parse.Query(Parse.Object.extend("test"));
+      const query = new Parse.Query(Parse.Object.extend("review"));
       const result = await query.get(id);
 
       setTargetData(result.toJSON());
@@ -76,6 +77,7 @@ function App() {
       </div>
       <AddItem />
       <ArtistList />
+      <RecentReviews />
     </div>
   );
 }

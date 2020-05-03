@@ -1,22 +1,14 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState} from 'react';
 import Parse from 'parse';
 
 const ArtistList = () => {
-  const[artistList, setArtistList] = useState([]);
-  const fetchArtists = useCallback(() => {
-    const fetchData = async() => {
-      setArtistList([]);
-      const query = new Parse.Query(Parse.Object.extend("test"));
-      const results = await query.find();
+  const [artistList, setArtistList] = useState([]);
+  const fetchArtists = async () => {
+    const query = new Parse.Query(Parse.Object.extend("review"));
+    const results = await query.find();
 
-      results.forEach(result => {
-        setArtistList(aL => [...aL, result.toJSON().artist]);
-      });
-    };
-
-    fetchData();
-
-  },[]);
+    setArtistList(results.map((result) => result.toJSON().artist));
+  };
 
   return (
     <div>

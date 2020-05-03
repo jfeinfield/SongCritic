@@ -4,7 +4,7 @@ import Parse from 'parse';
 const AddItem = () => {
   const [addedId, setAddedId] = useState("");
   const addItem = useCallback(async (item) => {
-    const Test = Parse.Object.extend("test");
+    const Test = Parse.Object.extend("review");
     const test = new Test();
     const result = await test.save(JSON.parse(item));
 
