@@ -1,0 +1,518 @@
+{
+	"info": {
+		"_postman_id": "8752ebbe-c034-4126-8ad5-9d784e872210",
+		"name": "Sprint307-8am-MWF-Team7",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Roles",
+			"item": [
+				{
+					"name": "Listeners",
+					"item": [
+						{
+							"name": "Create Listeners Role",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Parse-Application-Id",
+										"value": "{{APPLICATION_ID}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Listeners\",\n    \"ACL\": {\n        \"*\": {\n            \"read\": true\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "http://localhost:1337/parse/roles",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "1337",
+									"path": [
+										"parse",
+										"roles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add User to the Listeners Role",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-Parse-Application-Id",
+										"value": "{{APPLICATION_ID}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Parse-Master-Key",
+										"value": "{{MASTER_KEY}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"users\": {\n        \"__op\": \"AddRelation\",\n        \"objects\": [\n            {\n                \"__type\": \"Pointer\",\n                \"className\": \"_User\",\n                \"objectId\": \"5TLLG49cDW\"\n            }\n        ]\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:1337/parse/roles/kjiPyimff2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "1337",
+									"path": [
+										"parse",
+										"roles",
+										"kjiPyimff2"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Artists",
+					"item": [
+						{
+							"name": "Create Artists Role",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Parse-Application-Id",
+										"type": "text",
+										"value": "{{APPLICATION_ID}}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Artists\",\n    \"ACL\": {\n        \"*\": {\n            \"read\": true\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "http://localhost:1337/parse/roles",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "1337",
+									"path": [
+										"parse",
+										"roles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add User to the Artists Role",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-Parse-Application-Id",
+										"value": "{{APPLICATION_ID}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Parse-Master-Key",
+										"value": "{{MASTER_KEY}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"users\": {\n        \"__op\": \"AddRelation\",\n        \"objects\": [\n            {\n                \"__type\": \"Pointer\",\n                \"className\": \"_User\",\n                \"objectId\": \"5TLLG49cDW\"\n            }\n        ]\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:1337/parse/roles/XJ8W2he3eJ",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "1337",
+									"path": [
+										"parse",
+										"roles",
+										"XJ8W2he3eJ"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Admins",
+					"item": [
+						{
+							"name": "Create Admins Role",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Parse-Application-Id",
+										"value": "{{APPLICATION_ID}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Admins\",\n    \"ACL\": {\n        \"*\": {\n            \"read\": true,\n            \"write\": true\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "http://localhost:1337/parse/roles",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "1337",
+									"path": [
+										"parse",
+										"roles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add User to the Admins Role",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-Parse-Application-Id",
+										"value": "{{APPLICATION_ID}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Parse-Master-Key",
+										"value": "{{MASTER_KEY}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"users\": {\n        \"__op\": \"AddRelation\",\n        \"objects\": [\n            {\n                \"__type\": \"Pointer\",\n                \"className\": \"_User\",\n                \"objectId\": \"5TLLG49cDW\"\n            }\n        ]\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:1337/parse/roles/CF8i8S04a6",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "1337",
+									"path": [
+										"parse",
+										"roles",
+										"CF8i8S04a6"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Retrieve Roles",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Parse-Application-Id",
+								"value": "{{APPLICATION_ID}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:1337/parse/roles",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"parse",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Add User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Parse-Application-Id",
+								"value": "{{APPLICATION_ID}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Parse-Revocable-Session",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{USERNAME}}\",\n    \"password\": \"{{PASSWORD}}\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:1337/parse/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"parse",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Parse-Application-Id",
+								"value": "{{APPLICATION_ID}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:1337/parse/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"parse",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "test Class",
+			"item": [
+				{
+					"name": "Update Class Level Permissions",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-Parse-Application-Id",
+								"value": "{{APPLICATION_ID}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Parse-Master-Key",
+								"value": "{{MASTER_KEY}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"classLevelPermissions\": {\n        \"find\": {\n            \"*\": true\n        },\n        \"get\": {\n            \"*\": true\n        },\n        \"create\": {\n            \"role:Listener\": true,\n            \"requiresAuthentication\": true\n        },\n        \"update\": {\n            \"role:Listener\": true,\n            \"requiresAuthentication\": true\n        },\n        \"delete\": {\n            \"role:Listener\": true,\n            \"requiresAuthentication\": true\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:1337/parse/schemas/test",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"parse",
+								"schemas",
+								"test"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Parse-Application-Id",
+								"value": "{{APPLICATION_ID}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:1337/parse/classes/test",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"parse",
+								"classes",
+								"test"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Parse-Application-Id",
+								"type": "text",
+								"value": "{{APPLICATION_ID}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": 1,\n    \"artist\": \"string\",\n    \"song\": \"string\",\n    \"rating\": 1,\n    \"review\": \"string\",\n    \"classLevelPermissions\": {\n        \"find\": {\n            \"*\": true\n        },\n        \"get\": {\n            \"*\": true\n        },\n        \"create\": {\n            \"muddin\": true,\n            \"requiresAuthentication\": true\n        },\n        \"update\": {\n            \"muddin\": true,\n            \"requiresAuthentication\": true\n        },\n        \"delete\": {\n            \"muddin\": true,\n            \"requiresAuthentication\": true\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:1337/parse/classes/test",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"parse",
+								"classes",
+								"test"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Retrieve schemas",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Parse-Application-Id",
+						"value": "{{APPLICATION_ID}}",
+						"type": "text"
+					},
+					{
+						"key": "X-Parse-Master-Key",
+						"value": "{{MASTER_KEY}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:1337/parse/schemas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"parse",
+						"schemas"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"id": "afbe77c2-5673-4af7-907d-93f564eef628",
+			"key": "APPLICATION_ID",
+			"value": "HjKymbNGAhUhWwGSAmMDevlJJzVQPgworMQ9Fbud",
+			"type": "string"
+		},
+		{
+			"id": "65b22f29-fc76-4c27-b1ce-c19ec361d476",
+			"key": "MASTER_KEY",
+			"value": "SmezUtSvpF9wcwhdTh92wqkIMsFZggACtGp8CGHy",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

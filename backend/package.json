@@ -3,12 +3,14 @@
   "description": "parse-server for parse-test",
   "scripts": {
     "start": "parse-server config.json",
+    "dashboard": "parse-dashboard --dev --appId HjKymbNGAhUhWwGSAmMDevlJJzVQPgworMQ9Fbud --masterKey SmezUtSvpF9wcwhdTh92wqkIMsFZggACtGp8CGHy --serverURL \"http://localhost:1337/parse\" --appName \"Song Critic\"",
     "test": "jest tests/"
   },
   "dependencies": {
     "parse-server": "^4.1.0"
   },
   "devDependencies": {
+    "parse-dashboard": "^2.1.0",
     "axios": "^0.19.2",
     "jest": "^25.4.0"
   }
