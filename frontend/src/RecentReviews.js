@@ -15,7 +15,7 @@ const RecentReviews = () => {
       const results = await query.find();
   
       setRecentReviews(results.map((r) => {
-        let review = r.toJSON();
+        const review = r.toJSON();
         review.id = r.id;
         return review;
       }));

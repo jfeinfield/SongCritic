@@ -2,9 +2,14 @@
   "name": "parse-test",
   "description": "parse-server for parse-test",
   "scripts": {
-    "start": "parse-server config.json"
+    "start": "parse-server config.json",
+    "test": "jest tests/"
   },
   "dependencies": {
     "parse-server": "^4.1.0"
+  },
+  "devDependencies": {
+    "axios": "^0.19.2",
+    "jest": "^25.4.0"
   }
 }
