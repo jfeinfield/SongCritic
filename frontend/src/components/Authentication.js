@@ -26,9 +26,9 @@ const Authentication = () => {
   const logIn = async (username, password) => {
     try {
       setCurrentUser(await Parse.User.logIn(username, password));
+      setErrorMsg("");
     } catch (error) {
       setErrorMsg(`${error.code} ${error.message}`);
-      setErrorMsg("");
     }
   };
 
