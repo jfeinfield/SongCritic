@@ -1,7 +1,7 @@
 import React from 'react';
 import Parse from 'parse';
 
-import Authentication from "./Authentication";
+import Authentication from "./components/Authentication";
 import AddItem from "./AddItem";
 import ArtistList from "./ArtistList";
 import SubmitReview from "./SubmitReview";
