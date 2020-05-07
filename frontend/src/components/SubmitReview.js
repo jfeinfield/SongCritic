@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import Parse from 'parse';
+import {Review as ReviewClass} from "../parseClasses";
 
 const SubmitReview = (props) => {
   const [song, setSong] = useState("");
@@ -9,21 +9,23 @@ const SubmitReview = (props) => {
   const [reviewPosted, setReviewPosted] = useState(false);
 
   const saveReview = async () => {
-    const item = {
-      userId: props.userId,
-      songName: song,
-      rating: songRating,
-      review: songReview
-    };
-    const Review = Parse.Object.extend("review");
-    const r = new Review();
+    const review = new ReviewClass();
 
-    await r.save(item);
+    try {
+      await review.save({
+        userId: props.currentUser.id,
+        songName: song,
+        rating: songRating,
+        review: songReview
+      });
   
-    setSong("");
-    setRating("");
-    setReview("");
-    setReviewPosted(true);
+      setSong("");
+      setRating("");
+      setReview("");
+      setReviewPosted(true);
+    } catch {
+      // TODO: handle submission error
+    }
   };
 
   return (
@@ -31,7 +33,11 @@ const SubmitReview = (props) => {
       <h2>Write a Review</h2>
       <label htmlFor="txtSongName">
         Song name:
-        <input id="txtSongName" value={song} onChange={(e) => setSong(e.target.value)} />
+        <input
+          id="txtSongName"
+          value={song}
+          onChange={(e) => setSong(e.target.value)}
+        />
       </label>
       <br />
       <label htmlFor="txtRating">
@@ -50,7 +56,11 @@ const SubmitReview = (props) => {
       <label htmlFor="txtSongReview">
         Review:
         <br />
-        <textarea id="txtSongReview" value={songReview} onChange={(e) => setReview(e.target.value)} />
+        <textarea
+          id="txtSongReview"
+          value={songReview}
+          onChange={(e) => setReview(e.target.value)}
+        />
       </label>
       <br />
       <button
@@ -61,13 +71,15 @@ const SubmitReview = (props) => {
         Submit Review
       </button>
       <br />
-      <div hidden={!reviewPosted}>Review posted successfully!</div>
+      {reviewPosted && <div>Review posted successfully!</div>}
     </div>
   );
 };
 
 SubmitReview.propTypes = {
-  userId: PropTypes.number.isRequired
+  currentUser: PropTypes.shape({
+    id: PropTypes.string
+  }).isRequired
 };
 
 export default SubmitReview;

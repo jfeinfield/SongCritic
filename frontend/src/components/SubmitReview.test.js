@@ -1,5 +1,10 @@
 import React from "react";
-import { cleanup, fireEvent, render, waitForElement } from "@testing-library/react";
+import {
+  cleanup,
+  fireEvent,
+  render,
+  waitForElement
+} from "@testing-library/react";
 import SubmitReview from "./SubmitReview";
 
 
@@ -18,7 +23,10 @@ jest.mock("parse", () => ({
 afterEach(cleanup);
 
 it("sends request and displays success message", async () => {
-  const { getByLabelText, getByText } = render(<SubmitReview userId={1} />);
+  const {
+    getByLabelText,
+    getByText
+  } = render(<SubmitReview currentUser={{id: "fakeUserId"}} />);
 
   const txtSongName = getByLabelText(/^Song name:/i);
   fireEvent.change(txtSongName, { target: { value: "song name" } });
@@ -27,10 +35,8 @@ it("sends request and displays success message", async () => {
   const txtReview = getByLabelText(/^Review:/i);
   fireEvent.change(txtReview, { target: { value: "song review" } });
 
-  // Click button
   fireEvent.click(getByText('Submit Review'))
 
-  // Wait for page to update with results
   await waitForElement(() => getByText(/Review posted successfully/i));
   expect(getByText(/Review posted successfully/i)).toBeTruthy()
 });
