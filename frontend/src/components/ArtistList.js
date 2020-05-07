@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
 import Parse from 'parse';
+import {Review as ReviewClass} from "../parseClasses";
 
 const ArtistList = () => {
   const [artistList, setArtistList] = useState([]);
+
   const fetchArtists = async () => {
-    const query = new Parse.Query(Parse.Object.extend("review"));
+    const query = new Parse.Query(ReviewClass);
     const results = await query.find();
 
     setArtistList(results.map((result) => result.toJSON().artist));

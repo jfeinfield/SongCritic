@@ -5,7 +5,7 @@ import AuthInfo from "./components/AuthInfo";
 import SignUp from "./components/SignUp";
 import LogIn from "./components/LogIn";
 import AddItem from "./components/AddItem";
-import ArtistList from "./ArtistList";
+import ArtistList from "./components/ArtistList";
 import SubmitReview from "./components/SubmitReview";
 import RecentReviews from "./components/RecentReviews";
 
