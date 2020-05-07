@@ -1,5 +1,10 @@
 import React from "react";
-import { cleanup, fireEvent, render, waitForElement } from "@testing-library/react";
+import {
+  cleanup,
+  fireEvent,
+  render,
+  waitForElement
+} from "@testing-library/react";
 import AddItem from "./AddItem";
 
 jest.mock("parse", () => ({
@@ -19,14 +24,16 @@ jest.mock("parse", () => ({
           exists: () => {}
         })
       })
-    }
+    };
   }
 }));
 
 afterEach(cleanup);
 
 it("sends request and displays response id on enter", async () => {
-  const { getByLabelText, getByText } = render(<AddItem />);
+  const {getByLabelText, getByText} = render(
+    <AddItem currentUser={{id: "fakeUserId"}} />
+  );
 
   const textInput = getByLabelText(/^JSON:/i);
 
@@ -37,11 +44,12 @@ it("sends request and displays response id on enter", async () => {
       code: "Enter",
       charCode: 13,
       target: {
-        value: "{\"userId\":\"muddin\",\"artist\":\"JPEGMAFIA\",\"song\":\"BALD!\",\"rating\":4.5,\"review\":\"Iss a test\"}"
+        value: "{\"userId\":\"muddin\",\"artist\":\"JPEGMAFIA\",\"song\":"
+                 + "\"BALD!\",\"rating\":4.5,\"review\":\"Iss a test\"}"
       }
     }
   );
 
   await waitForElement(() => getByText(/thisIsAnId/i));
-  expect(getByText(/thisIsAnId/i)).toBeTruthy()
+  expect(getByText(/thisIsAnId/i)).toBeTruthy();
 });
