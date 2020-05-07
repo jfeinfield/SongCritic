@@ -1,6 +1,7 @@
 import React from 'react';
 import Parse from 'parse';
 
+import Authentication from "./Authentication";
 import AddItem from "./AddItem";
 import ArtistList from "./ArtistList";
 import SubmitReview from "./SubmitReview";
@@ -14,6 +15,7 @@ function App() {
 
   return (
     <div style={{width: "80vw", margin: "0 auto"}}>
+      <Authentication />
       <AddItem />
       <ArtistList />
       <SubmitReview userId={1} />
