@@ -24,7 +24,7 @@ jest.mock("parse", () => ({
           exists: () => {}
         })
       })
-    }
+    };
   }
 }));
 
@@ -49,5 +49,5 @@ it("sends request and displays response id on enter", async () => {
   );
 
   await waitForElement(() => getByText(/thisIsAnId/i));
-  expect(getByText(/thisIsAnId/i)).toBeTruthy()
+  expect(getByText(/thisIsAnId/i)).toBeTruthy();
 });

@@ -20,7 +20,7 @@ const Review = (props) => {
           </div>
         )}
     </>
-  )
+  );
 };
 
 Review.propTypes = {

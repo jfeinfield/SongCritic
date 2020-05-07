@@ -19,7 +19,7 @@ it("clears fields upon submit", async () => {
 
   fireEvent.change(usernameInput, {target: {value: "uname"}});
   fireEvent.change(passwordInput, {target: {value: "pwd"}});
-  fireEvent.click(queryByText("Log In", {selector: "input"}))
+  fireEvent.click(queryByText("Log In", {selector: "input"}));
 
   expect(usernameInput.value).toBe("");
   expect(passwordInput.value).toBe("");

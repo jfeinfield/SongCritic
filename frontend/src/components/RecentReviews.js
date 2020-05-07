@@ -36,10 +36,10 @@ const RecentReviews = () => {
             rating={reviews.rating}
             review={reviews.review}
           />
-        )
+        );
       })}
     </div>
-  )
-}
+  );
+};
 
 export default RecentReviews;

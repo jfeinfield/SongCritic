@@ -41,7 +41,7 @@ function App() {
 
   const logOut = async () => {
     try {
-      await Parse.User.logOut(currentUser)
+      await Parse.User.logOut(currentUser);
       setCurrentUser(null);
     } catch (error) {
       setErrorMsg(`${error.code} ${error.message}`);

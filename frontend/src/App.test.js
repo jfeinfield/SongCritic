@@ -45,7 +45,7 @@ it("populates currentUser on sign up", async () => {
   fireEvent.click(queryByText("Sign Up", {selector: "input"}));
 
   await waitForElement(() => queryByText(/fakeUsernameSignUp/i));
-  expect(queryByText(/fakeUsernameSignUp/i)).toBeTruthy()
+  expect(queryByText(/fakeUsernameSignUp/i)).toBeTruthy();
 });
 
 it("populates currentUser on log in", async () => {
@@ -59,7 +59,7 @@ it("populates currentUser on log in", async () => {
   fireEvent.click(queryByText("Log In", {selector: "input"}));
 
   await waitForElement(() => queryByText(/fakeUsernameLogIn/i));
-  expect(queryByText(/fakeUsernameLogIn/i)).toBeTruthy()
+  expect(queryByText(/fakeUsernameLogIn/i)).toBeTruthy();
 });
 
 it("clears currentUser on log out", async () => {
@@ -76,5 +76,5 @@ it("clears currentUser on log out", async () => {
   fireEvent.click(queryByText(/Log Out/i));
 
   await waitForElement(() => queryByText(/Username: n\/a/i));
-  expect(queryByText(/Username: n\/a/i)).toBeTruthy()
+  expect(queryByText(/Username: n\/a/i)).toBeTruthy();
 });
