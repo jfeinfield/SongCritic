@@ -52,6 +52,7 @@ function App() {
 
   return (
     <div style={{width: "80vw", margin: "0 auto"}}>
+      <h1>Song Critic</h1>
       <section>
         <h2>Authentication</h2>
         <AuthInfo currentUser={currentUser} errorMsg={errorMsg}/>
