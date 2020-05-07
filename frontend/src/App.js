@@ -7,7 +7,7 @@ import LogIn from "./components/LogIn";
 import AddItem from "./components/AddItem";
 import ArtistList from "./ArtistList";
 import SubmitReview from "./components/SubmitReview";
-import RecentReviews from "./RecentReviews";
+import RecentReviews from "./components/RecentReviews";
 
 import "./App.css";
 

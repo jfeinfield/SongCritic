@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import Parse from 'parse';
+import React, { useState, useEffect } from "react";
+import Parse from "parse";
 
+import {Review as ReviewClass} from "../parseClasses";
 import Review from "./Review";
 
 const RecentReviews = () => {
@@ -9,7 +10,7 @@ const RecentReviews = () => {
 
   useEffect(() => {
     (async () => {
-      const query = new Parse.Query(Parse.Object.extend("review"));
+      const query = new Parse.Query(ReviewClass);
       query.limit(numReviews).addDescending("createdAt").exists("review");
   
       const results = await query.find();
