@@ -31,7 +31,7 @@ jest.mock("parse", () => ({
 afterEach(cleanup);
 
 it("sends request and displays response id on enter", async () => {
-  const { getByLabelText, getByText } = render(<AddItem />);
+  const {getByLabelText, getByText} = render(<AddItem />);
 
   const textInput = getByLabelText(/^JSON:/i);
 

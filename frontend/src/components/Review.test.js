@@ -1,12 +1,12 @@
 import React from "react";
-import { cleanup, render } from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 
 import Review from "./Review";
 
 afterEach(cleanup);
 
 it("renders when all props are provided", () => {
-  const { queryByText } = render(
+  const {queryByText} = render(
     <Review
       artist="JPEGMAFIA"
       song="BALD!"
@@ -23,7 +23,7 @@ it("renders when all props are provided", () => {
 });
 
 it("doesn't render when only some props are provided", () => {
-  const { queryByText } = render(
+  const {queryByText} = render(
     <Review
       artist="JPEGMAFIA"
       song="BALD!"
@@ -38,7 +38,7 @@ it("doesn't render when only some props are provided", () => {
 });
 
 it("doesn't render when no props are provided", () => {
-  const { container } = render(<Review />);
+  const {container} = render(<Review />);
 
   expect(container.querySelector("p")).toBeFalsy();
 });

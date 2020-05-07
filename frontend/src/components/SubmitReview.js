@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {Review as ReviewClass} from "../parseClasses";
 
@@ -18,7 +18,7 @@ const SubmitReview = (props) => {
         rating: songRating,
         review: songReview
       });
-  
+
       setSong("");
       setRating("");
       setReview("");

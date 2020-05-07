@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import Parse from "parse";
 
 import {Review as ReviewClass} from "../parseClasses";
@@ -12,9 +12,9 @@ const RecentReviews = () => {
     (async () => {
       const query = new Parse.Query(ReviewClass);
       query.limit(numReviews).addDescending("createdAt").exists("review");
-  
+
       const results = await query.find();
-  
+
       setRecentReviews(results.map((r) => {
         const review = r.toJSON();
         review.id = r.id;
@@ -28,7 +28,7 @@ const RecentReviews = () => {
       <h2>Recent Reviews</h2>
       {recentReviews.map((reviews) => {
         return (
-          <Review 
+          <Review
             key={reviews.id}
             artist={reviews.artist}
             song={reviews.song}

@@ -25,7 +25,7 @@ const AddItem = (props) => {
       </pre>
       <div>
         <label htmlFor="jIn">
-          JSON: 
+          JSON:
           <input
             type="text"
             id="jIn"

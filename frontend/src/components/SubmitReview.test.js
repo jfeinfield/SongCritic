@@ -8,13 +8,12 @@ import {
 
 import SubmitReview from "./SubmitReview";
 
-
 jest.mock("parse", () => ({
   Object: {
     extend: () => (
       function Review() {
         return {
-          save: () => Promise.resolve({ id: "newId" })
+          save: () => Promise.resolve({id: "newId"})
         };
       }
     )
@@ -29,11 +28,11 @@ it("sends request and displays success message", async () => {
   );
 
   const txtSongName = getByLabelText(/^Song name:/i);
-  fireEvent.change(txtSongName, { target: { value: "song name" } });
+  fireEvent.change(txtSongName, {target: {value: "song name"}});
   const txtRating = getByLabelText(/^Rating:/i);
-  fireEvent.change(txtRating, { target: { value: 2 } });
+  fireEvent.change(txtRating, {target: {value: 2}});
   const txtReview = getByLabelText(/^Review:/i);
-  fireEvent.change(txtReview, { target: { value: "song review" } });
+  fireEvent.change(txtReview, {target: {value: "song review"}});
 
   fireEvent.click(queryByText('Submit Review'))
 
