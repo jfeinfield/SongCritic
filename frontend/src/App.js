@@ -9,8 +9,6 @@ import ArtistList from "./components/ArtistList";
 import SubmitReview from "./components/SubmitReview";
 import RecentReviews from "./components/RecentReviews";
 
-import "./App.css";
-
 function App() {
   Parse.initialize("HjKymbNGAhUhWwGSAmMDevlJJzVQPgworMQ9Fbud", "");
   Parse.serverURL = "http://localhost:1337/parse";
