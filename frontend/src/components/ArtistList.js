@@ -19,8 +19,9 @@ const ArtistList = () => {
       {artistList.map((artist, index) => {
         const tempKey = `${index}-${artist}`; // FIXME: don't use index as key
         return (
-        <p key={tempKey}>{artist}</p>
-      )})}
+          <p key={tempKey}>{artist}</p>
+        )
+      })}
     </div>
   )
 }
