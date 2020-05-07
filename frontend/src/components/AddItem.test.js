@@ -1,5 +1,10 @@
 import React from "react";
-import { cleanup, fireEvent, render, waitForElement } from "@testing-library/react";
+import {
+  cleanup,
+  fireEvent,
+  render,
+  waitForElement
+} from "@testing-library/react";
 import AddItem from "./AddItem";
 
 jest.mock("parse", () => ({
@@ -37,7 +42,8 @@ it("sends request and displays response id on enter", async () => {
       code: "Enter",
       charCode: 13,
       target: {
-        value: "{\"userId\":\"muddin\",\"artist\":\"JPEGMAFIA\",\"song\":\"BALD!\",\"rating\":4.5,\"review\":\"Iss a test\"}"
+        value: "{\"userId\":\"muddin\",\"artist\":\"JPEGMAFIA\",\"song\":"
+                 + "\"BALD!\",\"rating\":4.5,\"review\":\"Iss a test\"}"
       }
     }
   );
