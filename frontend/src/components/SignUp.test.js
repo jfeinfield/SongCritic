@@ -11,7 +11,7 @@ afterEach(cleanup);
 
 it("clears fields upon submit", async () => {
   const {getByLabelText, queryByText} = render(
-    <SignUp handleLogIn={() => {}} />
+    <SignUp handleSignUp={() => {}} />
   );
 
   const usernameInput = getByLabelText(/^Username/i);
@@ -19,7 +19,7 @@ it("clears fields upon submit", async () => {
 
   fireEvent.change(usernameInput, {target: {value: "uname"}});
   fireEvent.change(passwordInput, {target: {value: "pwd"}});
-  fireEvent.click(queryByText("Log In", {selector: "input"}));
+  fireEvent.click(queryByText("Sign Up", {selector: "input"}));
 
   expect(usernameInput.value).toBe("");
   expect(passwordInput.value).toBe("");

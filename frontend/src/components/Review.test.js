@@ -10,7 +10,7 @@ it("renders when all props are provided", () => {
     <Review
       artist="JPEGMAFIA"
       song="BALD!"
-      userId={1}
+      userId="fakeUserId"
       rating={4.5}
       review="This is a song which was released as a single."
     />
