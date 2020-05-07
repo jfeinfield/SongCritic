@@ -25,8 +25,7 @@ function App() {
     user.set("password", password);
 
     try {
-      await user.signUp();
-      setCurrentUser(user);
+      setCurrentUser(await user.signUp());
       setErrorMsg("");
     } catch (error) {
       setErrorMsg(`${error.code} ${error.message}`);
