@@ -34,7 +34,7 @@ it("sends request and displays success message", async () => {
   const txtReview = getByLabelText(/^Review:/i);
   fireEvent.change(txtReview, {target: {value: "song review"}});
 
-  fireEvent.click(queryByText('Submit Review'))
+  fireEvent.click(queryByText("Submit Review"))
 
   await waitForElement(() => queryByText(/Review posted successfully/i));
   expect(queryByText(/Review posted successfully/i)).toBeTruthy()

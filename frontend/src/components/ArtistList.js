@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import Parse from 'parse';
+import React, {useState} from "react";
+import Parse from "parse";
 import {Review as ReviewClass} from "../parseClasses";
 
 const ArtistList = () => {
