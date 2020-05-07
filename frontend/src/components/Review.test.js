@@ -18,7 +18,8 @@ it("renders when all props are provided", () => {
 
   expect(queryByText(/JPEGMAFIA/i)).toBeTruthy();
   expect(queryByText("BALD!")).toBeTruthy();
-  expect(queryByText(/This is a song which was released as a single\./i)).toBeTruthy();
+  expect(queryByText(/This is a song which was released as a single\./i))
+    .toBeTruthy();
 });
 
 it("doesn't render when only some props are provided", () => {
@@ -32,7 +33,8 @@ it("doesn't render when only some props are provided", () => {
 
   expect(queryByText(/JPEGMAFIA/i)).toBeFalsy();
   expect(queryByText("BALD!")).toBeFalsy();
-  expect(queryByText(/This is a song which was released as a single\./i)).toBeFalsy();
+  expect(queryByText(/This is a song which was released as a single\./i))
+    .toBeFalsy();
 });
 
 it("doesn't render when no props are provided", () => {
