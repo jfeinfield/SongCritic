@@ -32,6 +32,15 @@ const Authentication = () => {
     }
   };
 
+  const logOut = async () => {
+    try {
+      await Parse.User.logOut(currentUser)
+      setCurrentUser(null);
+    } catch (error) {
+      setErrorMsg(`${error.code} ${error.message}`);
+    }
+  };
+
   return (
     <div>
       <h2>Authentication</h2>
@@ -50,6 +59,13 @@ const Authentication = () => {
       </div>
       <SignUp handleSignUp={signUp} />
       <LogIn handleLogIn={logIn} />
+      <button
+        disabled={!currentUser}
+        type="button"
+        onClick={logOut}
+      >
+        Log Out
+      </button>
     </div>
   );
 };
