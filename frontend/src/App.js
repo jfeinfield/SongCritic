@@ -1,85 +1,74 @@
-import React, { useState, useCallback } from 'react';
-import Parse from 'parse';
-
-import Review from "./Review";
-import AddItem from "./AddItem";
-import ArtistList from "./ArtistList";
-import SubmitReview from "./SubmitReview";
-import RecentReviews from "./RecentReviews";
-import Search from "./Search";
+import React, {useState} from "react";
+import Parse from "parse";
 
 import './App.css';
+import AuthInfo from "./components/AuthInfo";
+import SignUp from "./components/SignUp";
+import LogIn from "./components/LogIn";
+import AddItem from "./components/AddItem";
+import ArtistList from "./components/ArtistList";
+import SubmitReview from "./components/SubmitReview";
+import RecentReviews from "./components/RecentReviews";
+import Search from "./Search";
 
 function App() {
   Parse.initialize("HjKymbNGAhUhWwGSAmMDevlJJzVQPgworMQ9Fbud", "");
   Parse.serverURL = "http://localhost:1337/parse";
 
-  const [items, setItems] = useState([]);
-  const fetchItems = useCallback(() => {
-    const fetchData = async () => {
-      const query = new Parse.Query(Parse.Object.extend("review"));
-      const result = await query.find();
+  const [currentUser, setCurrentUser] = useState(Parse.User.current());
+  const [errorMsg, setErrorMsg] = useState("");
 
-      setItems(result);
-    };
+  const signUp = async (username, password) => {
+    const user = new Parse.User();
 
-    fetchData();
-  }, []);
+    user.set("username", username);
+    user.set("password", password);
 
-  const [targetData, setTargetData] = useState({});
-  const fetchItem = useCallback((id) => {
-    const fetchData = async () => {
-      const query = new Parse.Query(Parse.Object.extend("review"));
-      const result = await query.get(id);
+    try {
+      setCurrentUser(await user.signUp());
+      setErrorMsg("");
+    } catch (error) {
+      setErrorMsg(`${error.code} ${error.message}`);
+    }
+  };
 
-      setTargetData(result.toJSON());
-    };
+  const logIn = async (username, password) => {
+    try {
+      setCurrentUser(await Parse.User.logIn(username, password));
+      setErrorMsg("");
+    } catch (error) {
+      setErrorMsg(`${error.code} ${error.message}`);
+    }
+  };
 
-    fetchData();
-  }, []);
+  const logOut = async () => {
+    try {
+      await Parse.User.logOut(currentUser);
+      setCurrentUser(null);
+    } catch (error) {
+      setErrorMsg(`${error.code} ${error.message}`);
+    }
+  };
 
   return (
-    <div
-      style={{width: "80vw", margin: "0 auto"}}
-    >
-      <div>
-        <h2>Items in Database</h2>
-        <button type="button" onClick={fetchItems}>Fetch Items</button>
-        {items.map(item => (
-          <div key={item.id}>
-            <p>{item.id}</p>
-            <ul>
-              {Object.entries(item).map(([key, value]) => (
-                <li key={`${item.id}-${key}`}>{key}: {value}</li>
-              ))}
-            </ul>
-          </div> 
-        ))}
-      </div>
-      <div>
-        <h2>View Item from Database</h2>
-        <div>
-          <label htmlFor="oId">
-            Object Id:
-            <input
-              type="text"
-              id="oId"
-              name="oId"
-              onKeyPress={event => (event.key === "Enter") && fetchItem(event.target.value)}
-            />
-          </label>
-        </div>
-        <Review
-          artist={targetData.artist}
-          song={targetData.song}
-          userId={targetData.userId}
-          rating={targetData.rating}
-          review={targetData.review}
-        />
-      </div>
-      <AddItem />
+    <div style={{width: "80vw", margin: "0 auto"}}>
+      <h1>Song Critic</h1>
+      <section>
+        <h2>Authentication</h2>
+        <AuthInfo currentUser={currentUser} errorMsg={errorMsg}/>
+        <SignUp handleSignUp={signUp} />
+        <LogIn handleLogIn={logIn} />
+        <button
+          disabled={!currentUser}
+          type="button"
+          onClick={logOut}
+        >
+          Log Out
+        </button>
+      </section>
+      {currentUser && <AddItem currentUser={currentUser} />}
+      {currentUser && <SubmitReview currentUser={currentUser} />}
       <ArtistList />
-      <SubmitReview userId={1} />
       <RecentReviews />
       <Search />
     </div>

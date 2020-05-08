@@ -5,11 +5,11 @@ const Review = (props) => {
   const {artist, song, userId, rating, review} = props;
   return (
     <>
-      {artist
-        && song
-        && userId
-        && rating
-        && review
+      {artist !== null
+        && song !== null
+        && userId !== null
+        && rating !== null
+        && review !== null
         && (
           <div className="review">
             <h3>{song}</h3>
@@ -20,13 +20,13 @@ const Review = (props) => {
           </div>
         )}
     </>
-  )
+  );
 };
 
 Review.propTypes = {
   artist: PropTypes.string,
   song: PropTypes.string,
-  userId: PropTypes.number,
+  userId: PropTypes.string,
   rating: PropTypes.number,
   review: PropTypes.string
 };
