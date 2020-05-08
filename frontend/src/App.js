@@ -6,6 +6,7 @@ import AddItem from "./AddItem";
 import ArtistList from "./ArtistList";
 import SubmitReview from "./SubmitReview";
 import RecentReviews from "./RecentReviews";
+import Search from "./Search";
 
 import './App.css';
 
@@ -80,6 +81,7 @@ function App() {
       <ArtistList />
       <SubmitReview userId={1} />
       <RecentReviews />
+      <Search />
     </div>
   );
 }
