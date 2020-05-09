@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Parse from "parse";
+import {Artist as ArtistClass, Song as SongClass} from "../parseClasses";
 
 const Search = () => {
   const [searchTerm, setSearchTerm] = useState("");;
@@ -10,12 +11,12 @@ const Search = () => {
   const [didSearch, setDidSearch] = useState(false);
 
   const doSearch = async () => {
-    const artistQuery = new Parse.Query(Parse.Object.extend("artist"));
+    const artistQuery = new Parse.Query(ArtistClass);
     artistQuery.fullText("name", searchTerm).limit(10);
 
     const artistResults = await artistQuery.find();
 
-    const songQuery = new Parse.Query(Parse.Object.extend("song"));
+    const songQuery = new Parse.Query(SongClass);
     songQuery.fullText("name", searchTerm).limit(10);
 
     const songResults = await songQuery.find();
