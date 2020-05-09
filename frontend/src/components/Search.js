@@ -36,6 +36,7 @@ const Search = () => {
       <h2>Search</h2>
       <label>
         <input
+          data-testid = "searchInput"
           value={searchTerm} 
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyPress={e => (e.key === "Enter") && searchTerm !== "" && doSearch()}
@@ -44,7 +45,7 @@ const Search = () => {
       <button disabled={searchTerm === ""} type="button" onClick={() => doSearch()}>
         Search
       </button>
-      <div hidden={!artistFound}>
+      {artistFound && <div>
         <h2>Artists</h2>
         {artistResults.map((artist) => {
           return (
@@ -52,8 +53,8 @@ const Search = () => {
               <h4>{artist.name}</h4>
             </div>
         )})}
-      </div>
-      <div hidden={!songFound}>
+      </div>}
+      {songFound && <div>
         <h2>Songs</h2>
         {songResults.map((song) => {
           return (
@@ -62,8 +63,8 @@ const Search = () => {
               <p>By: {song.artistName}</p>
             </div>
         )})}
-      </div>
-      <div hidden={artistFound || songFound || !didSearch}>No results found</div>
+      </div>}
+      {didSearch && !artistFound && !songFound && <div>No results found</div>}
     </div>
   );
 }
