@@ -1,7 +1,11 @@
 import React, {useState, useEffect} from "react";
 import Parse from "parse";
 
-import {Review as ReviewClass} from "../parseClasses";
+import {
+  Review as ReviewClass,
+  Song as SongClass,
+  User as UserClass
+} from "../parseClasses";
 import Review from "./Review";
 
 const RecentReviews = () => {
@@ -13,31 +17,48 @@ const RecentReviews = () => {
       const query = new Parse.Query(ReviewClass);
       query.limit(numReviews).addDescending("createdAt").exists("review");
 
-      const results = await query.find();
+      const resultsWithPointers = await query.find();
+      const results = resultsWithPointers.map(async (r) => {
+        const {
+          objectId,
+          author: {objectId: authorId},
+          song: {objectId: songId},
+          review: ReviewText,
+          rating
+        } = r.toJSON();
 
-      setRecentReviews(results.map((r) => {
-        const review = r.toJSON();
-        review.id = r.id;
+        let song = await new Parse.Query(SongClass).get(songId);
+        song = song.toJSON();
+        const userQuery = new Parse.Query(UserClass);
+        let author = await userQuery.get(authorId);
+        author = author.toJSON();
+        let artist = await userQuery.get(song.artist.objectId);
+        artist = artist.toJSON();
+
+        const review = {objectId, review: ReviewText, rating};
+        review.author = author.name;
+        review.song = song.name;
+        review.artist = artist.name;
         return review;
-      }));
+      });
+
+      setRecentReviews(await Promise.all(results));
     })();
   },[]);
 
   return (
     <div>
       <h2>Recent Reviews</h2>
-      {recentReviews.map((reviews) => {
-        return (
-          <Review
-            key={reviews.id}
-            artist={reviews.artist}
-            song={reviews.song}
-            userId={reviews.userId}
-            rating={reviews.rating}
-            review={reviews.review}
-          />
-        );
-      })}
+      {recentReviews.map((r) => (
+        <Review
+          key={r.objectId}
+          artistName={r.artist}
+          song={r.song}
+          authorName={r.author}
+          rating={r.rating}
+          review={r.review}
+        />
+      ))}
     </div>
   );
 };
