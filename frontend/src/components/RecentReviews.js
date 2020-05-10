@@ -15,11 +15,7 @@ const RecentReviews = () => {
 
       const results = await query.find();
 
-      setRecentReviews(results.map((r) => {
-        const review = r.toJSON();
-        review.id = r.id;
-        return review;
-      }));
+      setRecentReviews(results.map((r) =>  r.toJSON()));
     })();
   },[]);
 
@@ -29,7 +25,7 @@ const RecentReviews = () => {
       {recentReviews.map((reviews) => {
         return (
           <Review
-            key={reviews.id}
+            key={reviews.objectId}
             artist={reviews.artist}
             song={reviews.song}
             userId={reviews.userId}
