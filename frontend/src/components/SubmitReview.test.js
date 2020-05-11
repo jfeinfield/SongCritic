@@ -23,7 +23,7 @@ jest.mock("parse", () => ({
 afterEach(cleanup);
 
 it("sends request and displays success message", async () => {
-  const {getByLabelText, queryByText} = render(
+  const {container, getByLabelText, queryByText} = render(
     <SubmitReview currentUser={{id: "fakeUserId"}} />
   );
 
@@ -34,7 +34,7 @@ it("sends request and displays success message", async () => {
   const txtReview = getByLabelText(/^Review:/i);
   fireEvent.change(txtReview, {target: {value: "song review"}});
 
-  fireEvent.click(queryByText("Submit Review"));
+  fireEvent.submit(container.querySelector('form[name="reviewForm"]'))
 
   await waitForElement(() => queryByText(/Review posted successfully/i));
   expect(queryByText(/Review posted successfully/i)).toBeTruthy();

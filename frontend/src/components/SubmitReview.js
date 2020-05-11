@@ -4,6 +4,7 @@ import {Review as ReviewClass} from "../parseClasses";
 
 const SubmitReview = (props) => {
   const [song, setSong] = useState("");
+  const [artist, setArtist] = useState("");
   const [songRating, setRating] = useState("");
   const [songReview, setReview] = useState("");
   const [reviewPosted, setReviewPosted] = useState(false);
@@ -15,11 +16,13 @@ const SubmitReview = (props) => {
       await review.save({
         userId: props.currentUser.id,
         songName: song,
+        artistName: artist,
         rating: songRating,
         review: songReview
       });
 
       setSong("");
+      setArtist("");
       setRating("");
       setReview("");
       setReviewPosted(true);
@@ -28,15 +31,30 @@ const SubmitReview = (props) => {
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    saveReview();
+  };
+
   return (
-    <div className="container">
+    <div>
       <h2>Write a Review</h2>
+    <form name="reviewForm" onSubmit={handleSubmit}>
       <label htmlFor="txtSongName">
         Song name:
         <input
           id="txtSongName"
           value={song}
           onChange={(e) => setSong(e.target.value)}
+        />
+      </label>
+      <br />
+      <label htmlFor="txtArtistName">
+        Artist:
+        <input
+          id="txtArtistName"
+          value={artist}
+          onChange={(e) => setArtist(e.target.value)}
         />
       </label>
       <br />
@@ -63,15 +81,14 @@ const SubmitReview = (props) => {
         />
       </label>
       <br />
-      <button
-        disabled={song === "" || songRating === "" || songReview === ""}
-        type="button"
-        onClick={() => saveReview()}
-      >
-        Submit Review
-      </button>
+      <input
+        disabled={song === "" || songRating === "" || songReview === ""
+          || artist === ""}
+        type="submit"
+      />
       <br />
       {reviewPosted && <div>Review posted successfully!</div>}
+    </form>
     </div>
   );
 };

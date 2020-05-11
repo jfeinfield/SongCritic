@@ -8,6 +8,7 @@ import AddItem from "./components/AddItem";
 import ArtistList from "./components/ArtistList";
 import SubmitReview from "./components/SubmitReview";
 import RecentReviews from "./components/RecentReviews";
+import UploadSong from "./components/UploadSong";
 
 function App() {
   Parse.initialize("HjKymbNGAhUhWwGSAmMDevlJJzVQPgworMQ9Fbud", "");
@@ -66,6 +67,7 @@ function App() {
       </section>
       {currentUser && <AddItem currentUser={currentUser} />}
       {currentUser && <SubmitReview currentUser={currentUser} />}
+      {currentUser && <UploadSong currentUser={currentUser} />}
       <ArtistList />
       <RecentReviews />
     </div>
