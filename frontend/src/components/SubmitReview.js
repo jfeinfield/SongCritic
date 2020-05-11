@@ -85,6 +85,7 @@ const SubmitReview = (props) => {
           disabled={song === "" || songRating === "" || songReview === ""
           || artist === ""}
           type="submit"
+          value="Submit Review"
         />
         <br />
         {reviewPosted && <div>Review posted successfully!</div>}

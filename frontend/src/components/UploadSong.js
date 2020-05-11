@@ -56,6 +56,7 @@ const UploadSong = (props) => {
         <input
           disabled={song === "" || coverArt === "" }
           type="submit"
+          value="Post Song"
         />
         <br />
         <div hidden={!songUploaded}>Song posted successfully!</div>
