@@ -4,6 +4,7 @@ import {Review as ReviewClass} from "../parseClasses";
 
 const SubmitReview = (props) => {
   const [song, setSong] = useState("");
+  const [artist, setArtist] = useState("");
   const [songRating, setRating] = useState("");
   const [songReview, setReview] = useState("");
   const [reviewPosted, setReviewPosted] = useState(false);
@@ -15,11 +16,13 @@ const SubmitReview = (props) => {
       await review.save({
         userId: props.currentUser.id,
         songName: song,
+        artistName: artist,
         rating: songRating,
         review: songReview
       });
 
       setSong("");
+      setArtist("");
       setRating("");
       setReview("");
       setReviewPosted(true);
@@ -28,50 +31,64 @@ const SubmitReview = (props) => {
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    saveReview();
+  };
+
   return (
-    <div className="container">
+    <div>
       <h2>Write a Review</h2>
-      <label htmlFor="txtSongName">
+      <form name="reviewForm" onSubmit={handleSubmit}>
+        <label htmlFor="txtSongName">
         Song name:
-        <input
-          id="txtSongName"
-          value={song}
-          onChange={(e) => setSong(e.target.value)}
-        />
-      </label>
-      <br />
-      <label htmlFor="txtRating">
-        Rating:
-        <input
-          id="txtRating"
-          type="number"
-          min="0"
-          max="5"
-          step="0.5"
-          value={songRating}
-          onChange={(e) => setRating(e.target.value)}
-        />
-      </label>
-      <br />
-      <label htmlFor="txtSongReview">
-        Review:
+          <input
+            id="txtSongName"
+            value={song}
+            onChange={(e) => setSong(e.target.value)}
+          />
+        </label>
         <br />
-        <textarea
-          id="txtSongReview"
-          value={songReview}
-          onChange={(e) => setReview(e.target.value)}
+        <label htmlFor="txtArtistName">
+        Artist:
+          <input
+            id="txtArtistName"
+            value={artist}
+            onChange={(e) => setArtist(e.target.value)}
+          />
+        </label>
+        <br />
+        <label htmlFor="txtRating">
+        Rating:
+          <input
+            id="txtRating"
+            type="number"
+            min="0"
+            max="5"
+            step="0.5"
+            value={songRating}
+            onChange={(e) => setRating(e.target.value)}
+          />
+        </label>
+        <br />
+        <label htmlFor="txtSongReview">
+        Review:
+          <br />
+          <textarea
+            id="txtSongReview"
+            value={songReview}
+            onChange={(e) => setReview(e.target.value)}
+          />
+        </label>
+        <br />
+        <input
+          disabled={song === "" || songRating === "" || songReview === ""
+          || artist === ""}
+          type="submit"
         />
-      </label>
-      <br />
-      <button
-        disabled={song === "" || songRating === "" || songReview === ""}
-        type="button"
-        onClick={() => saveReview()}
-      >
-        Submit Review
-      </button>
-      <br />
-      {reviewPosted && <div>Review posted successfully!</div>}
+        <br />
+        {reviewPosted && <div>Review posted successfully!</div>}
+      </form>
     </div>
   );
 };
