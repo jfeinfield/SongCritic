@@ -9,6 +9,7 @@ import ArtistList from "./components/ArtistList";
 import SubmitReview from "./components/SubmitReview";
 import RecentReviews from "./components/RecentReviews";
 import UploadSong from "./components/UploadSong";
+import Search from "./components/Search";
 
 function App() {
   Parse.initialize("HjKymbNGAhUhWwGSAmMDevlJJzVQPgworMQ9Fbud", "");
@@ -70,6 +71,7 @@ function App() {
       {currentUser && <UploadSong currentUser={currentUser} />}
       <ArtistList />
       <RecentReviews />
+      <Search />
     </div>
   );
 }
