@@ -43,32 +43,32 @@ const UploadSong = (props) => {
   // it is a good one
     <div>
       <h2>Post a new song</h2>
-    <form name="usForm" onSubmit={handleSubmit}>
-      <label htmlFor="txtSong">
+      <form name="usForm" onSubmit={handleSubmit}>
+        <label htmlFor="txtSong">
         Song name:
-        <input
-          id="txtSong"
-          value={song}
-          onChange={(e) => setSong(e.target.value)}
-        />
-      </label>
-      <br />
-      <label htmlFor="txtCoverArt">
+          <input
+            id="txtSong"
+            value={song}
+            onChange={(e) => setSong(e.target.value)}
+          />
+        </label>
+        <br />
+        <label htmlFor="txtCoverArt">
         Cover Art:
+          <input
+            id="txtCoverArt"
+            value={coverArt}
+            onChange={(e) => setArt(e.target.value)}
+          />
+        </label>
+        <br />
         <input
-          id="txtCoverArt"
-          value={coverArt}
-          onChange={(e) => setArt(e.target.value)}
+          disabled={song === "" || coverArt === "" }
+          type="submit"
         />
-      </label>
-      <br />
-      <input
-        disabled={song === "" || coverArt === "" }
-        type="submit"
-      />
-      <br />
-      <div hidden={!songUploaded}>Song posted successfully!</div>
-    </form>
+        <br />
+        <div hidden={!songUploaded}>Song posted successfully!</div>
+      </form>
     </div>
   );
 };

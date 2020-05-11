@@ -4,7 +4,6 @@ import {
   fireEvent,
   render,
   waitForElement,
-  getByText
 } from "@testing-library/react";
 
 import UploadSong from "./UploadSong";
@@ -33,7 +32,7 @@ it("sends request and displays success message", async () => {
   const txtCoverArt = getByLabelText(/^Cover Art:/i);
   fireEvent.change(txtCoverArt, {target: {value: 2}});
 
-  fireEvent.submit(container.querySelector('form[name="usForm"]'))
+  fireEvent.submit(container.querySelector("form[name=\"usForm\"]"));
 
   await waitForElement(() => queryByText(/Song posted successfully!/i));
   expect(queryByText(/Song posted successfully!/i)).toBeTruthy();

@@ -39,56 +39,56 @@ const SubmitReview = (props) => {
   return (
     <div>
       <h2>Write a Review</h2>
-    <form name="reviewForm" onSubmit={handleSubmit}>
-      <label htmlFor="txtSongName">
+      <form name="reviewForm" onSubmit={handleSubmit}>
+        <label htmlFor="txtSongName">
         Song name:
-        <input
-          id="txtSongName"
-          value={song}
-          onChange={(e) => setSong(e.target.value)}
-        />
-      </label>
-      <br />
-      <label htmlFor="txtArtistName">
-        Artist:
-        <input
-          id="txtArtistName"
-          value={artist}
-          onChange={(e) => setArtist(e.target.value)}
-        />
-      </label>
-      <br />
-      <label htmlFor="txtRating">
-        Rating:
-        <input
-          id="txtRating"
-          type="number"
-          min="0"
-          max="5"
-          step="0.5"
-          value={songRating}
-          onChange={(e) => setRating(e.target.value)}
-        />
-      </label>
-      <br />
-      <label htmlFor="txtSongReview">
-        Review:
+          <input
+            id="txtSongName"
+            value={song}
+            onChange={(e) => setSong(e.target.value)}
+          />
+        </label>
         <br />
-        <textarea
-          id="txtSongReview"
-          value={songReview}
-          onChange={(e) => setReview(e.target.value)}
-        />
-      </label>
-      <br />
-      <input
-        disabled={song === "" || songRating === "" || songReview === ""
+        <label htmlFor="txtArtistName">
+        Artist:
+          <input
+            id="txtArtistName"
+            value={artist}
+            onChange={(e) => setArtist(e.target.value)}
+          />
+        </label>
+        <br />
+        <label htmlFor="txtRating">
+        Rating:
+          <input
+            id="txtRating"
+            type="number"
+            min="0"
+            max="5"
+            step="0.5"
+            value={songRating}
+            onChange={(e) => setRating(e.target.value)}
+          />
+        </label>
+        <br />
+        <label htmlFor="txtSongReview">
+        Review:
+          <br />
+          <textarea
+            id="txtSongReview"
+            value={songReview}
+            onChange={(e) => setReview(e.target.value)}
+          />
+        </label>
+        <br />
+        <input
+          disabled={song === "" || songRating === "" || songReview === ""
           || artist === ""}
-        type="submit"
-      />
-      <br />
-      {reviewPosted && <div>Review posted successfully!</div>}
-    </form>
+          type="submit"
+        />
+        <br />
+        {reviewPosted && <div>Review posted successfully!</div>}
+      </form>
     </div>
   );
 };
