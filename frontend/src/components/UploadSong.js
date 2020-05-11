@@ -5,13 +5,9 @@ import {Song as SongClass} from "../parseClasses";
 const UploadSong = (props) => {
   const [song, setSong] = useState("");
   const [coverArt, setArt] = useState("");
-  // const [ArtistID, setID] = useState("");
   const [songUploaded, setSongUploaded] = useState(false);
 
   const saveSong = async () => {
-    // we are saying that artist id and user id is the same thing for now
-    // use user id to auto populate the artist name for the upload,
-    // not sure how to do this as of now
     const songC = new SongClass();
 
     try {
@@ -36,11 +32,6 @@ const UploadSong = (props) => {
   };
 
   return (
-  // make this a form, Mian posted some info about this, find it or ask
-  // also i think i need to change it from onchange to something else,
-  // double check the message
-  // cover art needs to be a url, need to add input validation to make sure
-  // it is a good one
     <div>
       <h2>Post a new song</h2>
       <form name="usForm" onSubmit={handleSubmit}>
