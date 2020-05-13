@@ -7,6 +7,9 @@ const AuthInfo = (props) => {
     <div>
       <h3>Info</h3>
       <p>Username: {currentUser ? currentUser.getUsername() : "n/a"}</p>
+      <p>Display Name: {currentUser ? currentUser.get("name") : "n/a"}</p>
+      <p>Is an artist: {currentUser ?
+        (currentUser.get("isArtist") && "Yes" || "No") : "n/a"}</p>
       <p>
         Session Token: {currentUser ? currentUser.getSessionToken() : "n/a"}
       </p>
@@ -24,7 +27,8 @@ AuthInfo.propTypes = {
   currentUser: PropTypes.shape({
     authenticated: PropTypes.func,
     getSessionToken: PropTypes.func,
-    getUsername: PropTypes.func
+    getUsername: PropTypes.func,
+    get: PropTypes.func
   }),
   errorMsg: PropTypes.string.isRequired
 };
