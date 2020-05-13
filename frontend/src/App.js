@@ -67,7 +67,8 @@ function App() {
         </button>
       </section>
       {currentUser && <AddItem currentUser={currentUser} />}
-      {currentUser && <SubmitReview currentUser={currentUser} />}
+      {currentUser &&
+        <SubmitReview currentUser={currentUser} songId="lvdeaaILDE" />}
       {currentUser && <UploadSong currentUser={currentUser} />}
       <ArtistList />
       <RecentReviews />
