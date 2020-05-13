@@ -8,7 +8,7 @@ import LogIn from "./components/LogIn";
 import ArtistList from "./components/ArtistList";
 import SubmitReview from "./components/SubmitReview";
 import RecentReviews from "./components/RecentReviews";
-import UploadSong from "./components/UploadSong";
+import SubmitSong from "./components/SubmitSong";
 import Search from "./components/Search";
 
 function App() {
@@ -80,7 +80,7 @@ function App() {
           </button>
           <SubmitReview currentUser={currentUser} songId="lvdeaaILDE" />
           {currentUser.get("isArtist")
-            && <UploadSong currentUser={currentUser} />}
+            && <SubmitSong currentUser={currentUser} />}
           <ArtistList />
           <RecentReviews />
           <Search />
