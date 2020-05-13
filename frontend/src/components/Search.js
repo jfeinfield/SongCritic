@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React, {useState} from "react";
 import Parse from "parse";
-import {Artist as ArtistClass, Song as SongClass} from "../parseClasses";
+import {
+  Song as SongClass,
+  User as UserClass,
+  Artist as ArtistClass
+} from "../parseClasses";
 
 const Search = () => {
   const [searchTerm, setSearchTerm] = useState("");;
@@ -11,63 +15,74 @@ const Search = () => {
   const [didSearch, setDidSearch] = useState(false);
 
   const doSearch = async () => {
-    const artistQuery = new Parse.Query(ArtistClass);
-    artistQuery.fullText("name", searchTerm).limit(10);
+    const artistPointers =
+      (await new Parse.Query(ArtistClass).find()).map((v) => v.get("user"));
 
-    const artistResults = await artistQuery.find();
+    const artistPromises = artistPointers.map(async (pointer) =>
+      new Parse.Query(UserClass).get(pointer.id)
+    );
+
+    const artistQueryResults =
+      await Promise.all(artistPromises).then((users) =>
+        users.map((user) => ({
+          objectId: user.id,
+          name: user.toJSON().name
+        })).filter(({name}) => name.includes(searchTerm))
+      );
 
     const songQuery = new Parse.Query(SongClass);
-    songQuery.fullText("name", searchTerm).limit(10);
+    songQuery.contains("name", searchTerm).limit(10);
 
-    const songResults = await songQuery.find();
+    const songQueryResults = await songQuery.find();
 
-    setArtistFound(artistResults.length === 0 ? false : true);
-
-    setSongFound(songResults.length === 0 ? false : true);
-
-    setArtistResults(artistResults.map((a) => a.toJSON()));
-
-    setSongResults(songResults.map((s) => s.toJSON()));
-    
+    setArtistFound(artistQueryResults.length !== 0);
+    setSongFound(songQueryResults.length !== 0);
+    setArtistResults(artistQueryResults);
+    setSongResults(songQueryResults.map((s) => s.toJSON()));
     setDidSearch(true);
   };
 
   return (
     <div>
       <h2>Search</h2>
-      <label>
+      <label htmlFor="searchInput">
+        Search:
         <input
-          data-testid = "searchInput"
-          value={searchTerm} 
+          id="searchInput"
+          name="searchInput"
+          data-testid="searchInput"
+          value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          onKeyPress={e => (e.key === "Enter") && searchTerm !== "" && doSearch()}
+          onKeyPress={
+            e => (e.key === "Enter") && searchTerm !== "" && doSearch()
+          }
         />
       </label>
-      <button disabled={searchTerm === ""} type="button" onClick={() => doSearch()}>
+      <button
+        disabled={searchTerm === ""}
+        type="button"
+        onClick={() => doSearch()}>
         Search
       </button>
       {artistFound && <div>
-        <h2>Artists</h2>
-        {artistResults.map((artist) => {
-          return (
-            <div key={artist.objectId}>
-              <h4>{artist.name}</h4>
-            </div>
-        )})}
+        <h3>Artists</h3>
+        {artistResults.map((artist) => (
+          <ul key={artist.objectId}>
+            <li>{artist.name}</li>
+          </ul>
+        ))}
       </div>}
       {songFound && <div>
-        <h2>Songs</h2>
-        {songResults.map((song) => {
-          return (
-            <div key={song.objectId} >
-              <h3>{song.name}</h3>
-              <p>By: {song.artistName}</p>
-            </div>
-        )})}
+        <h3>Songs</h3>
+        {songResults.map((song) => (
+          <ul key={song.objectId} >
+            <li>{song.name}</li>
+          </ul>
+        ))}
       </div>}
       {didSearch && !artistFound && !songFound && <div>No results found</div>}
     </div>
   );
-}
+};
 
 export default Search;

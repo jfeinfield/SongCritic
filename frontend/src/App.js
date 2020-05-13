@@ -81,9 +81,9 @@ function App() {
           <SubmitReview currentUser={currentUser} songId="lvdeaaILDE" />
           {currentUser.get("isArtist")
             && <SubmitSong currentUser={currentUser} />}
+          <Search />
           <ArtistList />
           <RecentReviews />
-          <Search />
         </>
         : <>
           <SignUp handleSignUp={signUp} />
