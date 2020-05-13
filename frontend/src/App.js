@@ -4,7 +4,6 @@ import Parse from "parse";
 import AuthInfo from "./components/AuthInfo";
 import SignUp from "./components/SignUp";
 import LogIn from "./components/LogIn";
-import AddItem from "./components/AddItem";
 import ArtistList from "./components/ArtistList";
 import SubmitReview from "./components/SubmitReview";
 import RecentReviews from "./components/RecentReviews";
@@ -66,7 +65,6 @@ function App() {
           Log Out
         </button>
       </section>
-      {currentUser && <AddItem currentUser={currentUser} />}
       {currentUser &&
         <SubmitReview currentUser={currentUser} songId="lvdeaaILDE" />}
       {currentUser && <UploadSong currentUser={currentUser} />}
