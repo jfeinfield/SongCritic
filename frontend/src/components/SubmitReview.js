@@ -36,11 +36,12 @@ const SubmitReview = (props) => {
     const review = new ReviewClass();
     const songQuery = await new Parse.Query(SongClass).get(props.songId);
 
+    review.set("author", props.currentUser.toPointer());
+    review.set("song", songQuery.toPointer());
+    review.set("rating", parseFloat(songRating));
+    review.set("review", songReview);
+
     try {
-      review.set("author", props.currentUser.toPointer());
-      review.set("song", songQuery.toPointer());
-      review.set("rating", parseFloat(songRating));
-      review.set("review", songReview);
       await review.save();
 
       setRating("");

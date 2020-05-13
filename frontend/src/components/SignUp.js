@@ -2,12 +2,16 @@ import React, {useState} from "react";
 import PropTypes from "prop-types";
 
 const SignUp = (props) => {
+  const [isArtist, setIsArtist] = useState(false);
+  const [displayName, setDisplayName] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.handleSignUp(username, password);
+    props.handleSignUp(isArtist, displayName, username, password);
+    setIsArtist(false);
+    setDisplayName("");
     setUsername("");
     setPassword("");
   };
@@ -16,6 +20,28 @@ const SignUp = (props) => {
     <div>
       <h3>Sign Up</h3>
       <form onSubmit={handleSubmit}>
+        <label htmlFor="signUpIsArtist">
+          I am an artist
+          <input
+            type="checkbox"
+            id="signUpIsArtist"
+            name="signUpIsArtist"
+            checked={isArtist}
+            onChange={() => setIsArtist(!isArtist)}
+          />
+        </label>
+        <br />
+        <label htmlFor="signUpDisplayName">
+          Display Name:
+          <input
+            type="text"
+            id="signUpDisplayName"
+            name="signUpDisplayName"
+            value={displayName}
+            onChange={e => setDisplayName(e.target.value)}
+          />
+        </label>
+        <br />
         <label htmlFor="signUpUsername">
           Username:
           <input
@@ -39,7 +65,7 @@ const SignUp = (props) => {
         </label>
         <br />
         <input
-          disabled={username === "" || password === ""}
+          disabled={displayName === "" || username === "" || password === ""}
           type="submit"
           value="Sign Up"
         />

@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import Parse from "parse";
 
+import {Artist as ArtistClass} from "./parseClasses";
 import AuthInfo from "./components/AuthInfo";
 import SignUp from "./components/SignUp";
 import LogIn from "./components/LogIn";
@@ -17,9 +18,11 @@ function App() {
   const [currentUser, setCurrentUser] = useState(Parse.User.current());
   const [errorMsg, setErrorMsg] = useState("");
 
-  const signUp = async (username, password) => {
+  const signUp = async (isArtist, displayName, username, password) => {
     const user = new Parse.User();
 
+    user.set("isArtist", isArtist);
+    user.set("name", displayName);
     user.set("username", username);
     user.set("password", password);
 
@@ -28,6 +31,19 @@ function App() {
       setErrorMsg("");
     } catch (error) {
       setErrorMsg(`${error.code} ${error.message}`);
+      return;
+    }
+
+    if (isArtist) {
+      const artist = new ArtistClass();
+
+      artist.set("user", user.toPointer());
+
+      try {
+        await artist.save();
+      } catch (error) {
+        setErrorMsg(`${error.code} ${error.message}`);
+      }
     }
   };
 
@@ -52,25 +68,28 @@ function App() {
   return (
     <div style={{width: "80vw", margin: "0 auto"}}>
       <h1>Song Critic</h1>
-      <section>
-        <h2>Authentication</h2>
-        <AuthInfo currentUser={currentUser} errorMsg={errorMsg}/>
-        <SignUp handleSignUp={signUp} />
-        <LogIn handleLogIn={logIn} />
-        <button
-          disabled={!currentUser}
-          type="button"
-          onClick={logOut}
-        >
-          Log Out
-        </button>
-      </section>
-      {currentUser &&
-        <SubmitReview currentUser={currentUser} songId="lvdeaaILDE" />}
-      {currentUser && <UploadSong currentUser={currentUser} />}
-      <ArtistList />
-      <RecentReviews />
-      <Search />
+      <h2>Authentication</h2>
+      <AuthInfo currentUser={currentUser} errorMsg={errorMsg}/>
+      {currentUser
+        ? <>
+          <button
+            type="button"
+            onClick={logOut}
+          >
+            Log Out
+          </button>
+          <SubmitReview currentUser={currentUser} songId="lvdeaaILDE" />
+          {currentUser.get("isArtist")
+            && <UploadSong currentUser={currentUser} />}
+          <ArtistList />
+          <RecentReviews />
+          <Search />
+        </>
+        : <>
+          <SignUp handleSignUp={signUp} />
+          <LogIn handleLogIn={logIn} />
+        </>
+      }
     </div>
   );
 }
