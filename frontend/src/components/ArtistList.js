@@ -1,25 +1,40 @@
 import React, {useState} from "react";
 import Parse from "parse";
-import {Review as ReviewClass} from "../parseClasses";
+import {Artist as ArtistClass, User as UserClass} from "../parseClasses";
 
 const ArtistList = () => {
   const [artistList, setArtistList] = useState([]);
 
   const fetchArtists = async () => {
-    const query = new Parse.Query(ReviewClass);
-    const results = await query.find();
+    const artistPointers =
+      (await new Parse.Query(ArtistClass).find()).map((v) => v.get("user"));
 
-    setArtistList(results.map((result) => result.toJSON().artist));
+    // Create promises which resolve to the actual user
+    const artistPromises = artistPointers.map(async (pointer) =>
+      new Parse.Query(UserClass).get(pointer.id)
+    );
+
+    // Resolve each promise in the array and get their name
+    const artistUsers =
+      Promise.all(artistPromises).then((users) =>
+        users.map((user) => ({
+          id: user.id,
+          name: user.toJSON().name
+        }))
+      );
+
+    setArtistList(await artistUsers);
   };
 
   return (
     <div>
       <h2>Artists in Database</h2>
       <button type="button" onClick={fetchArtists}>Fetch Artists</button>
-      {artistList.map((artist, index) => {
-        const tempKey = `${index}-${artist}`; // FIXME: don't use index as key
+      {artistList.map((user) => {
+        const {id, name} = user;
+
         return (
-          <p key={tempKey}>{artist}</p>
+          <p key={id}>{name}</p>
         );
       })}
     </div>

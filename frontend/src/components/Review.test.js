@@ -8,9 +8,9 @@ afterEach(cleanup);
 it("renders when all props are provided", () => {
   const {queryByText} = render(
     <Review
-      artist="JPEGMAFIA"
+      artistName="JPEGMAFIA"
       song="BALD!"
-      userId="fakeUserId"
+      authorName="Author 0"
       rating={4.5}
       review="This is a song which was released as a single."
     />
@@ -25,7 +25,7 @@ it("renders when all props are provided", () => {
 it("doesn't render when only some props are provided", () => {
   const {queryByText} = render(
     <Review
-      artist="JPEGMAFIA"
+      artistName="JPEGMAFIA"
       song="BALD!"
       review="This is a song which was released as a single."
     />

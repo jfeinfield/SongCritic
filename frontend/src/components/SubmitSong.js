@@ -1,21 +1,21 @@
 import React, {useState} from "react";
 import PropTypes from "prop-types";
+
 import {Song as SongClass} from "../parseClasses";
 
-const UploadSong = (props) => {
+const SubmitSong = (props) => {
   const [song, setSong] = useState("");
   const [coverArt, setArt] = useState("");
   const [songUploaded, setSongUploaded] = useState(false);
 
   const saveSong = async () => {
-    const songC = new SongClass();
+    const newSong = new SongClass();
+    newSong.set("artist", props.currentUser.toPointer());
+    newSong.set("name", song);
+    newSong.set("art", coverArt);
 
     try {
-      await songC.save({
-        userId: props.currentUser.id,
-        songName: song,
-        art: coverArt,
-      });
+      await newSong.save();
 
       setSong("");
       setArt("");
@@ -36,7 +36,7 @@ const UploadSong = (props) => {
       <h2>Post a new song</h2>
       <form name="usForm" onSubmit={handleSubmit}>
         <label htmlFor="txtSong">
-        Song name:
+          Song name:
           <input
             id="txtSong"
             value={song}
@@ -45,7 +45,7 @@ const UploadSong = (props) => {
         </label>
         <br />
         <label htmlFor="txtCoverArt">
-        Cover Art:
+          Cover Art:
           <input
             id="txtCoverArt"
             value={coverArt}
@@ -56,18 +56,18 @@ const UploadSong = (props) => {
         <input
           disabled={song === "" || coverArt === "" }
           type="submit"
+          value="Submit Song"
         />
-        <br />
-        <div hidden={!songUploaded}>Song posted successfully!</div>
       </form>
+      <div hidden={!songUploaded}>Song posted successfully!</div>
     </div>
   );
 };
 
-UploadSong.propTypes = {
+SubmitSong.propTypes = {
   currentUser: PropTypes.shape({
-    id: PropTypes.string
+    toPointer: PropTypes.func
   }).isRequired
 };
 
-export default UploadSong;
+export default SubmitSong;

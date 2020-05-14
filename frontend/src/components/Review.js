@@ -2,19 +2,19 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const Review = (props) => {
-  const {artist, song, userId, rating, review} = props;
+  const {artistName, song, authorName, rating, review} = props;
   return (
     <>
-      {artist !== null
+      {artistName !== null
         && song !== null
-        && userId !== null
+        && authorName !== null
         && rating !== null
         && review !== null
         && (
           <div className="review">
             <h3>{song}</h3>
-            <p>Artist: {artist}</p>
-            <p>By user: {userId}</p>
+            <p>Artist: {artistName}</p>
+            <p>By: {authorName}</p>
             <p>Rating: {rating}</p>
             <p>Review: {review}</p>
           </div>
@@ -24,17 +24,17 @@ const Review = (props) => {
 };
 
 Review.propTypes = {
-  artist: PropTypes.string,
+  artistName: PropTypes.string,
   song: PropTypes.string,
-  userId: PropTypes.string,
+  authorName: PropTypes.string,
   rating: PropTypes.number,
   review: PropTypes.string
 };
 
 Review.defaultProps = {
-  artist: null,
+  artistName: null,
   song: null,
-  userId: null,
+  authorName: null,
   rating: null,
   review: null
 };
