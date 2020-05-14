@@ -7,12 +7,10 @@ import AuthInfo from "./components/AuthInfo";
 import SignUp from "./components/SignUp";
 import LogIn from "./components/LogIn";
 import ArtistList from "./components/ArtistList";
-import SubmitReview from "./components/SubmitReview";
 import RecentReviews from "./components/RecentReviews";
 import SubmitSong from "./components/SubmitSong";
 import Search from "./components/Search";
 import SongPage from "./components/SongPage";
-
 
 function App() {
   Parse.initialize("HjKymbNGAhUhWwGSAmMDevlJJzVQPgworMQ9Fbud", "");
@@ -76,13 +74,13 @@ function App() {
             <Link to="/">Home</Link>
           </li>
           <li>
-            <Link to="/song/songId">SongPage</Link>
+            <Link to="/song/lvdeaaILDE">SongPage</Link>
           </li>
         </ul>
       </nav>
       <Switch>
         <Route path="/song/:songId">
-          <SongPage />
+          <SongPage currentUser={currentUser} />
         </Route>
         <Route path="/">
           <div style={{width: "80vw", margin: "0 auto"}}>
@@ -97,7 +95,6 @@ function App() {
                 >
                   Log Out
                 </button>
-                <SubmitReview currentUser={currentUser} songId="lvdeaaILDE" />
                 {currentUser.get("isArtist")
                   && <SubmitSong currentUser={currentUser} />}
                 <Search />

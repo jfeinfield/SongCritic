@@ -1,36 +1,16 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import PropTypes from "prop-types";
 import Parse from "parse";
 
 import {
   Song as SongClass,
   Review as ReviewClass,
-  User as UserClass
 } from "../parseClasses";
 
 const SubmitReview = (props) => {
-  const [song, setSong] = useState("");
-  const [artist, setArtist] = useState("");
   const [songRating, setRating] = useState("");
   const [songReview, setReview] = useState("");
   const [reviewPosted, setReviewPosted] = useState(false);
-
-  useEffect(() => {
-    (async () => {
-      let songQuery = await new Parse.Query(SongClass).get(props.songId);
-      songQuery = songQuery.toJSON();
-      let artistQuery = await new Parse.Query(UserClass)
-        .get(songQuery.artist.objectId);
-      artistQuery = artistQuery.toJSON();
-
-      setSong(songQuery.name);
-      setArtist(artistQuery.name);
-    })();
-  }, [
-    props.songId, // eslint-disable-line react/destructuring-assignment
-    song,
-    artist
-  ]);
 
   const saveReview = async () => {
     const review = new ReviewClass();
@@ -59,7 +39,7 @@ const SubmitReview = (props) => {
 
   return (
     <div>
-      <h2>Review: {song} by {artist}</h2>
+      <h4>Write a Review</h4>
       <form name="reviewForm" onSubmit={handleSubmit}>
         <label htmlFor="txtRating">
         Rating:
