@@ -10,7 +10,7 @@ import Review from "./Review";
 
 const RecentReviews = () => {
   const numReviews = 5;
-  const[recentReviews, setRecentReviews] = useState([]);
+  const [recentReviews, setRecentReviews] = useState([]);
 
   useEffect(() => {
     (async () => {
