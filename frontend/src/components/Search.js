@@ -27,7 +27,9 @@ const Search = () => {
         users.map((user) => ({
           objectId: user.id,
           name: user.toJSON().name
-        })).filter(({name}) => name.toLowerCase().includes(searchTerm.toLowerCase()))
+        })).filter(({name}) => {return (
+          name.toLowerCase().includes(searchTerm.toLowerCase())
+        );})
       );
 
     const songQuery = new Parse.Query(SongClass);

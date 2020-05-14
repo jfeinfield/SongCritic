@@ -1,5 +1,5 @@
 import React from "react";
-import {cleanup, fireEvent, render, waitForElement} from "@testing-library/react";
+import {cleanup, render, waitForElement} from "@testing-library/react";
 
 import RecentReviews from "./RecentReviews";
 
@@ -21,7 +21,14 @@ jest.mock("parse", () => ({
         })
       }),
       find: () => Promise.resolve([{
-        toJSON: () => {return {objectId:"asdf", song:"Forever", artist:"Drake", userId:"asd", rating:5,review:"good"}}
+        toJSON: () => {return ({
+          objectId:"asdf",
+          song:"Forever",
+          artist:"Drake",
+          userId:"asd",
+          rating:5,
+          review:"good"
+        });}
       }])
     };
   }
