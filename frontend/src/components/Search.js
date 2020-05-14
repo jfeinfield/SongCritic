@@ -27,11 +27,11 @@ const Search = () => {
         users.map((user) => ({
           objectId: user.id,
           name: user.toJSON().name
-        })).filter(({name}) => name.includes(searchTerm))
+        })).filter(({name}) => name.toLowerCase().includes(searchTerm.toLowerCase()))
       );
 
     const songQuery = new Parse.Query(SongClass);
-    songQuery.contains("name", searchTerm).limit(10);
+    songQuery.fullText("name", searchTerm).limit(10);
 
     const songQueryResults = await songQuery.find();
 
