@@ -81,8 +81,14 @@ function App() {
           </ul>
         </nav>
         <Switch>
-          <Route path="/song/:songId">
-            <SongPage currentUser={currentUser} />
+          <Route exact path="/">
+            <>
+              <Search />
+              {currentUser && currentUser.get("isArtist")
+                    && <SubmitSong currentUser={currentUser} />}
+              <ArtistList />
+              <RecentReviews />
+            </>
           </Route>
           <Route path="/auth">
             <>
@@ -104,14 +110,11 @@ function App() {
               }
             </>
           </Route>
-          <Route path="/">
-            <>
-              <Search />
-              {currentUser && currentUser.get("isArtist")
-                    && <SubmitSong currentUser={currentUser} />}
-              <ArtistList />
-              <RecentReviews />
-            </>
+          <Route path="/song/:songId">
+            <SongPage currentUser={currentUser} />
+          </Route>
+          <Route path="*">
+            <h2>404 - Page not found!</h2>
           </Route>
         </Switch>
       </div>
