@@ -68,47 +68,53 @@ function App() {
 
   return (
     <Router>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/song/lvdeaaILDE">SongPage</Link>
-          </li>
-        </ul>
-      </nav>
-      <Switch>
-        <Route path="/song/:songId">
-          <SongPage currentUser={currentUser} />
-        </Route>
-        <Route path="/">
-          <div style={{width: "80vw", margin: "0 auto"}}>
-            <h1>Song Critic</h1>
-            <h2>Authentication</h2>
-            <AuthInfo currentUser={currentUser} errorMsg={errorMsg}/>
-            {currentUser
-              ? <>
-                <button
-                  type="button"
-                  onClick={logOut}
-                >
-                  Log Out
-                </button>
-                {currentUser.get("isArtist")
-                  && <SubmitSong currentUser={currentUser} />}
-                <Search />
-                <ArtistList />
-                <RecentReviews />
-              </>
-              : <>
-                <SignUp handleSignUp={signUp} />
-                <LogIn handleLogIn={logIn} />
-              </>
-            }
-          </div>
-        </Route>
-      </Switch>
+      <div style={{width: "80vw", margin: "0 auto"}}>
+        <h1>Song Critic</h1>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/auth">Authentication</Link>
+            </li>
+          </ul>
+        </nav>
+        <Switch>
+          <Route path="/song/:songId">
+            <SongPage currentUser={currentUser} />
+          </Route>
+          <Route path="/auth">
+            <>
+              <h2>Authentication</h2>
+              <AuthInfo currentUser={currentUser} errorMsg={errorMsg}/>
+              {currentUser
+                ? <>
+                  <button
+                    type="button"
+                    onClick={logOut}
+                  >
+                    Log Out
+                  </button>
+                </>
+                : <>
+                  <SignUp handleSignUp={signUp} />
+                  <LogIn handleLogIn={logIn} />
+                </>
+              }
+            </>
+          </Route>
+          <Route path="/">
+            <>
+              <Search />
+              {currentUser && currentUser.get("isArtist")
+                    && <SubmitSong currentUser={currentUser} />}
+              <ArtistList />
+              <RecentReviews />
+            </>
+          </Route>
+        </Switch>
+      </div>
     </Router>
   );
 }
