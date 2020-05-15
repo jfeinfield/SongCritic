@@ -39,7 +39,7 @@ const SubmitReview = (props) => {
 
   return (
     <div>
-      <h4>Write a Review</h4>
+      <h3>Write a Review</h3>
       <form name="reviewForm" onSubmit={handleSubmit}>
         <label htmlFor="txtRating">
         Rating:

@@ -69,33 +69,33 @@ const SongPage = (props) => {
       {fetchingSong
         ? <p>Loading song and reviews...</p>
         : <>
-          <h1>{songName}</h1>
-          <h3>By: {artistName}</h3>
+          <h2>{songName}</h2>
+          <strong>by: {artistName}</strong>
           {currentUser
             ? <>
               <SubmitReview currentUser={currentUser} songId={songId} />
             </>
-            :<>
-              <h4>Write a Review</h4>
+            : <div>
+              <h3>Write a Review</h3>
               <p>Must be signed in to write a review</p>
-            </>
+            </div>
           }
-          <h4>Reviews</h4>
-          {reviews.length !== 0
-            ? <>
-              {reviews.map((r) => (
-                <div key={r.objectId}>
-                  <h5>{r.author}</h5>
-                  <p>{r.rating} stars</p>
-                  <p>{r.review}</p>
-                  <p />
-                </div>
-              ))}
-            </>
-            : <>
-              <p>Be the first to write a review!</p>
-            </>
-          }
+          <section>
+            <h3>Reviews</h3>
+            {reviews.length !== 0
+              ? <>
+                {reviews.map((r) => (
+                  <div key={r.objectId}>
+                    <h4>{r.author}</h4>
+                    <p>{r.rating} stars</p>
+                    <p>{r.review}</p>
+                    <p />
+                  </div>
+                ))}
+              </>
+              : <p>Be the first to write a review!</p>
+            }
+          </section>
         </>
       }
     </div>
