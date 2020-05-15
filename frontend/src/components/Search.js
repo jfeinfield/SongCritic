@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import Parse from "parse";
+import {Link} from "react-router-dom";
 import {
   Song as SongClass,
   User as UserClass,
@@ -78,7 +79,7 @@ const Search = () => {
         <h3>Songs</h3>
         {songResults.map((song) => (
           <ul key={song.objectId} >
-            <li>{song.name}</li>
+            <li><Link to={`/song/${song.objectId}`}>{song.name}</Link></li>
           </ul>
         ))}
       </div>}
