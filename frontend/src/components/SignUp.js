@@ -1,33 +1,39 @@
-import React, {useState} from "react";
+import React from "react";
 import PropTypes from "prop-types";
+import {useForm} from "react-hook-form";
 
 const SignUp = (props) => {
-  const [isArtist, setIsArtist] = useState(false);
-  const [displayName, setDisplayName] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const {register, handleSubmit, reset, errors} = useForm();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    props.handleSignUp(isArtist, displayName, username, password);
-    setIsArtist(false);
-    setDisplayName("");
-    setUsername("");
-    setPassword("");
+  const onSubmit = (data) => {
+    const {
+      signUpIsArtist,
+      signUpDisplayName,
+      signUpUsername,
+      signUpPassword
+    } = data;
+
+    props.handleSignUp(
+      signUpIsArtist,
+      signUpDisplayName,
+      signUpUsername,
+      signUpPassword
+    );
+
+    reset();
   };
 
   return (
     <div>
       <h3>Sign Up</h3>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor="signUpIsArtist">
           I am an artist
           <input
             type="checkbox"
             id="signUpIsArtist"
             name="signUpIsArtist"
-            checked={isArtist}
-            onChange={() => setIsArtist(!isArtist)}
+            ref={register()}
           />
         </label>
         <br />
@@ -37,10 +43,18 @@ const SignUp = (props) => {
             type="text"
             id="signUpDisplayName"
             name="signUpDisplayName"
-            value={displayName}
-            onChange={e => setDisplayName(e.target.value)}
+            ref={
+              register({
+                required: true,
+                minLength: 1
+              })
+            }
           />
         </label>
+        {errors.signUpDisplayName?.type === "required"
+          && <span>This field is required</span>}
+        {errors.signUpDisplayName?.type === "minLength"
+          && <span>This field must contain at least 4 characters</span>}
         <br />
         <label htmlFor="signUpUsername">
           Username:
@@ -48,10 +62,18 @@ const SignUp = (props) => {
             type="text"
             id="signUpUsername"
             name="signUpUsername"
-            value={username}
-            onChange={e => setUsername(e.target.value)}
+            ref={
+              register({
+                required: true,
+                minLength: 4
+              })
+            }
           />
         </label>
+        {errors.signUpUsername?.type === "required"
+          && <span>This field is required</span>}
+        {errors.signUpUsername?.type === "minLength"
+          && <span>This field must contain at least 4 characters</span>}
         <br />
         <label htmlFor="signUpPassword">
           Password:
@@ -59,13 +81,20 @@ const SignUp = (props) => {
             type="password"
             id="signUpPassword"
             name="signUpPassword"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
+            ref={
+              register({
+                required: true,
+                minLength: 4
+              })
+            }
           />
         </label>
+        {errors.signUpPassword?.type === "required"
+          && <span>This field is required</span>}
+        {errors.signUpPassword?.type === "minLength"
+          && <span>This field must contain at least 4 characters</span>}
         <br />
         <input
-          disabled={displayName === "" || username === "" || password === ""}
           type="submit"
           value="Sign Up"
         />
