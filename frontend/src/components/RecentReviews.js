@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import Parse from "parse";
+import {Link} from "react-router-dom";
 
 import {
   Review as ReviewClass,
@@ -10,7 +11,7 @@ import Review from "./Review";
 
 const RecentReviews = () => {
   const numReviews = 5;
-  const[recentReviews, setRecentReviews] = useState([]);
+  const [recentReviews, setRecentReviews] = useState([]);
 
   useEffect(() => {
     (async () => {
@@ -38,6 +39,7 @@ const RecentReviews = () => {
         const review = {objectId, review: ReviewText, rating};
         review.author = author.name;
         review.song = song.name;
+        review.songId = songId;
         review.artist = artist.name;
         return review;
       });
@@ -50,14 +52,16 @@ const RecentReviews = () => {
     <div>
       <h2>Recent Reviews</h2>
       {recentReviews.map((r) => (
-        <Review
-          key={r.objectId}
-          artistName={r.artist}
-          song={r.song}
-          authorName={r.author}
-          rating={r.rating}
-          review={r.review}
-        />
+        <div key={r.objectId}>
+          <Review
+            artistName={r.artist}
+            song={r.song}
+            authorName={r.author}
+            rating={r.rating}
+            review={r.review}
+          />
+          <Link to={`/song/${r.songId}`}>Visit song page for {r.song}</Link>
+        </div>
       ))}
     </div>
   );

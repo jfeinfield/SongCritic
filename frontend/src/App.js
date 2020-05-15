@@ -1,15 +1,16 @@
 import React, {useState} from "react";
 import Parse from "parse";
+import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
 
 import {Artist as ArtistClass} from "./parseClasses";
 import AuthInfo from "./components/AuthInfo";
 import SignUp from "./components/SignUp";
 import LogIn from "./components/LogIn";
 import ArtistList from "./components/ArtistList";
-import SubmitReview from "./components/SubmitReview";
 import RecentReviews from "./components/RecentReviews";
 import SubmitSong from "./components/SubmitSong";
 import Search from "./components/Search";
+import SongPage from "./components/SongPage";
 
 function App() {
   Parse.initialize("HjKymbNGAhUhWwGSAmMDevlJJzVQPgworMQ9Fbud", "");
@@ -66,31 +67,58 @@ function App() {
   };
 
   return (
-    <div style={{width: "80vw", margin: "0 auto"}}>
-      <h1>Song Critic</h1>
-      <h2>Authentication</h2>
-      <AuthInfo currentUser={currentUser} errorMsg={errorMsg}/>
-      {currentUser
-        ? <>
-          <button
-            type="button"
-            onClick={logOut}
-          >
-            Log Out
-          </button>
-          <SubmitReview currentUser={currentUser} songId="lvdeaaILDE" />
-          {currentUser.get("isArtist")
-            && <SubmitSong currentUser={currentUser} />}
-          <Search />
-          <ArtistList />
-          <RecentReviews />
-        </>
-        : <>
-          <SignUp handleSignUp={signUp} />
-          <LogIn handleLogIn={logIn} />
-        </>
-      }
-    </div>
+    <Router>
+      <div style={{width: "80vw", margin: "0 auto"}}>
+        <h1>Song Critic</h1>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/auth">Authentication</Link>
+            </li>
+          </ul>
+        </nav>
+        <Switch>
+          <Route exact path="/">
+            <>
+              <Search />
+              {currentUser && currentUser.get("isArtist")
+                    && <SubmitSong currentUser={currentUser} />}
+              <ArtistList />
+              <RecentReviews />
+            </>
+          </Route>
+          <Route path="/auth">
+            <>
+              <h2>Authentication</h2>
+              <AuthInfo currentUser={currentUser} errorMsg={errorMsg}/>
+              {currentUser
+                ? <>
+                  <button
+                    type="button"
+                    onClick={logOut}
+                  >
+                    Log Out
+                  </button>
+                </>
+                : <>
+                  <SignUp handleSignUp={signUp} />
+                  <LogIn handleLogIn={logIn} />
+                </>
+              }
+            </>
+          </Route>
+          <Route path="/song/:songId">
+            <SongPage currentUser={currentUser} />
+          </Route>
+          <Route path="*">
+            <h2>404 - Page not found!</h2>
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
