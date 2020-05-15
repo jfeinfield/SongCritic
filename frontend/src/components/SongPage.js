@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
-import {useParams, Link} from "react-router-dom";
+import {useParams, Redirect} from "react-router-dom";
 import Parse from "parse";
 import {
   Song as SongClass,
@@ -14,24 +14,19 @@ const SongPage = (props) => {
   const [reviews, setReviews] = useState([]);
   const [songName, setSongName] = useState("");
   const [artistName, setArtistName] = useState("");
-  const [songIdFound, setSongIdFound] = useState(true);
+  const [fetchingSong, setFetchingSong] = useState(true);
+  const [foundSong, setFoundSong] = useState(false);
 
   useEffect(() => {
     (async () => {
-      let found = true;
       const songQuery = new Parse.Query(SongClass);
 
-      const song = await songQuery.get(songId).catch(() => {
-        found = false;
-        setSongIdFound(false);
-      });
-
-      if(found) {
+      try {
+        const song = await songQuery.get(songId);
         setSongName(song.get("name"));
 
         const artistQuery = new Parse.Query(UserClass);
         const artist = await artistQuery.get(song.get("artist").id);
-
         setArtistName(artist.get("name"));
 
         const reviewQuery = new Parse.Query(ReviewClass);
@@ -58,14 +53,22 @@ const SongPage = (props) => {
         });
 
         setReviews(await Promise.all(results));
+        setFoundSong(true);
+        setFetchingSong(false);
+      } catch {
+        // error while fetching data -> navigate to 404 page
+        setFoundSong(false);
+        setFetchingSong(false);
       }
     })();
   }, [songId]);
 
   return (
     <div>
-      {songIdFound
-        ? <>
+      {!fetchingSong && !foundSong && <Redirect to="/404" />}
+      {fetchingSong
+        ? <p>Loading song and reviews...</p>
+        : <>
           <h1>{songName}</h1>
           <h3>By: {artistName}</h3>
           {currentUser
@@ -93,9 +96,6 @@ const SongPage = (props) => {
               <p>Be the first to write a review!</p>
             </>
           }
-        </>
-        : <>
-          <p>Error: Page not found. Go back <Link to="/">home</Link>.</p>
         </>
       }
     </div>
