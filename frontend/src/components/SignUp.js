@@ -19,7 +19,6 @@ const SignUp = (props) => {
       signUpUsername,
       signUpPassword
     );
-
     reset();
   };
 
@@ -43,12 +42,7 @@ const SignUp = (props) => {
             type="text"
             id="signUpDisplayName"
             name="signUpDisplayName"
-            ref={
-              register({
-                required: true,
-                minLength: 1
-              })
-            }
+            ref={register({required: true, minLength: 1})}
           />
         </label>
         {errors.signUpDisplayName?.type === "required"
@@ -62,12 +56,7 @@ const SignUp = (props) => {
             type="text"
             id="signUpUsername"
             name="signUpUsername"
-            ref={
-              register({
-                required: true,
-                minLength: 4
-              })
-            }
+            ref={register({required: true, minLength: 4})}
           />
         </label>
         {errors.signUpUsername?.type === "required"
@@ -81,12 +70,7 @@ const SignUp = (props) => {
             type="password"
             id="signUpPassword"
             name="signUpPassword"
-            ref={
-              register({
-                required: true,
-                minLength: 4
-              })
-            }
+            ref={register({required: true, minLength: 4})}
           />
         </label>
         {errors.signUpPassword?.type === "required"
