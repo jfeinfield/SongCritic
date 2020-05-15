@@ -1,31 +1,34 @@
-import React, {useState} from "react";
+import React from "react";
 import PropTypes from "prop-types";
+import {useForm} from "react-hook-form";
 
 const LogIn = (props) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const {register, handleSubmit, reset, errors} = useForm();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    props.handleLogIn(username, password);
-    setUsername("");
-    setPassword("");
+  const onSubmit = (data) => {
+    const {logInUsername, logInPassword} = data;
+
+    props.handleLogIn(logInUsername, logInPassword);
+    reset();
   };
 
   return (
     <div>
       <h3>Log In</h3>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor="logInUsername">
           Username:
           <input
             type="text"
             id="logInUsername"
             name="logInUsername"
-            value={username}
-            onChange={e => setUsername(e.target.value)}
+            ref={register({required: true, minLength: 4})}
           />
         </label>
+        {errors.logInUsername?.type === "required"
+          && <span>This field is required</span>}
+        {errors.logInUsername?.type === "minLength"
+          && <span>This field must contain at least 4 characters</span>}
         <br />
         <label htmlFor="logInPassword">
           Password:
@@ -33,13 +36,15 @@ const LogIn = (props) => {
             type="password"
             id="logInPassword"
             name="logInPassword"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
+            ref={register({required: true, minLength: 4})}
           />
         </label>
+        {errors.logInPassword?.type === "required"
+          && <span>This field is required</span>}
+        {errors.logInPassword?.type === "minLength"
+          && <span>This field must contain at least 4 characters</span>}
         <br />
         <input
-          disabled={username === "" || password === ""}
           type="submit"
           value="Log In"
         />
