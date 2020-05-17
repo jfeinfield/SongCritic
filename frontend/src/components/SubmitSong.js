@@ -48,8 +48,12 @@ const SubmitSong = (props) => {
           Cover Art:
           <input
             id="txtCoverArt"
+            type="url"
+            placeholder="https://example.com"
+            pattern="https://.*"
             value={coverArt}
             onChange={(e) => setArt(e.target.value)}
+            required
           />
         </label>
         <br />
