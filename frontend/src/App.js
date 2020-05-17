@@ -17,7 +17,9 @@ function App() {
   Parse.serverURL = "http://localhost:1337/parse";
 
   const [currentUser, setCurrentUser] = useState(Parse.User.current());
-  const [errorMsg, setErrorMsg] = useState("");
+  const [signUpErrorMsg, setSignUpErrorMsg] = useState("");
+  const [logInErrorMsg, setLogInErrorMsg] = useState("");
+  const [logOutErrorMsg, setLogOutErrorMsg] = useState("");
 
   const signUp = async (isArtist, displayName, username, password) => {
     const user = new Parse.User();
@@ -29,9 +31,9 @@ function App() {
 
     try {
       setCurrentUser(await user.signUp());
-      setErrorMsg("");
+      setSignUpErrorMsg("");
     } catch (error) {
-      setErrorMsg(`${error.code} ${error.message}`);
+      setSignUpErrorMsg(`${error.code} ${error.message}`);
       return;
     }
 
@@ -43,7 +45,7 @@ function App() {
       try {
         await artist.save();
       } catch (error) {
-        setErrorMsg(`${error.code} ${error.message}`);
+        setSignUpErrorMsg(`${error.code} ${error.message}`);
       }
     }
   };
@@ -51,9 +53,9 @@ function App() {
   const logIn = async (username, password) => {
     try {
       setCurrentUser(await Parse.User.logIn(username, password));
-      setErrorMsg("");
+      setLogInErrorMsg("");
     } catch (error) {
-      setErrorMsg(`${error.code} ${error.message}`);
+      setLogInErrorMsg(`${error.code} ${error.message}`);
     }
   };
 
@@ -62,7 +64,7 @@ function App() {
       await Parse.User.logOut(currentUser);
       setCurrentUser(null);
     } catch (error) {
-      setErrorMsg(`${error.code} ${error.message}`);
+      setLogOutErrorMsg(`${error.code} ${error.message}`);
     }
   };
 
@@ -93,7 +95,7 @@ function App() {
           <Route path="/auth">
             <>
               <h2>Authentication</h2>
-              <AuthInfo currentUser={currentUser} errorMsg={errorMsg}/>
+              <AuthInfo currentUser={currentUser}/>
               {currentUser
                 ? <>
                   <button
@@ -102,10 +104,17 @@ function App() {
                   >
                     Log Out
                   </button>
+                  {logOutErrorMsg !== "" && <p>{logOutErrorMsg}</p>}
                 </>
                 : <>
-                  <SignUp handleSignUp={signUp} />
-                  <LogIn handleLogIn={logIn} />
+                  <SignUp
+                    handleSignUp={signUp}
+                    errorMsg={signUpErrorMsg}
+                  />
+                  <LogIn
+                    handleLogIn={logIn}
+                    errorMsg={logInErrorMsg}
+                  />
                 </>
               }
             </>
