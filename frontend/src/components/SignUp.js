@@ -4,6 +4,9 @@ import {useForm} from "react-hook-form";
 
 const SignUp = (props) => {
   const {register, handleSubmit, reset, errors} = useForm();
+  const {
+    errorMsg: errorMsgFromParse
+  } = props;
 
   const onSubmit = (data) => {
     const {
@@ -83,12 +86,18 @@ const SignUp = (props) => {
           value="Sign Up"
         />
       </form>
+      {errorMsgFromParse !== "" && <p>{errorMsgFromParse}</p>}
     </div>
   );
 };
 
 SignUp.propTypes = {
-  handleSignUp: PropTypes.func.isRequired
+  handleSignUp: PropTypes.func.isRequired,
+  errorMsg: PropTypes.string
+};
+
+SignUp.defaultProps = {
+  errorMsg: ""
 };
 
 export default SignUp;

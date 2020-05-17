@@ -4,6 +4,9 @@ import {useForm} from "react-hook-form";
 
 const LogIn = (props) => {
   const {register, handleSubmit, reset, errors} = useForm();
+  const {
+    errorMsg: errorMsgFromParse
+  } = props;
 
   const onSubmit = (data) => {
     const {logInUsername, logInPassword} = data;
@@ -49,12 +52,18 @@ const LogIn = (props) => {
           value="Log In"
         />
       </form>
+      {errorMsgFromParse !== "" && <p>{errorMsgFromParse}</p>}
     </div>
   );
 };
 
 LogIn.propTypes = {
-  handleLogIn: PropTypes.func.isRequired
+  handleLogIn: PropTypes.func.isRequired,
+  errorMsg: PropTypes.string
+};
+
+LogIn.defaultProps = {
+  errorMsg: ""
 };
 
 export default LogIn;
