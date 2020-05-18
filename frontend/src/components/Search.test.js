@@ -1,18 +1,14 @@
 import React from "react";
-import {cleanup, fireEvent, render, waitForElement} from "@testing-library/react";
+import {
+  cleanup,
+  fireEvent,
+  render,
+  waitForElement
+} from "@testing-library/react";
 
 import Search from "./Search";
 
 jest.mock("parse", () => ({
-  Object: {
-    extend: () => (
-      function Artist() {
-        return {
-          save: () => Promise.resolve({id: "newId"}),
-        };
-      }
-    )
-  },
   Object: {
     extend: () => (
       function Song() {
