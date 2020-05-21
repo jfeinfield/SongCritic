@@ -1,6 +1,7 @@
-import React, {useState} from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import Parse from "parse";
+import { useForm } from "react-hook-form"
 
 import {
   Song as SongClass,
@@ -8,11 +9,12 @@ import {
 } from "../parseClasses";
 
 const SubmitReview = (props) => {
-  const [songRating, setRating] = useState("");
-  const [songReview, setReview] = useState("");
-  const [reviewPosted, setReviewPosted] = useState(false);
+  const { register, handleSubmit, reset, errors } = useForm();
+  const {
+    errorMsg: errorMsgFromParse
+  } = props;
 
-  const saveReview = async () => {
+  const saveReview = async (songRating, songReview) => {
     const review = new ReviewClass();
     const songQuery = await new Parse.Query(SongClass).get(props.songId);
 
@@ -23,54 +25,73 @@ const SubmitReview = (props) => {
 
     try {
       await review.save();
+      reset();
 
-      setRating("");
-      setReview("");
-      setReviewPosted(true);
-    } catch {
+      } catch {
       // TODO: handle submission error
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    saveReview();
+  const onSubmit = (data) => {
+    const {
+      songRating,
+      songReview,
+    } = data;
+    console.log(data);
+
+    saveReview(
+      songRating,
+      songReview,
+    );
+    reset();
+
   };
 
   return (
     <div>
       <h3>Write a Review</h3>
-      <form name="reviewForm" onSubmit={handleSubmit}>
-        <label htmlFor="txtRating">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <label htmlFor="songRating">
         Rating:
           <input
-            id="txtRating"
+            id="songRating"
+            name="songRating"
             type="number"
-            min="0"
-            max="5"
-            step="0.5"
-            value={songRating}
-            onChange={(e) => setRating(e.target.value)}
+            step=".5"
+            ref={
+              register({ 
+                required: true,
+                min: 0,
+                max: 5,
+              })
+            }
           />
         </label>
+        {errors.songRating?.type === "required"
+          && <span>This field is required</span>}
+        {errors.songRating?.type === "min"
+          && <span>Please enter a positive value</span>}
+        {errors.songRating?.type === "max"
+          && <span>Please enter a value less than or equal to 5</span>}
         <br />
-        <label htmlFor="txtSongReview">
+        <label htmlFor="songReview">
         Review:
           <br />
           <textarea
-            id="txtSongReview"
-            value={songReview}
-            onChange={(e) => setReview(e.target.value)}
+            id="songReview"
+            name="songReview"
+            ref={register({ required: true })}
           />
         </label>
+        {errors.songReview?.type === "required"
+          && <span>This field is required</span>}
         <br />
         <input
-          disabled={songRating === "" || songReview === ""}
           type="submit"
           value="Submit Review"
         />
       </form>
-      {reviewPosted && <div>Review posted successfully!</div>}
+      {errorMsgFromParse !== "" && <p>{errorMsgFromParse}</p>}
     </div>
   );
 };
@@ -79,7 +100,8 @@ SubmitReview.propTypes = {
   currentUser: PropTypes.shape({
     toPointer: PropTypes.func
   }).isRequired,
-  songId: PropTypes.string.isRequired
+  songId: PropTypes.string.isRequired,
+  errorMsg: PropTypes.string
 };
 
 export default SubmitReview;
