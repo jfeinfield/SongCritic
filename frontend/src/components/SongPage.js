@@ -2,17 +2,20 @@ import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
 import {useParams, Redirect} from "react-router-dom";
 import Parse from "parse";
+
 import {
   Song as SongClass,
   User as UserClass,
   Review as ReviewClass} from "../parseClasses";
 import SubmitReview from "./SubmitReview";
+import UpdateSong from "./UpdateSong";
 
 const SongPage = (props) => {
   const {currentUser} = props;
   const {songId} = useParams();
   const [reviews, setReviews] = useState([]);
   const [songName, setSongName] = useState("");
+  const [songArt, setSongArt] = useState("");
   const [artistName, setArtistName] = useState("");
   const [fetchingSong, setFetchingSong] = useState(true);
   const [foundSong, setFoundSong] = useState(false);
@@ -25,6 +28,7 @@ const SongPage = (props) => {
       try {
         const song = await songQuery.get(songId);
         setSongName(song.get("name"));
+        setSongArt(song.get("art"));
 
         const artistQuery = new Parse.Query(UserClass);
         const artist = await artistQuery.get(song.get("artist").id);
@@ -88,7 +92,12 @@ const SongPage = (props) => {
           <h2>{songName}</h2>
           <strong>by: {artistName}</strong>
           {isCurrentUserTheArtist
-            && <p>This is your song!</p>}
+            && <UpdateSong
+              songId={songId}
+              songName={songName}
+              songArt={songArt}
+            />
+          }
           {currentUser
             ? <SubmitReview currentUser={currentUser} songId={songId} />
             : <div>
