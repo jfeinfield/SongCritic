@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Parse from "parse";
-import { useForm } from "react-hook-form"
+import {useForm} from "react-hook-form";
 
 import {
   Song as SongClass,
@@ -9,7 +9,7 @@ import {
 } from "../parseClasses";
 
 const SubmitReview = (props) => {
-  const { register, handleSubmit, reset, errors } = useForm();
+  const {register, handleSubmit, reset, errors} = useForm();
   const {
     errorMsg: errorMsgFromParse
   } = props;
@@ -27,7 +27,7 @@ const SubmitReview = (props) => {
       await review.save();
       reset();
 
-      } catch {
+    } catch {
       // TODO: handle submission error
     }
   };
@@ -37,7 +37,6 @@ const SubmitReview = (props) => {
       songRating,
       songReview,
     } = data;
-    console.log(data);
 
     saveReview(
       songRating,
@@ -59,7 +58,7 @@ const SubmitReview = (props) => {
             type="number"
             step=".5"
             ref={
-              register({ 
+              register({
                 required: true,
                 min: 0,
                 max: 5,
@@ -80,7 +79,7 @@ const SubmitReview = (props) => {
           <textarea
             id="songReview"
             name="songReview"
-            ref={register({ required: true })}
+            ref={register({required: true})}
           />
         </label>
         {errors.songReview?.type === "required"
@@ -102,6 +101,10 @@ SubmitReview.propTypes = {
   }).isRequired,
   songId: PropTypes.string.isRequired,
   errorMsg: PropTypes.string
+};
+
+SubmitReview.defaultProps = {
+  errorMsg: ""
 };
 
 export default SubmitReview;

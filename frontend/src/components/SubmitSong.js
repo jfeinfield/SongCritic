@@ -1,11 +1,11 @@
-import React from "react"
+import React from "react";
 import PropTypes from "prop-types";
-import { useForm } from "react-hook-form"
+import {useForm} from "react-hook-form";
 
-import { Song as SongClass } from "../parseClasses";
+import {Song as SongClass} from "../parseClasses";
 
 const SubmitSong = (props) => {
-  const { register, handleSubmit, reset, errors } = useForm();
+  const {register, handleSubmit, reset, errors} = useForm();
   const {
     errorMsg: errorMsgFromParse
   } = props;
@@ -30,7 +30,6 @@ const SubmitSong = (props) => {
     const {
       songName,
       songArt,
-      songUploaded
     } = data;
 
     saveSong(
@@ -38,7 +37,6 @@ const SubmitSong = (props) => {
       songArt,
     );
     reset();
-    songUploaded = true;
 
   };
 
@@ -52,7 +50,7 @@ const SubmitSong = (props) => {
             type="text"
             id="songName"
             name="songName"
-            ref={register({ required: true })}
+            ref={register({required: true})}
 
           />
         </label>
@@ -67,8 +65,9 @@ const SubmitSong = (props) => {
             name="songArt"
             ref={
               register({
-                pattern: /(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/,
-                required: true
+                required: true,
+                // eslint-disable-next-line
+                pattern: /(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
               })
             }
           />
@@ -86,12 +85,15 @@ const SubmitSong = (props) => {
   );
 };
 
-
 SubmitSong.propTypes = {
   currentUser: PropTypes.shape({
     toPointer: PropTypes.func
   }).isRequired,
   errorMsg: PropTypes.string
+};
+
+SubmitSong.defaultProps = {
+  errorMsg: ""
 };
 
 export default SubmitSong;
