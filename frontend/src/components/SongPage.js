@@ -16,6 +16,7 @@ const SongPage = (props) => {
   const [artistName, setArtistName] = useState("");
   const [fetchingSong, setFetchingSong] = useState(true);
   const [foundSong, setFoundSong] = useState(false);
+  const [isCurrentUserTheArtist, setIsCurrentUserTheArtist] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -63,6 +64,21 @@ const SongPage = (props) => {
     })();
   }, [songId]);
 
+  useEffect(() => {
+    (async () => {
+      const songQuery = new Parse.Query(SongClass);
+
+      try {
+        const song = await songQuery.get(songId);
+        setIsCurrentUserTheArtist(
+          currentUser.toPointer().objectId === song.get("artist").id
+        );
+      } catch {
+        // TODO: handle error
+      }
+    })();
+  }, [songId, currentUser]);
+
   return (
     <div>
       {!fetchingSong && !foundSong && <Redirect to="/404" />}
@@ -71,10 +87,10 @@ const SongPage = (props) => {
         : <>
           <h2>{songName}</h2>
           <strong>by: {artistName}</strong>
+          {isCurrentUserTheArtist
+            && <p>This is your song!</p>}
           {currentUser
-            ? <>
-              <SubmitReview currentUser={currentUser} songId={songId} />
-            </>
+            ? <SubmitReview currentUser={currentUser} songId={songId} />
             : <div>
               <h3>Write a Review</h3>
               <p>Must be signed in to write a review</p>
