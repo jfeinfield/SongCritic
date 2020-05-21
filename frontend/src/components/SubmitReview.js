@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
 import Parse from "parse";
 
@@ -11,6 +11,28 @@ const SubmitReview = (props) => {
   const [songRating, setRating] = useState("");
   const [songReview, setReview] = useState("");
   const [reviewPosted, setReviewPosted] = useState(false);
+
+  /* eslint-disable react/destructuring-assignment */
+  useEffect(() => {
+    (async () => {
+      const reviewQuery = new Parse.Query(ReviewClass);
+      reviewQuery.equalTo("author", props.currentUser.toPointer());
+      reviewQuery.equalTo(
+        "song",
+        {"__type": "Pointer", "className": "song", "objectId": props.songId}
+      );
+
+      try {
+        const matchingReview = await reviewQuery.find();
+        if (matchingReview.length !== 0)
+          setReviewPosted(true);
+      } catch {
+        // currently this component has no way of displaying error messages
+        // TODO: handle query error
+      }
+    })();
+  }, [props.currentUser, props.songId]);
+  /* eslint-enable react/destructuring-assignment */
 
   const saveReview = async () => {
     const review = new ReviewClass();
@@ -40,37 +62,41 @@ const SubmitReview = (props) => {
   return (
     <div>
       <h3>Write a Review</h3>
-      <form name="reviewForm" onSubmit={handleSubmit}>
-        <label htmlFor="txtRating">
-        Rating:
-          <input
-            id="txtRating"
-            type="number"
-            min="0"
-            max="5"
-            step="0.5"
-            value={songRating}
-            onChange={(e) => setRating(e.target.value)}
-          />
-        </label>
-        <br />
-        <label htmlFor="txtSongReview">
-        Review:
-          <br />
-          <textarea
-            id="txtSongReview"
-            value={songReview}
-            onChange={(e) => setReview(e.target.value)}
-          />
-        </label>
-        <br />
-        <input
-          disabled={songRating === "" || songReview === ""}
-          type="submit"
-          value="Submit Review"
-        />
-      </form>
-      {reviewPosted && <div>Review posted successfully!</div>}
+      {reviewPosted
+        ? <p>Review posted successfully!</p>
+        : <>
+          <form name="reviewForm" onSubmit={handleSubmit}>
+            <label htmlFor="txtRating">
+            Rating:
+              <input
+                id="txtRating"
+                type="number"
+                min="0"
+                max="5"
+                step="0.5"
+                value={songRating}
+                onChange={(e) => setRating(e.target.value)}
+              />
+            </label>
+            <br />
+            <label htmlFor="txtSongReview">
+            Review:
+              <br />
+              <textarea
+                id="txtSongReview"
+                value={songReview}
+                onChange={(e) => setReview(e.target.value)}
+              />
+            </label>
+            <br />
+            <input
+              disabled={songRating === "" || songReview === ""}
+              type="submit"
+              value="Submit Review"
+            />
+          </form>
+        </>
+      }
     </div>
   );
 };
