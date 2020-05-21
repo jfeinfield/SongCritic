@@ -10,6 +10,19 @@ import LogIn from "./LogIn";
 
 afterEach(cleanup);
 
+it("shows errors passed from its parent", async () => {
+  // Arrange
+  const errorMsg = "this is a fake error message";
+
+  // Act
+  const {
+    queryByText
+  } = render(<LogIn handleLogIn={() => {}} errorMsg={errorMsg} />);
+
+  // Assert
+  expect(queryByText(errorMsg)).toBeTruthy();
+});
+
 it("shows errors if required fields are empty", async () => {
   // Arrange
 
