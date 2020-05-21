@@ -2,20 +2,24 @@ import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
 import {useParams, Redirect} from "react-router-dom";
 import Parse from "parse";
+
 import {
   Song as SongClass,
   User as UserClass,
   Review as ReviewClass} from "../parseClasses";
 import SubmitReview from "./SubmitReview";
+import UpdateSong from "./UpdateSong";
 
 const SongPage = (props) => {
   const {currentUser} = props;
   const {songId} = useParams();
   const [reviews, setReviews] = useState([]);
   const [songName, setSongName] = useState("");
+  const [songArt, setSongArt] = useState("");
   const [artistName, setArtistName] = useState("");
   const [fetchingSong, setFetchingSong] = useState(true);
   const [foundSong, setFoundSong] = useState(false);
+  const [isCurrentUserTheArtist, setIsCurrentUserTheArtist] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -24,6 +28,7 @@ const SongPage = (props) => {
       try {
         const song = await songQuery.get(songId);
         setSongName(song.get("name"));
+        setSongArt(song.get("art"));
 
         const artistQuery = new Parse.Query(UserClass);
         const artist = await artistQuery.get(song.get("artist").id);
@@ -63,6 +68,21 @@ const SongPage = (props) => {
     })();
   }, [songId]);
 
+  useEffect(() => {
+    (async () => {
+      const songQuery = new Parse.Query(SongClass);
+
+      try {
+        const song = await songQuery.get(songId);
+        setIsCurrentUserTheArtist(
+          currentUser.toPointer().objectId === song.get("artist").id
+        );
+      } catch {
+        // TODO: handle error
+      }
+    })();
+  }, [songId, currentUser]);
+
   return (
     <div>
       {!fetchingSong && !foundSong && <Redirect to="/404" />}
@@ -71,10 +91,15 @@ const SongPage = (props) => {
         : <>
           <h2>{songName}</h2>
           <strong>by: {artistName}</strong>
+          {isCurrentUserTheArtist
+            && <UpdateSong
+              songId={songId}
+              songName={songName}
+              songArt={songArt}
+            />
+          }
           {currentUser
-            ? <>
-              <SubmitReview currentUser={currentUser} songId={songId} />
-            </>
+            ? <SubmitReview currentUser={currentUser} songId={songId} />
             : <div>
               <h3>Write a Review</h3>
               <p>Must be signed in to write a review</p>
