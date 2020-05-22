@@ -13,6 +13,7 @@ import Search from "./components/Search";
 import SongPage from "./components/SongPage";
 import UserPage from "./components/UserPage";
 import SongDir from "./components/SongDir";
+import ArtistDir from "./components/ArtistDir";
 
 function App() {
   Parse.initialize("HjKymbNGAhUhWwGSAmMDevlJJzVQPgworMQ9Fbud", "");
@@ -86,6 +87,9 @@ function App() {
               <Link to={`/user/${currentUser.id}`}>Account</Link>
             </li>}
             <li>
+              <Link to="/artists">Artists</Link>
+            </li>
+            <li>
             <Link to="/songs">Songs</Link>
             </li>
           </ul>
@@ -135,6 +139,9 @@ function App() {
           </Route>
           <Route path="/songs">
             <SongDir />
+          </Route>
+          <Route path="/artists">
+            <ArtistDir />
           </Route>
           <Route path="*">
             <h2>404 - Page not found!</h2>
