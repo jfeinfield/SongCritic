@@ -89,7 +89,7 @@ function App() {
               <Link to="/artists">Artists</Link>
             </li>
             <li>
-            <Link to="/songs">Songs</Link>
+              <Link to="/songs">Songs</Link>
             </li>
           </ul>
         </nav>

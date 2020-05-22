@@ -7,7 +7,6 @@ const ArtistDir = () => {
   const [artists, setArtists] = useState([]);
   const [fetchingArtists, setFetchingArtists] = useState(true);
 
-
   useEffect(() => {
     (async () => {
       try {
@@ -27,11 +26,13 @@ const ArtistDir = () => {
               name: user.toJSON().name
             }))
           );
-        setArtists((await artistUsers).sort((a,b) => (a.name).localeCompare(b.name)));
+        setArtists((await artistUsers).sort((a,b) => {
+          return (a.name).localeCompare(b.name);
+        }));
+
         setFetchingArtists(false);
       } catch (error) {
-        console.log(error);
-        //TODO: handle error
+        // TODO: handle error
       }
     })();
   }, []);
@@ -39,17 +40,21 @@ const ArtistDir = () => {
   return (
     <div>
       <h1>Artists</h1>
-      {fetchingArtists 
-      ? <>
-        <p>Fetching artists...</p>
-      </>
-      : <>
-        {artists.map((artist) => {
-          return <p key={artist.id}><Link to={`/user/${artist.id}`}>{artist.name}</Link></p>
-        })}
-      </> }
+      {fetchingArtists
+        ? <>
+          <p>Fetching artists...</p>
+        </>
+        : <>
+          {artists.map((artist) => {
+            return (
+              <p key={artist.id}>
+                <Link to={`/user/${artist.id}`}>{artist.name}</Link>
+              </p>
+            );
+          })}
+        </> }
     </div>
   );
-}
+};
 
 export default ArtistDir;

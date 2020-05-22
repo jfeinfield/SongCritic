@@ -9,10 +9,11 @@ const SongDir = () => {
   useEffect(() => {
     (async () => {
       try {
-        const songList = await new Parse.Query(SongClass).addAscending("name").find();
-        setSongs(songList.map((song) => song.toJSON()))
+        const songQuery = new Parse.Query(SongClass);
+        const songList = await songQuery.addAscending("name").find();
+        setSongs(songList.map((song) => song.toJSON()));
       } catch (error) {
-        //TODO: handle error
+        // TODO: handle error
       }
     })();
   }, []);
@@ -21,10 +22,14 @@ const SongDir = () => {
     <div>
       <h1>Songs</h1>
       {songs.map((song) => {
-        return <p key={song.objectId}><Link to={`/song/${song.objectId}`}>{song.name}</Link></p>
+        return (
+          <p key={song.objectId}>
+            <Link to={`/song/${song.objectId}`}>{song.name}</Link>
+          </p>
+        );
       })}
     </div>
   );
-}
+};
 
 export default SongDir;
