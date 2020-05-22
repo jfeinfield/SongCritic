@@ -6,7 +6,6 @@ import {Artist as ArtistClass} from "./parseClasses";
 import AuthInfo from "./components/AuthInfo";
 import SignUp from "./components/SignUp";
 import LogIn from "./components/LogIn";
-import ArtistList from "./components/ArtistList";
 import RecentReviews from "./components/RecentReviews";
 import SubmitSong from "./components/SubmitSong";
 import Search from "./components/Search";
@@ -100,7 +99,6 @@ function App() {
               <Search />
               {currentUser && currentUser.get("isArtist")
                     && <SubmitSong currentUser={currentUser} />}
-              <ArtistList />
               <RecentReviews />
             </>
           </Route>
