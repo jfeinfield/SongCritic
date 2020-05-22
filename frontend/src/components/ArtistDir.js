@@ -6,6 +6,7 @@ import {User as UserClass, Artist as ArtistClass} from "../parseClasses";
 const ArtistDir = () => {
   const [artists, setArtists] = useState([]);
   const [fetchingArtists, setFetchingArtists] = useState(true);
+  const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -32,27 +33,35 @@ const ArtistDir = () => {
 
         setFetchingArtists(false);
       } catch (error) {
-        // TODO: handle error
+        setErrorMsg(error);
       }
     })();
   }, []);
 
   return (
     <div>
-      <h1>Artists</h1>
-      {fetchingArtists
+      {errorMsg !== ""
         ? <>
-          <p>Fetching artists...</p>
+          <p>{errorMsg}</p>
         </>
         : <>
-          {artists.map((artist) => {
-            return (
-              <p key={artist.id}>
-                <Link to={`/user/${artist.id}`}>{artist.name}</Link>
-              </p>
-            );
-          })}
-        </> }
+          <h1>Artists</h1>
+          {fetchingArtists
+            ? <>
+              <p>Fetching artists...</p>
+            </>
+            : <>
+              {artists.map((artist) => {
+                return (
+                  <p key={artist.id}>
+                    <Link to={`/user/${artist.id}`}>{artist.name}</Link>
+                  </p>
+                );
+              })}
+            </>
+          }
+        </>
+      }
     </div>
   );
 };

@@ -5,6 +5,8 @@ import {Song as SongClass} from "../parseClasses";
 
 const SongDir = () => {
   const [songs, setSongs] = useState([]);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [fetchingSongs, setFetchingSongs] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -12,22 +14,37 @@ const SongDir = () => {
         const songQuery = new Parse.Query(SongClass);
         const songList = await songQuery.addAscending("name").find();
         setSongs(songList.map((song) => song.toJSON()));
+        setFetchingSongs(false);
       } catch (error) {
-        // TODO: handle error
+        setErrorMsg(error);
       }
     })();
   }, []);
 
   return (
     <div>
-      <h1>Songs</h1>
-      {songs.map((song) => {
-        return (
-          <p key={song.objectId}>
-            <Link to={`/song/${song.objectId}`}>{song.name}</Link>
-          </p>
-        );
-      })}
+      {errorMsg !== ""
+        ? <>
+          <p>{errorMsg}</p>
+        </>
+        : <>
+          <h1>Songs</h1>
+          {fetchingSongs
+            ? <>
+              <p>Fetching songs...</p>
+            </>
+            : <>
+              {songs.map((song) => {
+                return (
+                  <p key={song.objectId}>
+                    <Link to={`/song/${song.objectId}`}>{song.name}</Link>
+                  </p>
+                );
+              })}
+            </>
+          } 
+        </>
+      }
     </div>
   );
 };
