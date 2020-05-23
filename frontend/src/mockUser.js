@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+/* This file is used to mock a parse user in unit tests. */
 class mockUser {
   constructor() {
     return {

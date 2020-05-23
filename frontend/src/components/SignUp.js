@@ -45,7 +45,7 @@ const SignUp = (props) => {
             type="text"
             id="signUpDisplayName"
             name="signUpDisplayName"
-            ref={register({required: true, minLength: 1})}
+            ref={register({required: true, minLength: 4})}
           />
         </label>
         {errors.signUpDisplayName?.type === "required"
