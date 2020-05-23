@@ -15,22 +15,25 @@ const SubmitReview = (props) => {
 
   const saveReview = async (songRating, songReview) => {
     const review = new ReviewClass();
-    try {
-      const songQuery = await new Parse.Query(SongClass).get(props.songId);
+    let songQuery;
 
-      review.set("author", props.currentUser.toPointer());
-      review.set("song", songQuery.toPointer());
-      review.set("rating", parseFloat(songRating));
-      review.set("review", songReview);
-      setSubmitErrorMsg("");
+    setSubmitErrorMsg("");
+
+    try {
+      songQuery = await new Parse.Query(SongClass).get(props.songId);
     } catch (error) {
       setSubmitErrorMsg(`${error.code} ${error.message}`);
-
+      return; // we can't run the rest of the save if this fails
     }
+
+    review.set("author", props.currentUser.toPointer());
+    review.set("song", songQuery.toPointer());
+    review.set("rating", parseFloat(songRating));
+    review.set("review", songReview);
+
     try {
       await review.save();
       reset();
-      setSubmitErrorMsg("");
     } catch (error) {
       setSubmitErrorMsg(`${error.code} ${error.message}`);
     }
@@ -47,7 +50,6 @@ const SubmitReview = (props) => {
       songRating,
       songReview,
     );
-
   };
 
   return (

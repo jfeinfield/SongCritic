@@ -11,6 +11,9 @@ const SubmitSong = (props) => {
 
   const saveSong = async (songName, songArt) => {
     const newSong = new SongClass();
+
+    setSubmitSongErrorMsg("");
+
     newSong.set("artist", props.currentUser.toPointer());
     newSong.set("name", songName);
     newSong.set("art", songArt);
@@ -18,7 +21,6 @@ const SubmitSong = (props) => {
     try {
       await newSong.save();
       reset();
-      setSubmitSongErrorMsg("");
     } catch (error){
       setSubmitSongErrorMsg(`${error.code} ${error.message}`);
     }
