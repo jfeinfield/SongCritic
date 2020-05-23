@@ -1,14 +1,13 @@
-import React from "react";
+import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {useForm} from "react-hook-form";
 
 import {Song as SongClass} from "../parseClasses";
 
 const SubmitSong = (props) => {
+  const [submitSongErrorMsg, setSubmitSongErrorMsg] = useState("");
+
   const {register, handleSubmit, reset, errors} = useForm();
-  const {
-    errorMsg: errorMsgFromParse
-  } = props;
 
   const saveSong = async (songName, songArt) => {
     const newSong = new SongClass();
@@ -19,9 +18,9 @@ const SubmitSong = (props) => {
     try {
       await newSong.save();
       reset();
-
-    } catch {
-      // TODO: handle submission error
+      setSubmitSongErrorMsg("");
+    } catch (error){
+      setSubmitSongErrorMsg(`${error.code} ${error.message}`);
     }
 
   };
@@ -36,8 +35,6 @@ const SubmitSong = (props) => {
       songName,
       songArt,
     );
-    reset();
-
   };
 
   return (
@@ -51,7 +48,6 @@ const SubmitSong = (props) => {
             id="songName"
             name="songName"
             ref={register({required: true})}
-
           />
         </label>
         {errors.songName?.type === "required"
@@ -65,22 +61,21 @@ const SubmitSong = (props) => {
             name="songArt"
             ref={
               register({
-                required: true,
                 // eslint-disable-next-line
                 pattern: /(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
               })
             }
           />
         </label>
-        {errors.songArt?.type === "required"
-          && <span>This field is required</span>}
+        {errors.songArt?.type === "pattern"
+          && <span>Needs to be a valid link</span>}
         <br />
         <input
           type="submit"
           value="Submit Song"
         />
       </form>
-      {errorMsgFromParse !== "" && <p>{errorMsgFromParse}</p>}
+      {submitSongErrorMsg !== "" && <p>{submitSongErrorMsg}</p>}
     </div>
   );
 };
@@ -89,11 +84,6 @@ SubmitSong.propTypes = {
   currentUser: PropTypes.shape({
     toPointer: PropTypes.func
   }).isRequired,
-  errorMsg: PropTypes.string
-};
-
-SubmitSong.defaultProps = {
-  errorMsg: ""
 };
 
 export default SubmitSong;

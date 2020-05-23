@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import PropTypes from "prop-types";
 import Parse from "parse";
 import {useForm} from "react-hook-form";
@@ -9,27 +9,32 @@ import {
 } from "../parseClasses";
 
 const SubmitReview = (props) => {
+  const [submitErrorMsg, setSubmitErrorMsg] = useState("");
+
   const {register, handleSubmit, reset, errors} = useForm();
-  const {
-    errorMsg: errorMsgFromParse
-  } = props;
 
   const saveReview = async (songRating, songReview) => {
     const review = new ReviewClass();
-    const songQuery = await new Parse.Query(SongClass).get(props.songId);
+    try {
+      const songQuery = await new Parse.Query(SongClass).get(props.songId);
 
-    review.set("author", props.currentUser.toPointer());
-    review.set("song", songQuery.toPointer());
-    review.set("rating", parseFloat(songRating));
-    review.set("review", songReview);
+      review.set("author", props.currentUser.toPointer());
+      review.set("song", songQuery.toPointer());
+      review.set("rating", parseFloat(songRating));
+      review.set("review", songReview);
+      setSubmitErrorMsg("");
+    } catch (error) {
+      setSubmitErrorMsg(`${error.code} ${error.message}`);
 
+    }
     try {
       await review.save();
       reset();
-
-    } catch {
-      // TODO: handle submission error
+      setSubmitErrorMsg("");
+    } catch (error) {
+      setSubmitErrorMsg(`${error.code} ${error.message}`);
     }
+
   };
 
   const onSubmit = (data) => {
@@ -42,7 +47,6 @@ const SubmitReview = (props) => {
       songRating,
       songReview,
     );
-    reset();
 
   };
 
@@ -90,7 +94,7 @@ const SubmitReview = (props) => {
           value="Submit Review"
         />
       </form>
-      {errorMsgFromParse !== "" && <p>{errorMsgFromParse}</p>}
+      {submitErrorMsg !== "" && <p>{submitErrorMsg}</p>}
     </div>
   );
 };
@@ -100,11 +104,6 @@ SubmitReview.propTypes = {
     toPointer: PropTypes.func
   }).isRequired,
   songId: PropTypes.string.isRequired,
-  errorMsg: PropTypes.string
-};
-
-SubmitReview.defaultProps = {
-  errorMsg: ""
 };
 
 export default SubmitReview;
