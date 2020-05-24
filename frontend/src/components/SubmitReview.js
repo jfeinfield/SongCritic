@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
 import Parse from "parse";
+import {useForm} from "react-hook-form";
 
 import {
   Song as SongClass,
@@ -8,35 +9,22 @@ import {
 } from "../parseClasses";
 
 const SubmitReview = (props) => {
-  const [songRating, setRating] = useState("");
-  const [songReview, setReview] = useState("");
-  const [reviewPosted, setReviewPosted] = useState(false);
+  const [submitErrorMsg, setSubmitErrorMsg] = useState("");
 
-  /* eslint-disable react/destructuring-assignment */
-  useEffect(() => {
-    (async () => {
-      const reviewQuery = new Parse.Query(ReviewClass);
-      reviewQuery.equalTo("author", props.currentUser.toPointer());
-      reviewQuery.equalTo(
-        "song",
-        {"__type": "Pointer", "className": "song", "objectId": props.songId}
-      );
+  const {register, handleSubmit, reset, errors} = useForm();
 
-      try {
-        const matchingReview = await reviewQuery.find();
-        if (matchingReview.length !== 0)
-          setReviewPosted(true);
-      } catch {
-        // currently this component has no way of displaying error messages
-        // TODO: handle query error
-      }
-    })();
-  }, [props.currentUser, props.songId]);
-  /* eslint-enable react/destructuring-assignment */
-
-  const saveReview = async () => {
+  const saveReview = async (songRating, songReview) => {
     const review = new ReviewClass();
-    const songQuery = await new Parse.Query(SongClass).get(props.songId);
+    let songQuery;
+
+    setSubmitErrorMsg("");
+
+    try {
+      songQuery = await new Parse.Query(SongClass).get(props.songId);
+    } catch (error) {
+      setSubmitErrorMsg(`${error.code} ${error.message}`);
+      return; // we can't run the rest of the save if this fails
+    }
 
     review.set("author", props.currentUser.toPointer());
     review.set("song", songQuery.toPointer());
@@ -45,58 +33,70 @@ const SubmitReview = (props) => {
 
     try {
       await review.save();
-
-      setRating("");
-      setReview("");
-      setReviewPosted(true);
-    } catch {
-      // TODO: handle submission error
+      reset();
+    } catch (error) {
+      setSubmitErrorMsg(`${error.code} ${error.message}`);
     }
+
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    saveReview();
+  const onSubmit = (data) => {
+    const {
+      songRating,
+      songReview,
+    } = data;
+
+    saveReview(
+      songRating,
+      songReview,
+    );
   };
 
   return (
     <div>
       <h3>Write a Review</h3>
-      {reviewPosted
-        ? <p>Review posted successfully!</p>
-        : <>
-          <form name="reviewForm" onSubmit={handleSubmit}>
-            <label htmlFor="txtRating">
-            Rating:
-              <input
-                id="txtRating"
-                type="number"
-                min="0"
-                max="5"
-                step="0.5"
-                value={songRating}
-                onChange={(e) => setRating(e.target.value)}
-              />
-            </label>
-            <br />
-            <label htmlFor="txtSongReview">
-            Review:
-              <br />
-              <textarea
-                id="txtSongReview"
-                value={songReview}
-                onChange={(e) => setReview(e.target.value)}
-              />
-            </label>
-            <br />
-            <input
-              disabled={songRating === "" || songReview === ""}
-              type="submit"
-              value="Submit Review"
-            />
-          </form>
-        </>
-      }
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <label htmlFor="songRating">
+        Rating:
+          <input
+            id="songRating"
+            name="songRating"
+            type="number"
+            step=".5"
+            ref={
+              register({
+                required: true,
+                min: 0,
+                max: 5,
+              })
+            }
+          />
+        </label>
+        {errors.songRating?.type === "required"
+          && <span>This field is required</span>}
+        {errors.songRating?.type === "min"
+          && <span>Please enter a positive value</span>}
+        {errors.songRating?.type === "max"
+          && <span>Please enter a value less than or equal to 5</span>}
+        <br />
+        <label htmlFor="songReview">
+        Review:
+          <br />
+          <textarea
+            id="songReview"
+            name="songReview"
+            ref={register({required: true})}
+          />
+        </label>
+        {errors.songReview?.type === "required"
+          && <span>This field is required</span>}
+        <br />
+        <input
+          type="submit"
+          value="Submit Review"
+        />
+      </form>
+      {submitErrorMsg !== "" && <p>{submitErrorMsg}</p>}
     </div>
   );
 };
@@ -105,7 +105,7 @@ SubmitReview.propTypes = {
   currentUser: PropTypes.shape({
     toPointer: PropTypes.func
   }).isRequired,
-  songId: PropTypes.string.isRequired
+  songId: PropTypes.string.isRequired,
 };
 
 export default SubmitReview;
