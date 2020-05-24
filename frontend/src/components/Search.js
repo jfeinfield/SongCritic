@@ -71,7 +71,7 @@ const Search = () => {
         <h3>Artists</h3>
         {artistResults.map((artist) => (
           <ul key={artist.objectId}>
-            <li>{artist.name}</li>
+            <li><Link to={`/user/${artist.objectId}`}>{artist.name}</Link></li>
           </ul>
         ))}
       </div>}

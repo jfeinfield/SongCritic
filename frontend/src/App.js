@@ -6,11 +6,13 @@ import {Artist as ArtistClass} from "./parseClasses";
 import AuthInfo from "./components/AuthInfo";
 import SignUp from "./components/SignUp";
 import LogIn from "./components/LogIn";
-import ArtistList from "./components/ArtistList";
 import RecentReviews from "./components/RecentReviews";
 import SubmitSong from "./components/SubmitSong";
 import Search from "./components/Search";
 import SongPage from "./components/SongPage";
+import UserPage from "./components/UserPage";
+import SongDir from "./components/SongDir";
+import ArtistDir from "./components/ArtistDir";
 
 function App() {
   Parse.initialize("HjKymbNGAhUhWwGSAmMDevlJJzVQPgworMQ9Fbud", "");
@@ -80,6 +82,15 @@ function App() {
             <li>
               <Link to="/auth">Authentication</Link>
             </li>
+            {currentUser && <li>
+              <Link to={`/user/${currentUser.id}`}>Account</Link>
+            </li>}
+            <li>
+              <Link to="/artists">Artists</Link>
+            </li>
+            <li>
+              <Link to="/songs">Songs</Link>
+            </li>
           </ul>
         </nav>
         <Switch>
@@ -88,7 +99,6 @@ function App() {
               <Search />
               {currentUser && currentUser.get("isArtist")
                     && <SubmitSong currentUser={currentUser} />}
-              <ArtistList />
               <RecentReviews />
             </>
           </Route>
@@ -121,6 +131,15 @@ function App() {
           </Route>
           <Route path="/song/:songId">
             <SongPage currentUser={currentUser} />
+          </Route>
+          <Route path="/user/:userId">
+            <UserPage currentUser={currentUser} />
+          </Route>
+          <Route path="/songs">
+            <SongDir />
+          </Route>
+          <Route path="/artists">
+            <ArtistDir />
           </Route>
           <Route path="*">
             <h2>404 - Page not found!</h2>
