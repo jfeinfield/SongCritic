@@ -6,40 +6,83 @@ import AuthInfo from "./AuthInfo";
 afterEach(cleanup);
 
 it("handles a null currentUser", async () => {
-  const {queryByText} = render(<AuthInfo currentUser={null} errorMsg="" />);
+  // Arrange
+  const currentUser = null;
 
+  // Act
+  const {queryByText} = render(<AuthInfo currentUser={currentUser} />);
+
+  // Assert
   expect(queryByText("Username: n/a")).toBeTruthy();
+  expect(queryByText("Is an artist: n/a")).toBeTruthy();
   expect(queryByText("Session Token: n/a")).toBeTruthy();
   expect(queryByText("Authenticated: No")).toBeTruthy();
 });
 
 it("displays currentUser info", async () => {
-  const {queryByText} = render(
-    <AuthInfo
-      currentUser={{
-        getUsername: () => "fakeUsername",
-        getSessionToken: () => "fakeSessionToken",
-        authenticated: () => true
-      }}
-      errorMsg=""
-    />
-  );
+  // Arrange
+  const username = "fakeUsername";
+  const displayName = "Fake Display Name";
+  const isArtist = false;
+  const sessionToken = "fakeSessionToken";
+  const authenticated = true;
+  const currentUser = {
+    get: (key) => {
+      switch(key) {
+      case "name":
+        return displayName;
+      case "isArtist":
+        return isArtist;
+      default:
+        return undefined;
+      }
+    },
+    getUsername: () => username,
+    getSessionToken: () => sessionToken,
+    authenticated: () => authenticated
+  };
 
-  expect(queryByText("Username: fakeUsername")).toBeTruthy();
-  expect(queryByText("Session Token: fakeSessionToken")).toBeTruthy();
+  // Act
+  const {queryByText} = render(<AuthInfo currentUser={currentUser} />);
+
+  // Assert
+  expect(queryByText(`Username: ${username}`)).toBeTruthy();
+  expect(queryByText(`Display Name: ${displayName}`)).toBeTruthy();
+  expect(queryByText("Is an artist: No")).toBeTruthy();
+  expect(queryByText(`Session Token: ${sessionToken}`)).toBeTruthy();
   expect(queryByText("Authenticated: Yes")).toBeTruthy();
 });
 
-it("displays error messages", async () => {
-  const {queryByText} = render(
-    <AuthInfo currentUser={null} errorMsg="Fake error message"/>
-  );
+it("displays if a user is an artist", async () => {
+  // Arrange
+  const username = "fakeUsername";
+  const displayName = "Fake Display Name";
+  const isArtist = true;
+  const sessionToken = "fakeSessionToken";
+  const authenticated = true;
+  const currentUser = {
+    get: (key) => {
+      switch(key) {
+      case "name":
+        return displayName;
+      case "isArtist":
+        return isArtist;
+      default:
+        return undefined;
+      }
+    },
+    getUsername: () => username,
+    getSessionToken: () => sessionToken,
+    authenticated: () => authenticated
+  };
 
-  expect(queryByText(/Fake error message/i)).toBeTruthy();
-});
+  // Act
+  const {queryByText} = render(<AuthInfo currentUser={currentUser} />);
 
-it("hides empty error messages", async () => {
-  const {queryByText} = render(<AuthInfo currentUser={null} errorMsg="" />);
-
-  expect(queryByText(/Error/i)).toBeFalsy();
+  // Assert
+  expect(queryByText(`Username: ${username}`)).toBeTruthy();
+  expect(queryByText(`Display Name: ${displayName}`)).toBeTruthy();
+  expect(queryByText("Is an artist: Yes")).toBeTruthy();
+  expect(queryByText(`Session Token: ${sessionToken}`)).toBeTruthy();
+  expect(queryByText("Authenticated: Yes")).toBeTruthy();
 });
