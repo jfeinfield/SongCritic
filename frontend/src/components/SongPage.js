@@ -19,6 +19,7 @@ const SongPage = (props) => {
   const [artistName, setArtistName] = useState("");
   const [fetchingSong, setFetchingSong] = useState(true);
   const [foundSong, setFoundSong] = useState(false);
+  const [foundArt, setFoundArt] = useState(false);
   const [isCurrentUserTheArtist, setIsCurrentUserTheArtist] = useState(false);
 
   useEffect(() => {
@@ -59,10 +60,12 @@ const SongPage = (props) => {
 
         setReviews(await Promise.all(results));
         setFoundSong(true);
+        setFoundArt(true);
         setFetchingSong(false);
       } catch {
         // error while fetching data -> navigate to 404 page
         setFoundSong(false);
+        setFoundArt(false);
         setFetchingSong(false);
       }
     })();
@@ -90,6 +93,11 @@ const SongPage = (props) => {
         ? <p>Loading song and reviews...</p>
         : <>
           <h2>{songName}</h2>
+          {foundArt && songArt !== "" && <img src={songArt}
+            height="250"
+            width="270"
+          />}
+          <br />
           <strong>by: {artistName}</strong>
           {isCurrentUserTheArtist
             && <UpdateSong
