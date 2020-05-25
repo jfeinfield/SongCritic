@@ -17,6 +17,7 @@ const SongPage = (props) => {
   const [songName, setSongName] = useState("");
   const [songArt, setSongArt] = useState("");
   const [artistName, setArtistName] = useState("");
+  const [artistId, setArtistId] = useState("");
   const [fetchingSong, setFetchingSong] = useState(true);
   const [foundSong, setFoundSong] = useState(false);
   const [foundArt, setFoundArt] = useState(false);
@@ -33,6 +34,7 @@ const SongPage = (props) => {
 
         const artistQuery = new Parse.Query(UserClass);
         const artist = await artistQuery.get(song.get("artist").id);
+        setArtistId(artist.id);
         setArtistName(artist.get("name"));
 
         const reviewQuery = new Parse.Query(ReviewClass);
@@ -94,12 +96,13 @@ const SongPage = (props) => {
         : <>
           <h2>{songName}</h2>
           {foundArt && songArt !== "" && <img src={songArt}
+            alt=""
             height="250"
             width="270"
           />}
           <br />
           <strong>by: </strong>
-          <Link to={`/user/${currentUser.id}`}>{artistName}</Link>
+          <Link to={`/user/${artistId}`}>{artistName}</Link>
           {isCurrentUserTheArtist
             && <UpdateSong
               songId={songId}
