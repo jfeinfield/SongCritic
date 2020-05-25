@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
-import {useParams, Redirect} from "react-router-dom";
+import {useParams, Redirect, Link} from "react-router-dom";
 import Parse from "parse";
 
 import {
@@ -98,7 +98,8 @@ const SongPage = (props) => {
             width="270"
           />}
           <br />
-          <strong>by: {artistName}</strong>
+          <strong>by: </strong>
+          <Link to={`/user/${currentUser.id}`}>{artistName}</Link>
           {isCurrentUserTheArtist
             && <UpdateSong
               songId={songId}
