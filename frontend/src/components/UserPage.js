@@ -27,7 +27,7 @@ const UserPage = (props) => {
         setUsername(user.get("name"));
         setIsArtist(user.get("isArtist"));
 
-        if(user.get("isArtist")) {
+        if (user.get("isArtist")) {
           setIsArtist(true);
           const songQuery = new Parse.Query(SongClass);
           songQuery.addDescending("name").equalTo("artist",
@@ -40,27 +40,9 @@ const UserPage = (props) => {
         reviewQuery.equalTo("author",
           {"__type": "Pointer", "className": "_User", "objectId": userId});
         const reviewArray = await reviewQuery.find();
-        const results = reviewArray.map(async (r) => {
-          const {
-            objectId,
-            song: {objectId: songId},
-            review: ReviewText,
-            rating
-          } = r.toJSON();
-          const song = await new Parse.Query(SongClass).get(songId);
-          const artistQuery = new Parse.Query(UserClass);
-          const artist = await artistQuery.get(song.get("artist").id);
-          const review = {
-            objectId,
-            review: ReviewText,
-            rating,
-            song: song.get("name"),
-            artist: artist.get("name")
-          };
+        const results = reviewArray.map((r) => r.toJSON().objectId);
 
-          return review;
-        });
-        setReviews(await Promise.all(results));
+        setReviews(await results);
         setFoundUser(true);
         setFetchingUser(false);
       } catch (error){
@@ -105,15 +87,7 @@ const UserPage = (props) => {
             {reviews.length !== 0
               ? <>
                 {reviews.map((r) => (
-                  <div key={r.objectId}>
-                    <Review
-                      artistName={r.artist}
-                      song={r.song}
-                      authorName={username}
-                      rating={r.rating}
-                      review={r.review}
-                    />
-                  </div>
+                  <Review key={r} reviewId={r} showLinkToSong />
                 ))}
               </>
               : <>
