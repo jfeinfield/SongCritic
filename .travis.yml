@@ -4,5 +4,5 @@ node_js:
 install:
   - (cd frontend/ && npm install)
 test:
-  - (cd frontend/ && npm run test)
+  - (cd frontend/ && npm test)
 
