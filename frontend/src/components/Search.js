@@ -9,7 +9,6 @@ import {
 } from "../parseClasses";
 
 const Search = () => {
-  //const [searchTerm, setSearchTerm] = useState("");;
   const [artistResults, setArtistResults] = useState([]);
   const [songResults, setSongResults] = useState([]);
   const [artistFound, setArtistFound] = useState(false);
@@ -39,11 +38,11 @@ const Search = () => {
 
     const songQuery = new Parse.Query(SongClass);
 
-    let allSongs = await songQuery.find();
-    
+    const allSongs = await songQuery.find();
+
     const songQueryResults = allSongs.filter((song) => { return (
       song.get("name").toLowerCase().includes(searchTerm.toLowerCase())
-    );})
+    );});
 
     setArtistFound(artistQueryResults.length !== 0);
     setSongFound(songQueryResults.length !== 0);
