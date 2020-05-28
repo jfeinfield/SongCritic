@@ -99,7 +99,7 @@ function App() {
               <Search />
               {currentUser && currentUser.get("isArtist")
                     && <SubmitSong currentUser={currentUser} />}
-              <RecentReviews />
+              <RecentReviews currentUser={currentUser}/>
             </>
           </Route>
           <Route path="/auth">

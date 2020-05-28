@@ -9,6 +9,7 @@ import {
   Review as ReviewClass} from "../parseClasses";
 import SubmitReview from "./SubmitReview";
 import UpdateSong from "./UpdateSong";
+import Review from "./Review";
 
 const SongPage = (props) => {
   const {currentUser} = props;
@@ -42,27 +43,9 @@ const SongPage = (props) => {
           {"__type": "Pointer", "className": "song", "objectId": songId});
         const reviewArray = await reviewQuery.find();
 
-        const results = reviewArray.map(async (r) => {
-          const {
-            objectId,
-            author: {objectId: authorId},
-            review: ReviewText,
-            rating
-          } = r.toJSON();
+        const results = reviewArray.map((r) => r.toJSON().objectId);
 
-          const userQuery = new Parse.Query(UserClass);
-          let author = await userQuery.get(authorId);
-          const aId = author.id;
-          author = author.toJSON();
-
-          const review = {objectId, review: ReviewText, rating};
-          review.author = author.name;
-          review.authorId = aId;
-
-          return review;
-        });
-
-        setReviews(await Promise.all(results));
+        setReviews(await results);
         setFoundSong(true);
         setFoundArt(true);
         setFetchingSong(false);
@@ -127,12 +110,12 @@ const SongPage = (props) => {
             {reviews.length !== 0
               ? <>
                 {reviews.map((r) => (
-                  <div key={r.objectId}>
-                    <h4><Link to={`/user/${r.authorId}`}>{r.author}</Link></h4>
-                    <p>{r.rating} stars</p>
-                    <p>{r.review}</p>
-                    <p />
-                  </div>
+                  <Review
+                    key={r}
+                    currentUser={currentUser}
+                    reviewId={r}
+                    isListing
+                  />
                 ))}
               </>
               : <p>Be the first to write a review!</p>
