@@ -17,88 +17,63 @@ const Review = (props) => {
   const [isCurrentUserAuthor, setIsCurrentUserAuthor] = useState(false);
   const [isEditingReview, setIsEditingReview] = useState(false);
   const [isReviewDeleted, setIsReviewDeleted] = useState(false);
+  const [fetchError, setFetchError] = useState(null);
+  const [updateError, setUpdateError] = useState(null);
+  const [deleteError, setDeleteError] = useState(null);
 
   useEffect(() => {
     (async () => {
-      const query = new Parse.Query(ReviewClass);
-
-      let resultWithPointers;
       try {
-        resultWithPointers = await query.get(reviewId);
+        const query = new Parse.Query(ReviewClass);
+        const resultWithPointers = await query.get(reviewId);
+        const result = await (async (r) => {
+          const {
+            objectId,
+            author: {objectId: authorId},
+            song: {objectId: songId},
+            review: ReviewText,
+            rating
+          } = r.toJSON();
+
+          let song = await new Parse.Query(SongClass).get(songId);
+          song = song.toJSON();
+
+          const userQuery = new Parse.Query(UserClass);
+
+          let author = await userQuery.get(authorId);
+          author = author.toJSON();
+
+          let artist = await userQuery.get(song.artist.objectId);
+          artist = artist.toJSON();
+
+          const review = {objectId, review: ReviewText, rating, authorId};
+          review.author = author.name;
+          review.song = song.name;
+          review.songId = songId;
+          review.artist = artist.name;
+          review.artistId = song.artist.objectId;
+          return review;
+        })(resultWithPointers);
+
+        setReviewObj(result);
+        if (currentUser && result.authorId === currentUser.id)
+          setIsCurrentUserAuthor(true);
       } catch (error) {
-        // TODO: handle error
-        return;
+        setFetchError(`${error.code} ${error.message}`);
       }
-
-      const result = await (async (r) => {
-        const {
-          objectId,
-          author: {objectId: authorId},
-          song: {objectId: songId},
-          review: ReviewText,
-          rating
-        } = r.toJSON();
-
-        let song;
-        try {
-          song = await new Parse.Query(SongClass).get(songId);
-        } catch (error) {
-          // TODO: handle error
-          // TODO: exit outer function
-        }
-        song = song.toJSON();
-
-        const userQuery = new Parse.Query(UserClass);
-        let author;
-        try {
-          author = await userQuery.get(authorId);
-        } catch (error) {
-          // TODO: handle error
-          // TODO: exit outer function
-        }
-        author = author.toJSON();
-
-        let artist;
-        try {
-          artist = await userQuery.get(song.artist.objectId);
-        } catch (error) {
-          // TODO: handle error
-          // TODO: exit outer function
-        }
-        artist = artist.toJSON();
-
-        const review = {objectId, review: ReviewText, rating, authorId};
-        review.author = author.name;
-        review.song = song.name;
-        review.songId = songId;
-        review.artist = artist.name;
-        review.artistId = song.artist.objectId;
-        return review;
-      })(resultWithPointers);
-
-      setReviewObj(result);
-      if (currentUser && result.authorId === currentUser.id)
-        setIsCurrentUserAuthor(true);
     })();
-  }, [reviewId, setReviewObj, currentUser]);
+  }, [reviewId, setReviewObj, currentUser, fetchError]);
 
   const updateReview = async (songRating, songReview) => {
-    const query = new Parse.Query(ReviewClass);
-
-    let resultWithPointers;
     try {
-      resultWithPointers = await query.get(reviewId);
-    } catch (error) {
-      // TODO: handle error
-      console.log(error);
-      return;
-    }
+      const query = new Parse.Query(ReviewClass);
+      const resultWithPointers = await query.get(reviewId);
 
-    resultWithPointers.set("rating", parseFloat(songRating));
-    resultWithPointers.set("review", songReview);
+      resultWithPointers.set("rating", parseFloat(songRating));
+      resultWithPointers.set("review", songReview);
 
-    try {
       await resultWithPointers.save();
+
       setIsEditingReview(false);
       setReviewObj({
         ...reviewObj,
@@ -106,8 +81,7 @@ const Review = (props) => {
         rating: songRating
       });
     } catch (error) {
-      // TODO: handle error
-      console.log(error);
+      setUpdateError(`${error.code} ${error.message}`);
     }
   };
 
@@ -121,22 +95,21 @@ const Review = (props) => {
   };
 
   const deleteReview = async () => {
-    const query = new Parse.Query(ReviewClass);
-
-    let resultWithPointers;
     try {
-      resultWithPointers = await query.get(reviewId);
+      const query = new Parse.Query(ReviewClass);
+      const resultWithPointers = await query.get(reviewId);
 
       await resultWithPointers.destroy();
 
       setIsReviewDeleted(true);
       setReviewObj(null);
     } catch (error) {
-      // TODO: handle error
-      console.log(error);
+      setDeleteError(`${error.code} ${error.message}`);
     }
   };
 
+  if (fetchError)
+    return <p>{fetchError}</p>;
   if (reviewObj) {
     return (
       <div className="review">
@@ -231,6 +204,7 @@ const Review = (props) => {
                         type="submit"
                         value="Update Review"
                       />
+                      {updateError && <p>{updateError}</p>}
                     </form>
                     <button
                       type="button"
@@ -238,6 +212,7 @@ const Review = (props) => {
                     >
                       Delete Review
                     </button>
+                    {deleteError && <p>{deleteError}</p>}
                   </>
                 ) : (
                   <button
