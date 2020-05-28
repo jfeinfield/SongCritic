@@ -32,11 +32,13 @@ const RecentReviews = () => {
         song = song.toJSON();
         const userQuery = new Parse.Query(UserClass);
         let author = await userQuery.get(authorId);
+        const aId = author.id;
         author = author.toJSON();
         let artist = await userQuery.get(song.artist.objectId);
         artist = artist.toJSON();
 
         const review = {objectId, review: ReviewText, rating};
+        review.authorId = aId;
         review.author = author.name;
         review.song = song.name;
         review.songId = songId;
@@ -56,6 +58,7 @@ const RecentReviews = () => {
           <Review
             artistName={r.artist}
             song={r.song}
+            authorId={r.authorId}
             authorName={r.author}
             rating={r.rating}
             review={r.review}

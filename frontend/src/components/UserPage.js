@@ -109,6 +109,7 @@ const UserPage = (props) => {
                     <Review
                       artistName={r.artist}
                       song={r.song}
+                      authorId={userId}
                       authorName={username}
                       rating={r.rating}
                       review={r.review}

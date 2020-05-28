@@ -52,10 +52,12 @@ const SongPage = (props) => {
 
           const userQuery = new Parse.Query(UserClass);
           let author = await userQuery.get(authorId);
+          const aId = author.id;
           author = author.toJSON();
 
           const review = {objectId, review: ReviewText, rating};
           review.author = author.name;
+          review.authorId = aId;
 
           return review;
         });
@@ -123,7 +125,7 @@ const SongPage = (props) => {
               ? <>
                 {reviews.map((r) => (
                   <div key={r.objectId}>
-                    <h4>{r.author}</h4>
+                    <h4><Link to={`/user/${r.authorId}`}>{r.author}</Link></h4>
                     <p>{r.rating} stars</p>
                     <p>{r.review}</p>
                     <p />
