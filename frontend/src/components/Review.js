@@ -16,6 +16,7 @@ const Review = (props) => {
   const [reviewObj, setReviewObj] = useState(null);
   const [isCurrentUserAuthor, setIsCurrentUserAuthor] = useState(false);
   const [isEditingReview, setIsEditingReview] = useState(false);
+  const [isReviewDeleted, setIsReviewDeleted] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -119,132 +120,147 @@ const Review = (props) => {
     updateReview(songRating, songReview);
   };
 
-  return (
-    <>
-      {reviewObj
-        ? (
-          <div className="review">
-            {isListing
-              ? (
-                <>
-                  <Link to={`/user/${reviewObj.authorId}`}>
-                    <h4>{reviewObj.author}</h4>
-                  </Link>
-                  <p>{reviewObj.rating} stars</p>
-                  <p>{reviewObj.review}</p>
-                </>
-              ) : (
-                <>
-                  <h3>{reviewObj.song}</h3>
-                  <p>
-                    {"Artist: "}
-                    {isListing
-                      ? reviewObj.artist
-                      : (
-                        <Link to={`/user/${reviewObj.artistId}`}>
-                          {reviewObj.artist}
-                        </Link>
-                      )}
-                  </p>
-                  <p>
-                    {"By: "}
-                    <Link to={`/user/${reviewObj.authorId}`}>
-                      {reviewObj.author}
+  const deleteReview = async () => {
+    const query = new Parse.Query(ReviewClass);
+
+    let resultWithPointers;
+    try {
+      resultWithPointers = await query.get(reviewId);
+
+      await resultWithPointers.destroy();
+
+      setIsReviewDeleted(true);
+      setReviewObj(null);
+    } catch (error) {
+      // TODO: handle error
+      console.log(error);
+    }
+  };
+
+  if (reviewObj) {
+    return (
+      <div className="review">
+        {isListing
+          ? (
+            <>
+              <Link to={`/user/${reviewObj.authorId}`}>
+                <h4>{reviewObj.author}</h4>
+              </Link>
+              <p>{reviewObj.rating} stars</p>
+              <p>{reviewObj.review}</p>
+            </>
+          ) : (
+            <>
+              <h3>{reviewObj.song}</h3>
+              <p>
+                {"Artist: "}
+                {isListing
+                  ? reviewObj.artist
+                  : (
+                    <Link to={`/user/${reviewObj.artistId}`}>
+                      {reviewObj.artist}
                     </Link>
-                  </p>
-                  <p>Rating: {reviewObj.rating}</p>
-                  <p>Review: {reviewObj.review}</p>
-                </>
-              )}
-            {isCurrentUserAuthor
-              && (
-                <div>
-                  {isEditingReview
-                    ? (
-                      <>
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                          <label htmlFor="songRating">
-                          Rating:
-                            <input
-                              defaultValue={reviewObj.rating}
-                              id="songRating"
-                              name="songRating"
-                              type="number"
-                              step=".5"
-                              ref={
-                                register({
-                                  required: true,
-                                  min: 0,
-                                  max: 5,
-                                })
-                              }
-                            />
-                          </label>
-                          {errors.songRating?.type === "required"
-                            && <span>This field is required</span>}
-                          {errors.songRating?.type === "min"
-                            && <span>Please enter a positive value</span>}
-                          {errors.songRating?.type === "max"
-                            && (
-                              <span>
-                                Please enter a value less than or equal to 5
-                              </span>
-                            )
+                  )}
+              </p>
+              <p>
+                {"By: "}
+                <Link to={`/user/${reviewObj.authorId}`}>
+                  {reviewObj.author}
+                </Link>
+              </p>
+              <p>Rating: {reviewObj.rating}</p>
+              <p>Review: {reviewObj.review}</p>
+            </>
+          )}
+        {isCurrentUserAuthor
+          && (
+            <div>
+              {isEditingReview
+                ? (
+                  <>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                      <label htmlFor="songRating">
+                      Rating:
+                        <input
+                          defaultValue={reviewObj.rating}
+                          id="songRating"
+                          name="songRating"
+                          type="number"
+                          step=".5"
+                          ref={
+                            register({
+                              required: true,
+                              min: 0,
+                              max: 5,
+                            })
                           }
-                          <br />
-                          <label htmlFor="songReview">
-                          Review:
-                            <br />
-                            <textarea
-                              defaultValue={reviewObj.review}
-                              id="songReview"
-                              name="songReview"
-                              ref={register({required: true})}
-                            />
-                          </label>
-                          {errors.songReview?.type === "required"
-                            && <span>This field is required</span>}
-                          <br />
-                          <button
-                            type="button"
-                            onClick={() => setIsEditingReview(false)}
-                          >
-                            Cancel
-                          </button>
-                          <input
-                            type="submit"
-                            value="Update Review"
-                          />
-                        </form>
-                        <button
-                          type="button"
-                          onClick={() => console.log("delete")}
-                        >
-                          Delete Review
-                        </button>
-                      </>
-                    ) : (
+                        />
+                      </label>
+                      {errors.songRating?.type === "required"
+                        && <span>This field is required</span>}
+                      {errors.songRating?.type === "min"
+                        && <span>Please enter a positive value</span>}
+                      {errors.songRating?.type === "max"
+                        && (
+                          <span>
+                            Please enter a value less than or equal to 5
+                          </span>
+                        )
+                      }
+                      <br />
+                      <label htmlFor="songReview">
+                      Review:
+                        <br />
+                        <textarea
+                          defaultValue={reviewObj.review}
+                          id="songReview"
+                          name="songReview"
+                          ref={register({required: true})}
+                        />
+                      </label>
+                      {errors.songReview?.type === "required"
+                        && <span>This field is required</span>}
+                      <br />
                       <button
                         type="button"
-                        onClick={() => setIsEditingReview(true)}
+                        onClick={() => setIsEditingReview(false)}
                       >
-                        Edit Review
+                        Cancel
                       </button>
-                    )
-                  }
-                  <br />
-                </div>
-              )}
-            {showLinkToSong &&
-              <Link to={`/song/${reviewObj.songId}`}>
-                Visit song page for {reviewObj.song}
-              </Link>}
-          </div>
-        ) : (
-          <p>Loading review...</p>
-        )}
-    </>
-  );
+                      <input
+                        type="submit"
+                        value="Update Review"
+                      />
+                    </form>
+                    <button
+                      type="button"
+                      onClick={() => deleteReview()}
+                    >
+                      Delete Review
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setIsEditingReview(true)}
+                  >
+                    Edit Review
+                  </button>
+                )
+              }
+              <br />
+            </div>
+          )}
+        {showLinkToSong &&
+          <Link to={`/song/${reviewObj.songId}`}>
+            Visit song page for {reviewObj.song}
+          </Link>}
+      </div>
+    );
+  }
+  if (isReviewDeleted)
+    return <p><em>This review has been removed.</em></p>;
+  return <p>Loading review...</p>;
 };
 
 Review.propTypes = {
