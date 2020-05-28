@@ -6,4 +6,4 @@ install:
   - npm install
 script:
   - npm run-script lint
-  - npm test --coverage --watchAll=false --verbose
+  - npm run-script coverage
