@@ -87,7 +87,12 @@ const UserPage = (props) => {
             {reviews.length !== 0
               ? <>
                 {reviews.map((r) => (
-                  <Review key={r} reviewId={r} showLinkToSong />
+                  <Review
+                    key={r}
+                    currentUser={currentUser}
+                    reviewId={r}
+                    showLinkToSong
+                  />
                 ))}
               </>
               : <>

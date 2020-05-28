@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import Parse from "parse";
+import {useForm} from "react-hook-form";
 import {Link} from "react-router-dom";
 
 import {
@@ -10,8 +11,11 @@ import {
 } from "../parseClasses";
 
 const Review = (props) => {
-  const {reviewId, isListing, showLinkToSong} = props;
+  const {reviewId, isListing, showLinkToSong, currentUser} = props;
+  const {register, errors} = useForm();
   const [reviewObj, setReviewObj] = useState(null);
+  const [isCurrentUserAuthor, setIsCurrentUserAuthor] = useState(false);
+  const [isEditingReview, setIsEditingReview] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -72,8 +76,10 @@ const Review = (props) => {
       })(resultWithPointers);
 
       setReviewObj(result);
+      if (currentUser && result.authorId === currentUser.id)
+        setIsCurrentUserAuthor(true);
     })();
-  }, [reviewId, setReviewObj]);
+  }, [reviewId, setReviewObj, currentUser]);
 
   return (
     <>
@@ -112,6 +118,85 @@ const Review = (props) => {
                   <p>Review: {reviewObj.review}</p>
                 </>
               )}
+            {isCurrentUserAuthor
+              && (
+                <div>
+                  {isEditingReview
+                    ? (
+                      <>
+                        <form>
+                          <label htmlFor="songRating">
+                          Rating:
+                            <input
+                              defaultValue={reviewObj.rating}
+                              id="songRating"
+                              name="songRating"
+                              type="number"
+                              step=".5"
+                              ref={
+                                register({
+                                  required: true,
+                                  min: 0,
+                                  max: 5,
+                                })
+                              }
+                            />
+                          </label>
+                          {errors.songRating?.type === "required"
+                            && <span>This field is required</span>}
+                          {errors.songRating?.type === "min"
+                            && <span>Please enter a positive value</span>}
+                          {errors.songRating?.type === "max"
+                            && (
+                              <span>
+                                Please enter a value less than or equal to 5
+                              </span>
+                            )
+                          }
+                          <br />
+                          <label htmlFor="songReview">
+                          Review:
+                            <br />
+                            <textarea
+                              defaultValue={reviewObj.review}
+                              id="songReview"
+                              name="songReview"
+                              ref={register({required: true})}
+                            />
+                          </label>
+                          {errors.songReview?.type === "required"
+                            && <span>This field is required</span>}
+                          <br />
+                          <button
+                            type="button"
+                            onClick={() => setIsEditingReview(false)}
+                          >
+                            Cancel
+                          </button>
+                          <input
+                            type="submit"
+                            value="Update Review"
+                          />
+                        </form>
+                        <button
+                          type="button"
+                          onClick={() => console.log("delete")}
+                        >
+                          Delete Review
+                        </button>
+                      </>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => setIsEditingReview(true)}
+                      >
+                        Edit Review
+                      </button>
+                    )
+                  }
+                  <br />
+                </div>
+              )}
             {showLinkToSong &&
               <Link to={`/song/${reviewObj.songId}`}>
                 Visit song page for {reviewObj.song}
@@ -125,12 +210,16 @@ const Review = (props) => {
 };
 
 Review.propTypes = {
+  currentUser: PropTypes.shape({
+    id: PropTypes.string
+  }),
   reviewId: PropTypes.string.isRequired,
   isListing: PropTypes.bool,
   showLinkToSong: PropTypes.bool
 };
 
 Review.defaultProps = {
+  currentUser: null,
   isListing: false,
   showLinkToSong: false
 };

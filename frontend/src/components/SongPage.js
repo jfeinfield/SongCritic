@@ -95,7 +95,12 @@ const SongPage = (props) => {
             {reviews.length !== 0
               ? <>
                 {reviews.map((r) => (
-                  <Review key={r} reviewId={r} isListing />
+                  <Review
+                    key={r}
+                    currentUser={currentUser}
+                    reviewId={r}
+                    isListing
+                  />
                 ))}
               </>
               : <p>Be the first to write a review!</p>

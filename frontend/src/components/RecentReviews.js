@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import PropTypes from "prop-types";
 import Parse from "parse";
 
 import {
@@ -6,8 +7,9 @@ import {
 } from "../parseClasses";
 import Review from "./Review";
 
-const RecentReviews = () => {
+const RecentReviews = (props) => {
   const numReviews = 5;
+  const {currentUser} = props;
   const [recentReviews, setRecentReviews] = useState([]);
 
   useEffect(() => {
@@ -26,10 +28,25 @@ const RecentReviews = () => {
     <div>
       <h2>Recent Reviews</h2>
       {recentReviews.map((r) => (
-        <Review key={r} reviewId={r} showLinkToSong />
+        <Review
+          key={r}
+          currentUser={currentUser}
+          reviewId={r}
+          showLinkToSong
+        />
       ))}
     </div>
   );
+};
+
+RecentReviews.propTypes = {
+  currentUser: PropTypes.shape({
+    id: PropTypes.string
+  })
+};
+
+RecentReviews.defaultProps = {
+  currentUser: null
 };
 
 export default RecentReviews;
