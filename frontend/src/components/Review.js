@@ -16,10 +16,16 @@ const Review = (props) => {
   useEffect(() => {
     (async () => {
       const query = new Parse.Query(ReviewClass);
-      query.get(reviewId);
 
-      const resultWithPointers = await query.get(reviewId);;
-      const result = (async (r) => {
+      let resultWithPointers;
+      try {
+        resultWithPointers = await query.get(reviewId);
+      } catch (error) {
+        // TODO: handle error
+        return;
+      }
+
+      const result = await (async (r) => {
         const {
           objectId,
           author: {objectId: authorId},
@@ -28,12 +34,32 @@ const Review = (props) => {
           rating
         } = r.toJSON();
 
-        let song = await new Parse.Query(SongClass).get(songId);
+        let song;
+        try {
+          song = await new Parse.Query(SongClass).get(songId);
+        } catch (error) {
+          // TODO: handle error
+          // TODO: exit outer function
+        }
         song = song.toJSON();
+
         const userQuery = new Parse.Query(UserClass);
-        let author = await userQuery.get(authorId);
+        let author;
+        try {
+          author = await userQuery.get(authorId);
+        } catch (error) {
+          // TODO: handle error
+          // TODO: exit outer function
+        }
         author = author.toJSON();
-        let artist = await userQuery.get(song.artist.objectId);
+
+        let artist;
+        try {
+          artist = await userQuery.get(song.artist.objectId);
+        } catch (error) {
+          // TODO: handle error
+          // TODO: exit outer function
+        }
         artist = artist.toJSON();
 
         const review = {objectId, review: ReviewText, rating, authorId};
@@ -45,7 +71,7 @@ const Review = (props) => {
         return review;
       })(resultWithPointers);
 
-      setReviewObj(await result);
+      setReviewObj(result);
     })();
   }, [reviewId, setReviewObj]);
 
