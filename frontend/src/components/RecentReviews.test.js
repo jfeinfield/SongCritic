@@ -1,7 +1,4 @@
-import React from "react";
-import {cleanup, render, waitForElement} from "@testing-library/react";
-
-import RecentReviews from "./RecentReviews";
+import {cleanup} from "@testing-library/react";
 
 jest.mock("parse", () => ({
   Object: {
