@@ -1,5 +1,11 @@
 import React from "react";
-import {cleanup, render, waitForElement} from "@testing-library/react";
+import {
+  cleanup,
+  render,
+  waitForElement,
+  fireEvent
+} from "@testing-library/react";
+import {act} from "react-dom/test-utils";
 
 import Review from "./Review";
 
@@ -80,9 +86,9 @@ it("renders when provided the review id", async () => {
 
   // Act
   const {queryByText} = render(<Review reviewId="garbage" />);
+  await waitForElement(() => queryByText(/fakeAuthorName/i));
 
   // Assert
-  await waitForElement(() => queryByText(/fakeAuthorName/i));
   expect(queryByText(/fakeAuthorName/i)).toBeTruthy();
   expect(queryByText(/fakeArtistName/i)).toBeTruthy();
   expect(queryByText(/fakeSongName/i)).toBeTruthy();
@@ -97,9 +103,9 @@ it("renders link when prop is specified", async () => {
   const {
     queryByText
   } = render(<Review reviewId="garbage" showLinkToSong />);
+  await waitForElement(() => queryByText(/fakeArtistName/i));
 
   // Assert
-  await waitForElement(() => queryByText(/fakeArtistName/i));
   expect(queryByText(/Visit song page for/i)).toBeTruthy();
 });
 
@@ -111,11 +117,45 @@ it("doesn't render some info when listing is specified", async () => {
   const {
     queryByText
   } = render(<Review reviewId="garbage" isListing />);
+  await waitForElement(() => queryByText(/fakeAuthorName/i));
 
   // Assert
-  await waitForElement(() => queryByText(/fakeAuthorName/i));
   expect(queryByText(/fakeAuthorName/i)).toBeTruthy();
   expect(queryByText(/fakeReviewText/i)).toBeTruthy();
   expect(queryByText(/fakeArtistName/i)).toBeFalsy();
   expect(queryByText(/fakeSongName/i)).toBeFalsy();
+});
+
+it("renders the edit button when currentUser is the author", async () => {
+  // Arrange
+  const currentUser = {id: "fakeAuthorObjectId"};
+
+  // Act
+  const {
+    queryByText
+  } = render(<Review currentUser={currentUser} reviewId="garbage" />);
+  await waitForElement(() => queryByText(/fakeAuthorName/i));
+
+  // Assert
+  expect(queryByText(/Edit Review/i)).toBeTruthy();
+});
+
+it("renders the edit form when the eddit button is pressed", async () => {
+  // Arrange
+  const currentUser = {id: "fakeAuthorObjectId"};
+
+  // Act
+  const {
+    queryByText
+  } = render(<Review currentUser={currentUser} reviewId="garbage" />);
+  await waitForElement(() => queryByText(/fakeAuthorName/i));
+  await act(async () => {
+    await fireEvent.click(queryByText(/Edit Review/i, {selector: "button"}));
+  });
+
+  // Assert
+  expect(queryByText(/Rating/i, {selector: "label"})).toBeTruthy();
+  expect(queryByText(/Review/i, {selector: "label"})).toBeTruthy();
+  expect(queryByText(/Update Review/i, {selector: "input"})).toBeTruthy();
+  expect(queryByText(/Delete Review/i, {selector: "button"})).toBeTruthy();
 });
