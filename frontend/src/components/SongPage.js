@@ -97,11 +97,14 @@ const SongPage = (props) => {
         ? <p>Loading song and reviews...</p>
         : <>
           <h2>{songName}</h2>
-          {foundArt && songArt !== "" && <img src={songArt}
-            alt=""
-            height="250"
-            width="270"
-          />}
+          {foundArt && songArt !== "" && (
+            <img
+              src={songArt}
+              alt="album art"
+              height="256"
+              width="256"
+            />
+          )}
           <br />
           <strong>by: </strong>
           <Link to={`/user/${artistId}`}>{artistName}</Link>
