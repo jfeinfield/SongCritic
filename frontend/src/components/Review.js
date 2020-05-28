@@ -12,7 +12,7 @@ import {
 
 const Review = (props) => {
   const {reviewId, isListing, showLinkToSong, currentUser} = props;
-  const {register, errors} = useForm();
+  const {register, handleSubmit, errors} = useForm();
   const [reviewObj, setReviewObj] = useState(null);
   const [isCurrentUserAuthor, setIsCurrentUserAuthor] = useState(false);
   const [isEditingReview, setIsEditingReview] = useState(false);
@@ -81,6 +81,44 @@ const Review = (props) => {
     })();
   }, [reviewId, setReviewObj, currentUser]);
 
+  const updateReview = async (songRating, songReview) => {
+    const query = new Parse.Query(ReviewClass);
+
+    let resultWithPointers;
+    try {
+      resultWithPointers = await query.get(reviewId);
+    } catch (error) {
+      // TODO: handle error
+      console.log(error);
+      return;
+    }
+
+    resultWithPointers.set("rating", parseFloat(songRating));
+    resultWithPointers.set("review", songReview);
+
+    try {
+      await resultWithPointers.save();
+      setIsEditingReview(false);
+      setReviewObj({
+        ...reviewObj,
+        review: songReview,
+        rating: songRating
+      });
+    } catch (error) {
+      // TODO: handle error
+      console.log(error);
+    }
+  };
+
+  const onSubmit = (data) => {
+    const {
+      songRating,
+      songReview,
+    } = data;
+
+    updateReview(songRating, songReview);
+  };
+
   return (
     <>
       {reviewObj
@@ -124,7 +162,7 @@ const Review = (props) => {
                   {isEditingReview
                     ? (
                       <>
-                        <form>
+                        <form onSubmit={handleSubmit(onSubmit)}>
                           <label htmlFor="songRating">
                           Rating:
                             <input
