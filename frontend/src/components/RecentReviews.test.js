@@ -1,45 +1,113 @@
-import {cleanup} from "@testing-library/react";
+import React from "react";
+import {render, waitForElement, cleanup} from "@testing-library/react";
+
+import RecentReviews from "./RecentReviews";
 
 jest.mock("parse", () => ({
   Object: {
-    extend: () => (
-      function Review() {
-        return {
-          save: () => Promise.resolve({id: "newId"}),
-        };
-      }
-    )
+    extend: (name) => name
   },
-  Query: function Query() {
-    return {
-      limit: () => ({
-        addDescending: () => ({
-          exists: () => {}
+  Query: function Query(className) {
+    switch (className) {
+    case "review":
+      return {
+        limit: () => ({
+          addDescending: () => ({
+            exists: () => {}
+          })
+        }),
+        find: () => [
+          {
+            toJSON: () => ({
+              objectId: "fakeReviewId0"
+            })
+          }
+        ],
+        get: () => ({
+          toJSON: () => ({
+            objectId: "fakeObjectId",
+            author: {
+              objectId: "fakeAuthorObjectId"
+            },
+            song: {
+              objectId: "fakeSongObjectId"
+            },
+            review: "fakeReviewText",
+            rating: 2.5
+          })
         })
-      }),
-      find: () => Promise.resolve([{
-        toJSON: () => {return ({
-          objectId:"asdf",
-          song:"Forever",
-          artist:"Drake",
-          userId:"asd",
-          rating:5,
-          review:"good"
-        });}
-      }])
-    };
+      };
+    case "song":
+      return {
+        get: () => ({
+          toJSON: () => ({
+            name: "fakeSongName",
+            artist: {
+              objectId: "fakeArtistObjectId"
+            }
+          })
+        })
+      };
+    case "User":
+      return {
+        get: (objectId) => {
+          switch (objectId) {
+          case "fakeAuthorObjectId":
+            return {
+              toJSON: () => ({
+                name: "fakeAuthorName"
+              })
+            };
+          case "fakeArtistObjectId":
+            return {
+              toJSON: () => ({
+                name: "fakeArtistName"
+              })
+            };
+          default:
+            return {};
+          }
+        }
+      };
+    default:
+      return {};
+    }
+  }
+}));
+
+jest.mock("react-router-dom", () => ({
+  Link: (props) => {
+    // eslint-disable-next-line react/prop-types
+    const {to, children} = props;
+
+    return (<span>{to} {children}</span>);
   }
 }));
 
 afterEach(cleanup);
 
-// it("displays recent reviews", async () => {
-// const {queryByText} = render(<RecentReviews />);
+it("renders recent reviews", async () => {
+  // Arrange
+  // done in mock above
 
-//   await waitForElement(() => queryByText(/Artist: Drake/i));
-//   expect(queryByText(/Artist: Drake/i)).toBeTruthy();
+  // Act
+  const {queryByText} = render(<RecentReviews />);
+  await waitForElement(() => queryByText(/Artist:/i));
 
-// TODO: update this test
-it("FIXME: update RecentReviews test", async () => {
-  expect(true).toBe(true);
+  // Assert
+  expect(queryByText(/fakeArtistName/i)).toBeTruthy();
+  expect(queryByText(/fakeAuthorName/i)).toBeTruthy();
+  expect(queryByText(/fakeReviewText/i)).toBeTruthy();
+});
+
+it("renders links for reviews", async () => {
+  // Arrange
+  // done in mock above
+
+  // Act
+  const {queryByText} = render(<RecentReviews />);
+  await waitForElement(() => queryByText(/Artist:/i));
+
+  // Assert
+  expect(queryByText(/Visit song page for/i)).toBeTruthy();
 });
