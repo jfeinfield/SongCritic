@@ -15,7 +15,7 @@ const Search = () => {
   const [songFound, setSongFound] = useState(false);
   const [didSearch, setDidSearch] = useState(false);
 
-  const {register, handleSubmit} = useForm();
+  const {register, handleSubmit, errors} = useForm();
 
   const doSearch = async (data) => {
     const {searchTerm} = data;
@@ -65,6 +65,8 @@ const Search = () => {
           />
         </label>
         <button type="submit">Search</button>
+        {errors.searchTerm
+          && <span>Please enter a search term</span>}
       </form>
       {artistFound && <div>
         <h3>Artists</h3>
