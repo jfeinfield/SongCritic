@@ -33,7 +33,7 @@ afterEach(cleanup);
 it("displays no results found if no results found", async () => {
   const {getByTestId, queryByText, getAllByText} = render(<Search />);
 
-  const textInput = getByTestId("searchInput");
+  const textInput = getByTestId("searchTerm");
   fireEvent.change(textInput, {target: {value: "song that doesn't exist"}});
   fireEvent.click(getAllByText("Search")[1]);
 
