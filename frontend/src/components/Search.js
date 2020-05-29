@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import Parse from "parse";
 import {Link} from "react-router-dom";
+import {useForm} from "react-hook-form";
 import {
   Song as SongClass,
   User as UserClass,
@@ -8,14 +9,16 @@ import {
 } from "../parseClasses";
 
 const Search = () => {
-  const [searchTerm, setSearchTerm] = useState("");;
   const [artistResults, setArtistResults] = useState([]);
   const [songResults, setSongResults] = useState([]);
   const [artistFound, setArtistFound] = useState(false);
   const [songFound, setSongFound] = useState(false);
   const [didSearch, setDidSearch] = useState(false);
 
-  const doSearch = async () => {
+  const {register, handleSubmit, errors} = useForm();
+
+  const doSearch = async (data) => {
+    const {searchTerm} = data;
     const artistPointers =
       (await new Parse.Query(ArtistClass).find()).map((v) => v.get("user"));
 
@@ -34,9 +37,12 @@ const Search = () => {
       );
 
     const songQuery = new Parse.Query(SongClass);
-    songQuery.fullText("name", searchTerm).limit(10);
 
-    const songQueryResults = await songQuery.find();
+    const allSongs = await songQuery.find();
+
+    const songQueryResults = allSongs.filter((song) => { return (
+      song.get("name").toLowerCase().includes(searchTerm.toLowerCase())
+    );});
 
     setArtistFound(artistQueryResults.length !== 0);
     setSongFound(songQueryResults.length !== 0);
@@ -48,25 +54,20 @@ const Search = () => {
   return (
     <div>
       <h2>Search</h2>
-      <label htmlFor="searchInput">
-        Search:
-        <input
-          id="searchInput"
-          name="searchInput"
-          data-testid="searchInput"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          onKeyPress={
-            e => (e.key === "Enter") && searchTerm !== "" && doSearch()
-          }
-        />
-      </label>
-      <button
-        disabled={searchTerm === ""}
-        type="button"
-        onClick={() => doSearch()}>
-        Search
-      </button>
+      <form onSubmit={handleSubmit(doSearch)}>
+        <label htmlFor="searchTerm">
+          <input
+            type="text"
+            id="searchTerm"
+            name="searchTerm"
+            data-testid="searchTerm"
+            ref={register({required: true, pattern: /[^\s]/})}
+          />
+        </label>
+        <button type="submit">Search</button>
+        {errors.searchTerm
+          && <span>Please enter a search term</span>}
+      </form>
       {artistFound && <div>
         <h3>Artists</h3>
         {artistResults.map((artist) => (
