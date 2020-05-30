@@ -7,7 +7,7 @@ import {Song as SongClass} from "../parseClasses";
 
 const UpdateSong = (props) => {
   const {songId, songName, songArt} = props;
-  const {register, handleSubmit} = useForm();
+  const {register, errors, handleSubmit} = useForm();
   const [msg, setMsg] = useState("");
   const [err, setErr] = useState("");
 
@@ -42,10 +42,11 @@ const UpdateSong = (props) => {
             type="text"
             id="updateSongName"
             name="updateSongName"
-            ref={register()}
+            ref={register({required: true})}
           />
         </label>
-        {/* TODO: enforce same minLength as Justin A's component */}
+        {errors.updateSongName?.type === "required"
+          && <span>This field is required</span>}
         <br />
         <label htmlFor="updateSongArt">
           Cover Art:
@@ -54,10 +55,16 @@ const UpdateSong = (props) => {
             type="url"
             id="updateSongArt"
             name="updateSongArt"
-            ref={register()}
+            ref={
+              register({
+                // eslint-disable-next-line
+                pattern: /(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
+              })
+            }
           />
         </label>
-        {/* TODO: enforce same regex as Justin A's component */}
+        {errors.updateSongArt?.type === "pattern"
+          && <span>Needs to be a valid link</span>}
         <br />
         <input
           className="btn btn-primary"
