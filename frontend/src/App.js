@@ -1,6 +1,12 @@
 import React, {useState} from "react";
 import Parse from "parse";
-import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  NavLink
+} from "react-router-dom";
 
 import {Artist as ArtistClass} from "./parseClasses";
 import AuthInfo from "./components/AuthInfo";
@@ -72,27 +78,63 @@ function App() {
 
   return (
     <Router>
-      <div style={{width: "80vw", margin: "0 auto"}}>
-        <h1>Song Critic</h1>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/auth">Authentication</Link>
-            </li>
-            {currentUser && <li>
-              <Link to={`/user/${currentUser.id}`}>Account</Link>
-            </li>}
-            <li>
-              <Link to="/artists">Artists</Link>
-            </li>
-            <li>
-              <Link to="/songs">Songs</Link>
-            </li>
-          </ul>
-        </nav>
+      <nav className="navbar navbar-expand-lg navbar-light bg-light mb-3">
+        <div className="container">
+          <Link className="navbar-brand" to="/">Song Critic</Link>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon" />
+          </button>
+          <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div className="navbar-nav">
+              <NavLink
+                className="nav-item nav-link"
+                activeClassName="active"
+                to="/"
+              >
+                Home
+              </NavLink>
+              <NavLink
+                className="nav-item nav-link"
+                to="/auth"
+              >
+                Authentication
+              </NavLink>
+              {currentUser && (
+                <NavLink
+                  className="nav-item nav-link"
+                  activeClassName="active"
+                  to={`/user/${currentUser.id}`}
+                >
+                  Account
+                </NavLink>
+              )}
+              <NavLink
+                className="nav-item nav-link"
+                activeClassName="active"
+                to="/artists"
+              >
+                Artists
+              </NavLink>
+              <NavLink
+                className="nav-item nav-link"
+                activeClassName="active"
+                to="/songs"
+              >
+                Songs
+              </NavLink>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div className="container">
         <Switch>
           <Route exact path="/">
             <>
