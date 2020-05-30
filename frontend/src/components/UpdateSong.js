@@ -67,6 +67,7 @@ const UpdateSong = (props) => {
           && <span>Needs to be a valid link</span>}
         <br />
         <input
+          className="btn btn-primary"
           type="submit"
           value="Update"
         />
