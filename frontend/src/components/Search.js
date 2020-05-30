@@ -55,23 +55,32 @@ const Search = () => {
     <div>
       <h2>Search</h2>
       <form onSubmit={handleSubmit(doSearch)}>
-        <label htmlFor="searchTerm">
-          <input
-            type="text"
-            id="searchTerm"
-            name="searchTerm"
-            data-testid="searchTerm"
-            ref={register({required: true, pattern: /[^\s]/})}
-          />
-        </label>
+        <div className="formGroup">
+          <label htmlFor="searchTerm">
+            <input
+              className={
+                `form-control \
+                ${errors.searchTerm ? "is-invalid" : ""}`
+              }
+              type="text"
+              id="searchTerm"
+              name="searchTerm"
+              data-testid="searchTerm"
+              ref={register({required: true, pattern: /[^\s]/})}
+            />
+            {errors.searchTerm && (
+              <div className="invalid-feedback">
+                This field is required
+              </div>
+            )}
+          </label>
+        </div>
         <button
           className="btn btn-primary"
           type="submit"
         >
           Search
         </button>
-        {errors.searchTerm
-          && <span>Please enter a search term</span>}
       </form>
       {artistFound && <div>
         <h3>Artists</h3>

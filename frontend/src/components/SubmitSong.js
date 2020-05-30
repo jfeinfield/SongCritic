@@ -41,44 +41,60 @@ const SubmitSong = (props) => {
 
   return (
     <div>
-      <h2>Post a new song</h2>
+      <h2>Post a New Song</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor="songName">
-          Song name:
-          <input
-            type="text"
-            id="songName"
-            name="songName"
-            ref={register({required: true})}
-          />
-        </label>
-        {errors.songName?.type === "required"
-          && <span>This field is required</span>}
-        <br />
-        <label htmlFor="songArt">
-          Cover Art:
-          <input
-            id="songArt"
-            type="url"
-            name="songArt"
-            ref={
-              register({
-                // eslint-disable-next-line
-                pattern: /(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
-              })
-            }
-          />
-        </label>
-        {errors.songArt?.type === "pattern"
-          && <span>Needs to be a valid link</span>}
-        <br />
+        <div className="form-group">
+          <label htmlFor="songName">
+            Song name:
+            <input
+              className={
+                `form-control \
+                ${errors.songName ? "is-invalid" : ""}`
+              }
+              type="text"
+              id="songName"
+              name="songName"
+              ref={register({required: true})}
+            />
+            {errors.songName?.type === "required" && (
+              <div className="invalid-feedback">
+                This field is required
+              </div>
+            )}
+          </label>
+        </div>
+        <div className="form-group">
+          <label htmlFor="songArt">
+            Cover Art:
+            <input
+              className={
+                `form-control \
+                ${errors.songArt ? "is-invalid" : ""}`
+              }
+              id="songArt"
+              type="url"
+              name="songArt"
+              ref={
+                register({
+                  // eslint-disable-next-line
+                  pattern: /(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
+                })
+              }
+            />
+            {errors.songArt?.type === "pattern" && (
+              <div className="invalid-feedback">
+                Needs to be a valid link
+              </div>
+            )}
+          </label>
+        </div>
         <input
           className="btn btn-primary"
           type="submit"
           value="Submit Song"
         />
+        {submitSongErrorMsg !== "" && <p>{submitSongErrorMsg}</p>}
       </form>
-      {submitSongErrorMsg !== "" && <p>{submitSongErrorMsg}</p>}
     </div>
   );
 };

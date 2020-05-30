@@ -19,34 +19,56 @@ const LogIn = (props) => {
     <div>
       <h3>Log In</h3>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor="logInUsername">
-          Username:
-          <input
-            type="text"
-            id="logInUsername"
-            name="logInUsername"
-            ref={register({required: true, minLength: 4})}
-          />
-        </label>
-        {errors.logInUsername?.type === "required"
-          && <span>This field is required</span>}
-        {errors.logInUsername?.type === "minLength"
-          && <span>This field must contain at least 4 characters</span>}
-        <br />
-        <label htmlFor="logInPassword">
-          Password:
-          <input
-            type="password"
-            id="logInPassword"
-            name="logInPassword"
-            ref={register({required: true, minLength: 4})}
-          />
-        </label>
-        {errors.logInPassword?.type === "required"
-          && <span>This field is required</span>}
-        {errors.logInPassword?.type === "minLength"
-          && <span>This field must contain at least 4 characters</span>}
-        <br />
+        <div className="form-group">
+          <label htmlFor="logInUsername">
+            Username:
+            <input
+              className={
+                `form-control \
+                ${errors.logInUsername ? "is-invalid" : ""}`
+              }
+              type="text"
+              id="logInUsername"
+              name="logInUsername"
+              ref={register({required: true, minLength: 4})}
+            />
+            {errors.logInUsername?.type === "required" && (
+              <div className="invalid-feedback">
+                This field is required
+              </div>
+            )}
+            {errors.logInUsername?.type === "minLength" && (
+              <div className="invalid-feedback">
+                This field must contain at least 4 characters
+              </div>
+            )}
+          </label>
+        </div>
+        <div className="form-group">
+          <label htmlFor="logInPassword">
+            Password:
+            <input
+              className={
+                `form-control \
+                ${errors.logInPassword ? "is-invalid" : ""}`
+              }
+              type="password"
+              id="logInPassword"
+              name="logInPassword"
+              ref={register({required: true, minLength: 4})}
+            />
+            {errors.logInPassword?.type === "required" && (
+              <div className="invalid-feedback">
+                This field is required
+              </div>
+            )}
+            {errors.logInPassword?.type === "minLength" && (
+              <div className="invalid-feedback">
+                This field must contain at least 4 characters
+              </div>
+            )}
+          </label>
+        </div>
         <input
           className="btn btn-primary"
           type="submit"
