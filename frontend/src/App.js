@@ -4,12 +4,12 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+  Redirect,
   Link,
   NavLink
 } from "react-router-dom";
 
 import {Artist as ArtistClass} from "./parseClasses";
-import AuthInfo from "./components/AuthInfo";
 import SignUp from "./components/SignUp";
 import LogIn from "./components/LogIn";
 import RecentReviews from "./components/RecentReviews";
@@ -79,7 +79,7 @@ function App() {
   return (
     <Router>
       <nav className="navbar navbar-expand-lg navbar-light bg-light mb-3">
-        <div className="container">
+        <div className="container d-flex justify-content-between">
           <Link className="navbar-brand" to="/">Song Critic</Link>
           <button
             className="navbar-toggler"
@@ -97,15 +97,10 @@ function App() {
               <NavLink
                 className="nav-item nav-link"
                 activeClassName="active"
+                exact
                 to="/"
               >
                 Home
-              </NavLink>
-              <NavLink
-                className="nav-item nav-link"
-                to="/auth"
-              >
-                Authentication
               </NavLink>
               {currentUser && (
                 <NavLink
@@ -132,8 +127,27 @@ function App() {
               </NavLink>
             </div>
           </div>
+          {currentUser ? (
+            <button
+              className="btn btn-secondary"
+              onClick={logOut}
+              type="button"
+            >
+              Log Out
+            </button>
+          ) : (
+            <NavLink
+              className="nav-item nav-link"
+              to="/auth"
+            >
+              Log In / Sign Up
+            </NavLink>
+          )}
         </div>
       </nav>
+      <div>
+        {logOutErrorMsg !== "" && <p>{logOutErrorMsg}</p>}
+      </div>
       <div className="container">
         <Switch>
           <Route exact path="/">
@@ -147,18 +161,10 @@ function App() {
           <Route path="/auth">
             <>
               <h2>Authentication</h2>
-              <AuthInfo currentUser={currentUser}/>
-              {currentUser
-                ? <>
-                  <button
-                    type="button"
-                    onClick={logOut}
-                  >
-                    Log Out
-                  </button>
-                  {logOutErrorMsg !== "" && <p>{logOutErrorMsg}</p>}
-                </>
-                : <>
+              {currentUser ? (
+                <Redirect to="/" />
+              ) : (
+                <>
                   <SignUp
                     handleSignUp={signUp}
                     errorMsg={signUpErrorMsg}
@@ -168,7 +174,7 @@ function App() {
                     errorMsg={logInErrorMsg}
                   />
                 </>
-              }
+              )}
             </>
           </Route>
           <Route path="/song/:songId">
