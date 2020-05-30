@@ -195,18 +195,21 @@ const Review = (props) => {
                         && <span>This field is required</span>}
                       <br />
                       <button
+                        className="btn btn-secondary"
                         type="button"
                         onClick={() => setIsEditingReview(false)}
                       >
                         Cancel
                       </button>
                       <input
+                        className="btn btn-primary"
                         type="submit"
                         value="Update Review"
                       />
                       {updateError && <p>{updateError}</p>}
                     </form>
                     <button
+                      className="btn btn-danger"
                       type="button"
                       onClick={() => deleteReview()}
                     >
@@ -216,6 +219,7 @@ const Review = (props) => {
                   </>
                 ) : (
                   <button
+                    className="btn btn-secondary"
                     type="button"
                     onClick={() => setIsEditingReview(true)}
                   >

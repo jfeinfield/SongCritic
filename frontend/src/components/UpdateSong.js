@@ -60,6 +60,7 @@ const UpdateSong = (props) => {
         {/* TODO: enforce same regex as Justin A's component */}
         <br />
         <input
+          className="btn btn-primary"
           type="submit"
           value="Update"
         />

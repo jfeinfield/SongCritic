@@ -82,6 +82,7 @@ const SignUp = (props) => {
           && <span>This field must contain at least 4 characters</span>}
         <br />
         <input
+          className="btn btn-primary"
           type="submit"
           value="Sign Up"
         />

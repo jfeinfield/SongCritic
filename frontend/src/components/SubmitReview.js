@@ -92,6 +92,7 @@ const SubmitReview = (props) => {
           && <span>This field is required</span>}
         <br />
         <input
+          className="btn btn-primary"
           type="submit"
           value="Submit Review"
         />

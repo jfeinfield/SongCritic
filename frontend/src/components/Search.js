@@ -64,7 +64,12 @@ const Search = () => {
             ref={register({required: true, pattern: /[^\s]/})}
           />
         </label>
-        <button type="submit">Search</button>
+        <button
+          className="btn btn-primary"
+          type="submit"
+        >
+          Search
+        </button>
         {errors.searchTerm
           && <span>Please enter a search term</span>}
       </form>
