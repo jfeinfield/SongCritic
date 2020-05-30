@@ -8,7 +8,8 @@ import {act} from "react-dom/test-utils";
 
 import UpdateSong from "./UpdateSong";
 
-const mockSongObj = jest.fn();
+const mockSongSet = jest.fn();
+const mockSongSave = jest.fn()
 
 jest.mock("parse", () => ({
   Object: {
@@ -18,7 +19,10 @@ jest.mock("parse", () => ({
     switch (className) {
     case "song":
       return {
-        get: () => mockSongObj
+        get: () => ({
+          set: mockSongSet,
+          save: mockSongSave
+        })
       };
     default:
       return {};
@@ -26,13 +30,17 @@ jest.mock("parse", () => ({
   }
 }));
 
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  mockSongSet.mockClear();
+  mockSongSave.mockClear();
+});
 
 it("shows errors if required fields are empty", async () => {
   // Arrange
   const propSongId = "fakeSongId";
   const propSongName = "fakeSongName";
-  const propSongArt = "fakeSongArt";
+  const propSongArt = "https://localhost/cover.jpg";
   const inputSongName = "";
 
   // Act
@@ -46,15 +54,53 @@ it("shows errors if required fields are empty", async () => {
       songArt={propSongArt}
     />
   );
-  const songNameInput = getByLabelText(/^Song Name/i);
+  const songNameInputElement = getByLabelText(/^Song Name/i);
   // https://react-hook-form.com/faqs#TestingReactHookForm
   await act(async () => {
-    await fireEvent.input(songNameInput, {target: {value: inputSongName}});
+    await fireEvent.input(
+      songNameInputElement,
+      {target: {value: inputSongName}}
+    );
     await fireEvent.click(queryByText(/Update/, {selector: "input"}));
   });
 
   // Assert
   expect(queryByText(/This field is required/i)).toBeTruthy();
+});
+
+it("allows specifying no album art", async () => {
+  // Arrange
+  const propSongId = "fakeSongId";
+  const propSongName = "fakeSongName";
+  const propSongArt = "https://localhost/cover.jpg";
+  const inputCoverArt = "";
+
+  // Act
+  const {
+    queryByText,
+    getByLabelText
+  } = render(
+    <UpdateSong
+      songId={propSongId}
+      songName={propSongName}
+      songArt={propSongArt}
+    />
+  );
+  const coverArtInputElement = getByLabelText(/^Cover Art/i);
+  // https://react-hook-form.com/faqs#TestingReactHookForm
+  await act(async () => {
+    await fireEvent.input(
+      coverArtInputElement,
+      {target: {value: inputCoverArt}}
+    );
+    await fireEvent.click(queryByText(/Update/, {selector: "input"}));
+  });
+
+  // Assert
+  expect(queryByText(/Song details updated!/i)).toBeTruthy();
+  expect(mockSongSet.mock.calls.length).toBe(2);
+  expect(mockSongSet.mock.calls[1][1]).toBe(inputCoverArt);
+  expect(mockSongSave.mock.calls.length).toBe(1);
 });
 
 afterEach(cleanup);
