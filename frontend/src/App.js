@@ -1,9 +1,15 @@
 import React, {useState} from "react";
 import Parse from "parse";
-import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+  Link,
+  NavLink
+} from "react-router-dom";
 
 import {Artist as ArtistClass} from "./parseClasses";
-import AuthInfo from "./components/AuthInfo";
 import SignUp from "./components/SignUp";
 import LogIn from "./components/LogIn";
 import RecentReviews from "./components/RecentReviews";
@@ -72,27 +78,77 @@ function App() {
 
   return (
     <Router>
-      <div style={{width: "80vw", margin: "0 auto"}}>
-        <h1>Song Critic</h1>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/auth">Authentication</Link>
-            </li>
-            {currentUser && <li>
-              <Link to={`/user/${currentUser.id}`}>Account</Link>
-            </li>}
-            <li>
-              <Link to="/artists">Artists</Link>
-            </li>
-            <li>
-              <Link to="/songs">Songs</Link>
-            </li>
-          </ul>
-        </nav>
+      <nav className="navbar navbar-expand-lg navbar-light bg-light mb-3">
+        <div className="container d-flex justify-content-between">
+          <Link className="navbar-brand" to="/">Song Critic</Link>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon" />
+          </button>
+          <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div className="navbar-nav">
+              <NavLink
+                className="nav-item nav-link"
+                activeClassName="active"
+                exact
+                to="/"
+              >
+                Home
+              </NavLink>
+              {currentUser && (
+                <NavLink
+                  className="nav-item nav-link"
+                  activeClassName="active"
+                  to={`/user/${currentUser.id}`}
+                >
+                  Account
+                </NavLink>
+              )}
+              <NavLink
+                className="nav-item nav-link"
+                activeClassName="active"
+                to="/artists"
+              >
+                Artists
+              </NavLink>
+              <NavLink
+                className="nav-item nav-link"
+                activeClassName="active"
+                to="/songs"
+              >
+                Songs
+              </NavLink>
+            </div>
+          </div>
+          {currentUser ? (
+            <button
+              className="btn btn-secondary"
+              onClick={logOut}
+              type="button"
+            >
+              Log Out
+            </button>
+          ) : (
+            <NavLink
+              className="nav-item nav-link"
+              to="/auth"
+            >
+              Log In / Sign Up
+            </NavLink>
+          )}
+        </div>
+      </nav>
+      <div>
+        {logOutErrorMsg !== "" && <p>{logOutErrorMsg}</p>}
+      </div>
+      <div className="container">
         <Switch>
           <Route exact path="/">
             <>
@@ -105,18 +161,10 @@ function App() {
           <Route path="/auth">
             <>
               <h2>Authentication</h2>
-              <AuthInfo currentUser={currentUser}/>
-              {currentUser
-                ? <>
-                  <button
-                    type="button"
-                    onClick={logOut}
-                  >
-                    Log Out
-                  </button>
-                  {logOutErrorMsg !== "" && <p>{logOutErrorMsg}</p>}
-                </>
-                : <>
+              {currentUser ? (
+                <Redirect to="/" />
+              ) : (
+                <>
                   <SignUp
                     handleSignUp={signUp}
                     errorMsg={signUpErrorMsg}
@@ -126,7 +174,7 @@ function App() {
                     errorMsg={logInErrorMsg}
                   />
                 </>
-              }
+              )}
             </>
           </Route>
           <Route path="/song/:songId">

@@ -56,42 +56,64 @@ const SubmitReview = (props) => {
     <div>
       <h3>Write a Review</h3>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor="songRating">
-        Rating:
-          <input
-            id="songRating"
-            name="songRating"
-            type="number"
-            step=".5"
-            ref={
-              register({
-                required: true,
-                min: 0,
-                max: 5,
-              })
-            }
-          />
-        </label>
-        {errors.songRating?.type === "required"
-          && <span>This field is required</span>}
-        {errors.songRating?.type === "min"
-          && <span>Please enter a positive value</span>}
-        {errors.songRating?.type === "max"
-          && <span>Please enter a value less than or equal to 5</span>}
-        <br />
-        <label htmlFor="songReview">
-        Review:
-          <br />
-          <textarea
-            id="songReview"
-            name="songReview"
-            ref={register({required: true})}
-          />
-        </label>
-        {errors.songReview?.type === "required"
-          && <span>This field is required</span>}
-        <br />
+        <div className="form-group">
+          <label htmlFor="songRating">
+            Rating:
+            <input
+              className={
+                `form-control \
+                ${errors.songRating ? "is-invalid" : ""}`
+              }
+              id="songRating"
+              name="songRating"
+              type="number"
+              step=".5"
+              ref={
+                register({
+                  required: true,
+                  min: 0,
+                  max: 5,
+                })
+              }
+            />
+            {errors.songRating?.type === "required" && (
+              <div className="invalid-feedback">
+                This field is required
+              </div>
+            )}
+            {errors.songRating?.type === "min" && (
+              <div className="invalid-feedback">
+                Please enter a positive value
+              </div>
+            )}
+            {errors.songRating?.type === "max" && (
+              <div className="invalid-feedback">
+                Please enter a value less than or equal to 5
+              </div>
+            )}
+          </label>
+        </div>
+        <div className="form-group">
+          <label htmlFor="songReview">
+            Review:
+            <textarea
+              className={
+                `form-control \
+                ${errors.songReview ? "is-invalid" : ""}`
+              }
+              id="songReview"
+              name="songReview"
+              ref={register({required: true})}
+            />
+            {errors.songReview?.type === "required" && (
+              <div className="invalid-feedback">
+                This field is required
+              </div>
+            )}
+          </label>
+        </div>
         <input
+          className="btn btn-primary"
           type="submit"
           value="Submit Review"
         />
