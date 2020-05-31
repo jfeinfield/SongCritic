@@ -19,6 +19,7 @@ import SongPage from "./components/SongPage";
 import UserPage from "./components/UserPage";
 import SongDir from "./components/SongDir";
 import ArtistDir from "./components/ArtistDir";
+import TopSongs from "./components/TopSongs";
 
 function App() {
   Parse.initialize("HjKymbNGAhUhWwGSAmMDevlJJzVQPgworMQ9Fbud", "");
@@ -125,6 +126,13 @@ function App() {
               >
                 Songs
               </NavLink>
+              <NavLink
+                className="nav-item nav-link"
+                activeClassName="active"
+                to="/topSongs"
+              >
+                Top Rated
+              </NavLink>
             </div>
           </div>
           {currentUser ? (
@@ -188,6 +196,9 @@ function App() {
           </Route>
           <Route path="/artists">
             <ArtistDir />
+          </Route>
+          <Route path="/topSongs">
+            <TopSongs />
           </Route>
           <Route path="*">
             <h2>404 - Page not found!</h2>
