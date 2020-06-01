@@ -13,7 +13,8 @@ const SubmitReview = (props) => {
 
   const {register, handleSubmit, reset, errors} = useForm();
   const {
-    currentUser: user
+    currentUser: user,
+    songId
   } = props;
 
   const saveReview = async (songRating, songReview) => {
@@ -23,13 +24,13 @@ const SubmitReview = (props) => {
     setSubmitErrorMsg("");
 
     try {
-      songQuery = await new Parse.Query(SongClass).get(props.songId);
+      songQuery = await new Parse.Query(SongClass).get(songId);
     } catch (error) {
       setSubmitErrorMsg(`${error.code} ${error.message}`);
       return; // we can't run the rest of the save if this fails
     }
 
-    review.set("author", props.currentUser.toPointer());
+    review.set("author", user.toPointer());
     review.set("song", songQuery.toPointer());
     review.set("rating", parseFloat(songRating));
     review.set("review", songReview);
@@ -57,8 +58,7 @@ const SubmitReview = (props) => {
 
   return (
     <div>
-      {user
-        ?
+      {user ? (
         <div>
           <h3>Write a Review</h3>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -126,11 +126,12 @@ const SubmitReview = (props) => {
           </form>
           {submitErrorMsg !== "" && <p>{submitErrorMsg}</p>}
         </div>
-        : <div>
+      ) : (
+        <div>
           <h3>Write a Review</h3>
           <p>Must be signed in to write a review</p>
         </div>
-      }
+      )}
     </div>
   );
 };
