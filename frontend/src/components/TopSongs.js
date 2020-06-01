@@ -69,7 +69,7 @@ const TopSongs = () => {
                 <li key={song.id}>
                   <Link to={`/song/${song.id}`}>
                     {song.name}
-                  </Link> by {song.artistName} ({song.avgRating} stars)
+                  </Link> by {song.artistName} ({song.avgRating.toFixed(1)} stars)
                 </li>
               ))}
             </ol>
