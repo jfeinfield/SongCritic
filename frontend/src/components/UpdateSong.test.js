@@ -183,7 +183,7 @@ it("allows specifying no album art", async () => {
   expect(mockSongSave.mock.calls.length).toBe(1);
 });
 
-it("shows a message on success", async () => {
+it("calls handleSongUpdate with form info", async () => {
   // Arrange
   const propSongId = "fakeSongId";
   const propSongName = "fakeSongName";
