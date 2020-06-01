@@ -6,7 +6,7 @@ import Parse from "parse";
 import {Song as SongClass} from "../parseClasses";
 
 const UpdateSong = (props) => {
-  const {songId, songName, songArt} = props;
+  const {songId, songName, songArt, handleSongUpdate} = props;
   const {register, errors, handleSubmit} = useForm();
   const [msg, setMsg] = useState("");
   const [err, setErr] = useState("");
@@ -24,7 +24,7 @@ const UpdateSong = (props) => {
       currentSong.set("name", updateSongName);
       currentSong.set("art", updateSongArt);
       await currentSong.save();
-
+      handleSongUpdate(updateSongName, updateSongArt);
       setMsg("Song details updated!");
     } catch (error) {
       setErr(`${error.code} ${error.message}`);
@@ -81,7 +81,8 @@ const UpdateSong = (props) => {
 UpdateSong.propTypes = {
   songId: PropTypes.string.isRequired,
   songName: PropTypes.string.isRequired,
-  songArt: PropTypes.string.isRequired
+  songArt: PropTypes.string.isRequired,
+  handleSongUpdate: PropTypes.func.isRequired
 };
 
 export default UpdateSong;
