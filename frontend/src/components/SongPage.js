@@ -85,13 +85,7 @@ const SongPage = (props) => {
               songArt={songArt}
             />
           }
-          {currentUser
-            ? <SubmitReview currentUser={currentUser} songId={songId} />
-            : <div>
-              <h3>Write a Review</h3>
-              <p>Must be signed in to write a review</p>
-            </div>
-          }
+          <SubmitReview currentUser={currentUser} songId={songId} />
           <section>
             <h3>Reviews</h3>
             {reviews.length !== 0
