@@ -91,7 +91,7 @@ const UserPage = (props) => {
                     key={r}
                     currentUser={currentUser}
                     reviewId={r}
-                    showLinkToSong
+                    hideUser
                   />
                 ))}
               </>

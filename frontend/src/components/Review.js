@@ -11,7 +11,7 @@ import {
 } from "../parseClasses";
 
 const Review = (props) => {
-  const {reviewId, isListing, showLinkToSong, currentUser} = props;
+  const {reviewId, isListing, hideUser, currentUser} = props;
   const {register, handleSubmit, errors} = useForm();
   const [reviewObj, setReviewObj] = useState(null);
   const [isCurrentUserAuthor, setIsCurrentUserAuthor] = useState(false);
@@ -136,7 +136,11 @@ const Review = (props) => {
                 {reviewObj.artist}
               </h6>
               <p className="card-text">
-                <strong>Reviewer:</strong> <em>{reviewObj.author}</em><br />
+                {hideUser || (
+                  <>
+                    <strong>Reviewer:</strong> <em>{reviewObj.author}</em><br />
+                  </>
+                )}
                 <strong>Rating:</strong> {reviewObj.rating}<br />
                 <strong>Review:</strong><br />{reviewObj.review}
               </p>
@@ -146,9 +150,11 @@ const Review = (props) => {
               <Link className="card-link" to={`/user/${reviewObj.artistId}`}>
                 Visit {reviewObj.artist}&apos;s page
               </Link>
-              <Link className="card-link" to={`/user/${reviewObj.authorId}`}>
-                Visit {reviewObj.author}&apos;s page
-              </Link>
+              {hideUser || (
+                <Link className="card-link" to={`/user/${reviewObj.authorId}`}>
+                  Visit {reviewObj.author}&apos;s page
+                </Link>
+              )}
             </div>
           )}
         {isCurrentUserAuthor
@@ -280,13 +286,13 @@ Review.propTypes = {
   }),
   reviewId: PropTypes.string.isRequired,
   isListing: PropTypes.bool,
-  showLinkToSong: PropTypes.bool
+  hideUser: PropTypes.bool
 };
 
 Review.defaultProps = {
   currentUser: null,
   isListing: false,
-  showLinkToSong: false
+  hideUser: false
 };
 
 export default Review;
