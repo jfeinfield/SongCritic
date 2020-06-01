@@ -10,6 +10,7 @@ import UpdateSong from "./UpdateSong";
 
 const mockSongSet = jest.fn();
 const mockSongSave = jest.fn();
+const mockHandleSongUpdate = jest.fn();
 
 jest.mock("parse", () => ({
   Object: {
@@ -34,6 +35,7 @@ afterEach(() => {
   cleanup();
   mockSongSet.mockClear();
   mockSongSave.mockClear();
+  mockHandleSongUpdate.mockClear();
 });
 
 it("show an error if the song name is empty", async () => {
@@ -52,6 +54,7 @@ it("show an error if the song name is empty", async () => {
       songId={propSongId}
       songName={propSongName}
       songArt={propSongArt}
+      handleSongUpdate={mockHandleSongUpdate}
     />
   );
   const songNameInputElement = getByLabelText(/^Song Name/i);
@@ -84,6 +87,7 @@ it("shows an error if the URL is not valid", async () => {
       songId={propSongId}
       songName={propSongName}
       songArt={propSongArt}
+      handleSongUpdate={mockHandleSongUpdate}
     />
   );
   const songArtInputElement = getByLabelText(/^Cover Art/i);
@@ -117,6 +121,7 @@ it("shows a message on success", async () => {
       songId={propSongId}
       songName={propSongName}
       songArt={propSongArt}
+      handleSongUpdate={mockHandleSongUpdate}
     />
   );
   const songNameInputElement = getByLabelText(/^Song Name/i);
@@ -158,6 +163,7 @@ it("allows specifying no album art", async () => {
       songId={propSongId}
       songName={propSongName}
       songArt={propSongArt}
+      handleSongUpdate={mockHandleSongUpdate}
     />
   );
   const coverArtInputElement = getByLabelText(/^Cover Art/i);
@@ -177,4 +183,44 @@ it("allows specifying no album art", async () => {
   expect(mockSongSave.mock.calls.length).toBe(1);
 });
 
-afterEach(cleanup);
+it("shows a message on success", async () => {
+  // Arrange
+  const propSongId = "fakeSongId";
+  const propSongName = "fakeSongName";
+  const propSongArt = "https://localhost/cover.jpg";
+  const inputSongName = "fakeNewSongName";
+  const inputCoverArt = "https://localhost/cover.jpg";
+
+  // Act
+  const {
+    queryByText,
+    getByLabelText
+  } = render(
+    <UpdateSong
+      songId={propSongId}
+      songName={propSongName}
+      songArt={propSongArt}
+      handleSongUpdate={mockHandleSongUpdate}
+    />
+  );
+  const songNameInputElement = getByLabelText(/^Song Name/i);
+  const coverArtInputElement = getByLabelText(/^Cover Art/i);
+  // https://react-hook-form.com/faqs#TestingReactHookForm
+  await act(async () => {
+    await fireEvent.input(
+      songNameInputElement,
+      {target: {value: inputSongName}}
+    );
+    await fireEvent.input(
+      coverArtInputElement,
+      {target: {value: inputCoverArt}}
+    );
+    await fireEvent.click(queryByText(/Update/, {selector: "input"}));
+  });
+
+  // Assert
+  expect(queryByText(/Song details updated!/i)).toBeTruthy();
+  expect(mockHandleSongUpdate.mock.calls.length).toBe(1);
+  expect(mockHandleSongUpdate.mock.calls[0][0]).toBe(inputSongName);
+  expect(mockHandleSongUpdate.mock.calls[0][1]).toBe(inputCoverArt);
+});
