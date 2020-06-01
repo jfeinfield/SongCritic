@@ -60,10 +60,12 @@ const SongPage = (props) => {
       try {
         const song = await songQuery.get(songId);
         setIsCurrentUserTheArtist(
-          currentUser.toPointer().objectId === song.get("artist").id
+          currentUser !== null &&
+            currentUser.toPointer().objectId === song.get("artist").id
         );
       } catch {
-        // TODO: handle error
+        setFoundSong(false);
+        setFetchingSong(false);
       }
     })();
   }, [songId, currentUser]);
