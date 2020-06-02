@@ -37,7 +37,8 @@ const TopSongs = () => {
             id: song.id,
             name: song.get("name"),
             avgRating: rating/numRatings,
-            artistName: artist.get("name")
+            artistName: artist.get("name"),
+            artistId: artist.id
           };
         });
 
@@ -69,7 +70,9 @@ const TopSongs = () => {
                 <li key={song.id}>
                   <Link to={`/song/${song.id}`}>
                     {song.name}
-                  </Link> by {song.artistName} ({song.avgRating} stars)
+                  </Link> by <Link
+                    to={`/user/${song.artistId}`}>{song.artistName}
+                  </Link> ({song.avgRating.toFixed(1)} stars)
                 </li>
               ))}
             </ol>
