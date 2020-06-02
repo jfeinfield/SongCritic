@@ -70,6 +70,11 @@ const SongPage = (props) => {
     })();
   }, [songId, currentUser]);
 
+  const updateSongState = (newSongName, newSongArt) => {
+    setSongName(newSongName);
+    setSongArt(newSongArt);
+  };
+
   return (
     <div>
       {!fetchingSong && !foundSong && <Redirect to="/404" />}
@@ -83,6 +88,7 @@ const SongPage = (props) => {
               songId={songId}
               songName={songName}
               songArt={songArt}
+              handleSongUpdate={updateSongState}
             />
           }
           <SubmitReview currentUser={currentUser} songId={songId} />
