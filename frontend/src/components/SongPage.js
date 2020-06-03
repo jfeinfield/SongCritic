@@ -76,7 +76,7 @@ const SongPage = (props) => {
 
   const updateReviewsState = async (objectId) => {
     setReviews([objectId].concat(reviews));
-  }
+  };
 
   return (
     <div>
@@ -104,11 +104,10 @@ const SongPage = (props) => {
             />
           }
           {currentUser
-            ? <SubmitReview 
+            ? <SubmitReview
               currentUser={currentUser}
               songId={songId}
-              handleSubmitReview={updateReviewsState}
-              />
+              handleSubmitReview={updateReviewsState} />
             : <div>
               <h3>Write a Review</h3>
               <p>Must be signed in to write a review</p>
