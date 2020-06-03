@@ -16,7 +16,7 @@ jest.mock("parse", () => ({
     case "review":
       return {
         equalTo: () => {},
-        find: () => Promise.resolve({
+        find: () => Promise.resolve([{
           toJSON: () => ({
             objectId: "fakeObjectId",
             author: {
@@ -28,7 +28,7 @@ jest.mock("parse", () => ({
             review: "fakeReviewText",
             rating: 2.5
           })
-        })
+        }])
       };
     case "song":
       return {
@@ -52,16 +52,17 @@ jest.mock("parse", () => ({
       return {
         get: () => ({
           id: "fakeArtistId",
-          get: (id) => {
-            switch (id) {
+          get: (text) => {
+            switch (text) {
             case "name":
-              return "Fake Display Name";
+              return "fakeArtistName";
             case "artist":
               return {
                 id: "fakeArtistId",
                 get: (string) => {
                   if (string === "name")
                     return "Fake Display Name";
+                  return "";
                 }
 
               };
@@ -70,10 +71,6 @@ jest.mock("parse", () => ({
             }
 
           },
-          id: () => {
-            return "fakeArtistId";
-          }
-
         })
 
       };
@@ -98,25 +95,9 @@ afterEach(cleanup);
 
 it("renders when provided the song id", async () => {
   // Arrange
-  const username = "fakeUsername";
-  const displayName = "Fake Display Name";
-  const isArtist = false;
-  const sessionToken = "fakeSessionToken";
-  const authenticated = true;
   const currentUser = {
-    get: (key) => {
-      switch (key) {
-      case "name":
-        return displayName;
-      case "isArtist":
-        return isArtist;
-      default:
-        return undefined;
-      }
-    },
-    getUsername: () => username,
-    getSessionToken: () => sessionToken,
-    authenticated: () => authenticated
+    toPointer: () => ({objectId: "testId"}),
+    id: "testId"
   };
 
   // Act
@@ -130,33 +111,18 @@ it("renders when provided the song id", async () => {
 
 it("renders the edit button when currentUser is the artist", async () => {
   // Arrange
-  const username = "fakeUsername";
-  const displayName = "Fake Display Name";
-  const isArtist = false;
-  const sessionToken = "fakeSessionToken";
-  const authenticated = true;
   const currentUser = {
-    get: (key) => {
-      switch (key) {
-      case "name":
-        return displayName;
-      case "isArtist":
-        return isArtist;
-      default:
-        return undefined;
-      }
-    },
-    getUsername: () => username,
-    getSessionToken: () => sessionToken,
-    authenticated: () => authenticated
+    toPointer: () => ({objectId: "fakeArtistId"}),
+    id: "testId"
   };
 
   // Act
   const {
-    queryByText
+    queryByText,
+    queryAllByText
   } = render(<SongPage currentUser={currentUser} />);
   await waitForElement(() => queryByText(/fakeArtistName/i));
 
   // Assert
-  expect(queryByText(/Update Song Details/i)).toBeTruthy();
+  expect(queryAllByText(/Update/i).length).toBe(2);
 });
