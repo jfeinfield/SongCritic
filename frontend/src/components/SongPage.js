@@ -74,6 +74,11 @@ const SongPage = (props) => {
     })();
   }, [songId, currentUser]);
 
+  const updateReviewsState = async (objectId) => {
+    console.log(objectId);
+    setReviews([objectId].concat(reviews));
+  }
+
   return (
     <div>
       {!fetchingSong && !foundSong && <Redirect to="/404" />}
@@ -100,7 +105,11 @@ const SongPage = (props) => {
             />
           }
           {currentUser
-            ? <SubmitReview currentUser={currentUser} songId={songId} />
+            ? <SubmitReview 
+              currentUser={currentUser}
+              songId={songId}
+              handleSubmitReview={updateReviewsState}
+              />
             : <div>
               <h3>Write a Review</h3>
               <p>Must be signed in to write a review</p>

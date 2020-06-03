@@ -32,7 +32,9 @@ const SubmitReview = (props) => {
     review.set("review", songReview);
 
     try {
-      await review.save();
+      await review.save().then((object) => {
+        props.handleSubmitReview(object.id);
+      });
       reset();
     } catch (error) {
       setSubmitErrorMsg(`${error.code} ${error.message}`);
@@ -128,6 +130,7 @@ SubmitReview.propTypes = {
     toPointer: PropTypes.func
   }).isRequired,
   songId: PropTypes.string.isRequired,
+  handleSubmitReview: PropTypes.func.isRequired
 };
 
 export default SubmitReview;
