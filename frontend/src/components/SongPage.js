@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
-import {useParams, Redirect} from "react-router-dom";
+import {useParams, Redirect, Link} from "react-router-dom";
 import Parse from "parse";
 
 import {
@@ -18,8 +18,10 @@ const SongPage = (props) => {
   const [songName, setSongName] = useState("");
   const [songArt, setSongArt] = useState("");
   const [artistName, setArtistName] = useState("");
+  const [artistId, setArtistId] = useState("");
   const [fetchingSong, setFetchingSong] = useState(true);
   const [foundSong, setFoundSong] = useState(false);
+  const [foundArt, setFoundArt] = useState(false);
   const [isCurrentUserTheArtist, setIsCurrentUserTheArtist] = useState(false);
 
   useEffect(() => {
@@ -33,6 +35,7 @@ const SongPage = (props) => {
 
         const artistQuery = new Parse.Query(UserClass);
         const artist = await artistQuery.get(song.get("artist").id);
+        setArtistId(artist.id);
         setArtistName(artist.get("name"));
 
         const reviewQuery = new Parse.Query(ReviewClass);
@@ -44,10 +47,12 @@ const SongPage = (props) => {
 
         setReviews(await results);
         setFoundSong(true);
+        setFoundArt(true);
         setFetchingSong(false);
       } catch {
         // error while fetching data -> navigate to 404 page
         setFoundSong(false);
+        setFoundArt(false);
         setFetchingSong(false);
       }
     })();
@@ -82,7 +87,17 @@ const SongPage = (props) => {
         ? <p>Loading song and reviews...</p>
         : <>
           <h2>{songName}</h2>
-          <strong>by: {artistName}</strong>
+          {foundArt && songArt !== "" && (
+            <img
+              src={songArt}
+              alt="album art"
+              height="256"
+              width="256"
+            />
+          )}
+          <br />
+          <strong>by: </strong>
+          <Link to={`/user/${artistId}`}>{artistName}</Link>
           {isCurrentUserTheArtist
             && <UpdateSong
               songId={songId}
@@ -115,7 +130,9 @@ const SongPage = (props) => {
 };
 
 SongPage.propTypes = {
-  currentUser: PropTypes.instanceOf(Parse.User)
+  currentUser: PropTypes.shape({
+    toPointer: PropTypes.func
+  })
 };
 
 SongPage.defaultProps = {
