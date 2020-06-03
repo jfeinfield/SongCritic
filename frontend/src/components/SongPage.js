@@ -41,6 +41,7 @@ const SongPage = (props) => {
         const reviewQuery = new Parse.Query(ReviewClass);
         reviewQuery.equalTo("song",
           {"__type": "Pointer", "className": "song", "objectId": songId});
+        reviewQuery.addDescending("createdAt");
         const reviewArray = await reviewQuery.find();
 
         const results = reviewArray.map((r) => r.toJSON().objectId);
