@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {useForm} from "react-hook-form";
 
 const LogIn = (props) => {
-  const {register, handleSubmit, reset, errors} = useForm();
+  const {register, handleSubmit, errors} = useForm();
   const {
     errorMsg: errorMsgFromParse
   } = props;
@@ -12,16 +12,15 @@ const LogIn = (props) => {
     const {logInUsername, logInPassword} = data;
 
     props.handleLogIn(logInUsername, logInPassword);
-    reset();
   };
 
   return (
-    <div>
+    <div className="mb-5">
       <h3>Log In</h3>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
           <label htmlFor="logInUsername">
-            Username:
+            Username (required):
             <input
               className={
                 `form-control \
@@ -46,7 +45,7 @@ const LogIn = (props) => {
         </div>
         <div className="form-group">
           <label htmlFor="logInPassword">
-            Password:
+            Password (required):
             <input
               className={
                 `form-control \

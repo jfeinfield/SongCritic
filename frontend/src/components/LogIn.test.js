@@ -66,30 +66,6 @@ it("shows errors if inputs are too short", async () => {
   ).toBe(2);
 });
 
-it("clears fields upon submit", async () => {
-  // Arrange
-  const username = "fakeUname";
-  const password = "fakePwd";
-
-  // Act
-  const {
-    getByLabelText,
-    queryByText
-  } = render(<LogIn handleLogIn={() => {}} />);
-  const usernameInput = getByLabelText(/^Username/i);
-  const passwordInput = getByLabelText(/^Password/i);
-  // https://react-hook-form.com/faqs#TestingReactHookForm
-  await act(async () => {
-    await fireEvent.input(usernameInput, {target: {value: username}});
-    await fireEvent.input(passwordInput, {target: {value: password}});
-    await fireEvent.click(queryByText(/Log In/, {selector: "input"}));
-  });
-
-  // Assert
-  expect(usernameInput.value).toBe("");
-  expect(passwordInput.value).toBe("");
-});
-
 it("calls handleLogIn with the form data", async () => {
   // Arrange
   const username = "fakeUname";

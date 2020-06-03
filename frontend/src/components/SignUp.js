@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {useForm} from "react-hook-form";
 
 const SignUp = (props) => {
-  const {register, handleSubmit, reset, errors} = useForm();
+  const {register, handleSubmit, errors} = useForm();
   const {
     errorMsg: errorMsgFromParse
   } = props;
@@ -22,14 +22,13 @@ const SignUp = (props) => {
       signUpUsername,
       signUpPassword
     );
-    reset();
   };
 
   return (
-    <div>
+    <div className="mb-5">
       <h3>Sign Up</h3>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="form-check">
+        <div className="form-check mb-3">
           <input
             className="form-check-input"
             type="checkbox"
@@ -41,13 +40,13 @@ const SignUp = (props) => {
           <label className="form-check-label" htmlFor="signUpIsArtist">
             I am an artist
           </label>
+          <small className="form-text text-muted">
+            Artists are able to post their songs for the community to review
+          </small>
         </div>
-        <small id="artistHelp" className="form-text text-muted">
-          Artists are able to post their songs for the community to review
-        </small>
         <div className="form-group">
           <label htmlFor="signUpDisplayName">
-            Display Name:
+            Display name (required, at least 4 characters):
             <input
               className={
                 `form-control \
@@ -68,11 +67,14 @@ const SignUp = (props) => {
                 This field must contain at least 4 characters
               </div>
             )}
+            <small className="form-text text-muted">
+              This is the name other users will see
+            </small>
           </label>
         </div>
         <div className="form-group">
           <label htmlFor="signUpUsername">
-            Username:
+            Username (required, at least 4 characters):
             <input
               className={
                 `form-control \
@@ -93,11 +95,14 @@ const SignUp = (props) => {
                 This field must contain at least 4 characters
               </div>
             )}
+            <small className="form-text text-muted">
+              This is the name you will use to Log In
+            </small>
           </label>
         </div>
         <div className="form-group">
           <label htmlFor="signUpPassword">
-            Password:
+            Password (required, at least 4 characters):
             <input
               className={
                 `form-control \
