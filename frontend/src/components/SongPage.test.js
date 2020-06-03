@@ -15,7 +15,8 @@ jest.mock("parse", () => ({
     switch (className) {
     case "review":
       return {
-        get: () => ({
+        equalTo: () => {},
+        find: () => Promise.resolve({
           toJSON: () => ({
             objectId: "fakeObjectId",
             author: {
@@ -50,12 +51,20 @@ jest.mock("parse", () => ({
     case "User":
       return {
         get: () => ({
+          id: "fakeArtistId",
           get: (id) => {
             switch (id) {
             case "name":
               return "Fake Display Name";
             case "artist":
-              return {id: "fakeArtistId"};
+              return {
+                id: "fakeArtistId",
+                get: (string) => {
+                  if (string === "name")
+                    return "Fake Display Name";
+                }
+
+              };
             default:
               return "";
             }
