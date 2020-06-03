@@ -172,16 +172,20 @@ function App() {
               {currentUser ? (
                 <Redirect to="/" />
               ) : (
-                <>
-                  <SignUp
-                    handleSignUp={signUp}
-                    errorMsg={signUpErrorMsg}
-                  />
-                  <LogIn
-                    handleLogIn={logIn}
-                    errorMsg={logInErrorMsg}
-                  />
-                </>
+                <div className="row">
+                  <div className="col-md-6">
+                    <LogIn
+                      handleLogIn={logIn}
+                      errorMsg={logInErrorMsg}
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <SignUp
+                      handleSignUp={signUp}
+                      errorMsg={signUpErrorMsg}
+                    />
+                  </div>
+                </div>
               )}
             </>
           </Route>
