@@ -111,7 +111,10 @@ const SongPage = (props) => {
               handleSongUpdate={updateSongState}
             />
           }
-          <SubmitReview currentUser={currentUser} songId={songId} handleSubmitReview={updateReviewsState} />
+          <SubmitReview
+            currentUser={currentUser}
+            songId={songId}
+            handleSubmitReview={updateReviewsState} />
           <section>
             <h3>Reviews</h3>
             {reviews.length !== 0
