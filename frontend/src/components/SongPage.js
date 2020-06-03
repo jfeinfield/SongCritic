@@ -41,6 +41,7 @@ const SongPage = (props) => {
         const reviewQuery = new Parse.Query(ReviewClass);
         reviewQuery.equalTo("song",
           {"__type": "Pointer", "className": "song", "objectId": songId});
+        reviewQuery.addDescending("updatedAt");
         const reviewArray = await reviewQuery.find();
 
         const results = reviewArray.map((r) => r.toJSON().objectId);
@@ -75,6 +76,10 @@ const SongPage = (props) => {
     })();
   }, [songId, currentUser]);
 
+  const updateReviewsState = async (objectId) => {
+    setReviews([objectId].concat(reviews));
+  };
+
   const updateSongState = (newSongName, newSongArt) => {
     setSongName(newSongName);
     setSongArt(newSongArt);
@@ -106,7 +111,10 @@ const SongPage = (props) => {
               handleSongUpdate={updateSongState}
             />
           }
-          <SubmitReview currentUser={currentUser} songId={songId} />
+          <SubmitReview
+            currentUser={currentUser}
+            songId={songId}
+            handleSubmitReview={updateReviewsState} />
           <section>
             <h3>Reviews</h3>
             {reviews.length !== 0
