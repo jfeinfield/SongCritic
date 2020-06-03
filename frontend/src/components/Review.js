@@ -11,7 +11,7 @@ import {
 } from "../parseClasses";
 
 const Review = (props) => {
-  const {reviewId, isListing, showLinkToSong, currentUser} = props;
+  const {reviewId, isListing, hideUser, currentUser} = props;
   const {register, handleSubmit, errors} = useForm();
   const [reviewObj, setReviewObj] = useState(null);
   const [isCurrentUserAuthor, setIsCurrentUserAuthor] = useState(false);
@@ -109,45 +109,57 @@ const Review = (props) => {
   };
 
   if (fetchError)
-    return <p>{fetchError}</p>;
+    return (
+      <div className="card text-white bg-danger mb-3">
+        <div className="card-header">ERROR</div>
+        <div className="card-body">
+          <p className="card-text">{fetchError}</p>
+        </div>
+      </div>
+    );
   if (reviewObj) {
     return (
-      <div className="review">
+      <div className="card mb-3">
         {isListing
           ? (
-            <>
+            <div className="card-body">
               <Link to={`/user/${reviewObj.authorId}`}>
-                <h4>{reviewObj.author}</h4>
+                <h5 className="card-title">{reviewObj.author}</h5>
               </Link>
-              <p>{reviewObj.rating} stars</p>
-              <p>{reviewObj.review}</p>
-            </>
+              <p className="card-text">{reviewObj.rating} stars</p>
+              <p className="card-text">{reviewObj.review}</p>
+            </div>
           ) : (
-            <>
-              <h3>{reviewObj.song}</h3>
-              <p>
-                {"Artist: "}
-                {isListing
-                  ? reviewObj.artist
-                  : (
-                    <Link to={`/user/${reviewObj.artistId}`}>
-                      {reviewObj.artist}
-                    </Link>
-                  )}
+            <div className="card-body">
+              <h5 className="card-title">{reviewObj.song}</h5>
+              <h6 className="card-subtitle mb-2 text-muted">
+                {reviewObj.artist}
+              </h6>
+              <p className="card-text">
+                {hideUser || (
+                  <>
+                    <strong>Reviewer:</strong> <em>{reviewObj.author}</em><br />
+                  </>
+                )}
+                <strong>Rating:</strong> {reviewObj.rating}<br />
+                <strong>Review:</strong><br />{reviewObj.review}
               </p>
-              <p>
-                {"By: "}
-                <Link to={`/user/${reviewObj.authorId}`}>
-                  {reviewObj.author}
+              <Link className="card-link" to={`/song/${reviewObj.songId}`}>
+                Visit {reviewObj.song}
+              </Link>
+              <Link className="card-link" to={`/user/${reviewObj.artistId}`}>
+                Visit {reviewObj.artist}&apos;s page
+              </Link>
+              {hideUser || (
+                <Link className="card-link" to={`/user/${reviewObj.authorId}`}>
+                  Visit {reviewObj.author}&apos;s page
                 </Link>
-              </p>
-              <p>Rating: {reviewObj.rating}</p>
-              <p>Review: {reviewObj.review}</p>
-            </>
+              )}
+            </div>
           )}
         {isCurrentUserAuthor
           && (
-            <div>
+            <div className="card-footer">
               {isEditingReview
                 ? (
                   <>
@@ -211,21 +223,21 @@ const Review = (props) => {
                         </label>
                       </div>
                       <button
-                        className="btn btn-secondary"
+                        className="btn btn-secondary m-2"
                         type="button"
                         onClick={() => setIsEditingReview(false)}
                       >
-                        Cancel
+                        Cancel Update
                       </button>
                       <input
-                        className="btn btn-primary"
+                        className="btn btn-primary m-2"
                         type="submit"
                         value="Update Review"
                       />
                       {updateError && <p>{updateError}</p>}
                     </form>
                     <button
-                      className="btn btn-danger"
+                      className="btn btn-danger m-2"
                       type="button"
                       onClick={() => deleteReview()}
                     >
@@ -246,16 +258,26 @@ const Review = (props) => {
               <br />
             </div>
           )}
-        {showLinkToSong &&
-          <Link to={`/song/${reviewObj.songId}`}>
-            Visit song page for {reviewObj.song}
-          </Link>}
       </div>
     );
   }
   if (isReviewDeleted)
-    return <p><em>This review has been removed.</em></p>;
-  return <p>Loading review...</p>;
+    return (
+      <div className="card text-white bg-secondary mb-3">
+        <div className="card-header">DELETED</div>
+        <div className="card-body">
+          <p className="card-text">This review has been removed.</p>
+        </div>
+      </div>
+    );
+  return (
+    <div className="card bg-light mb-3">
+      <div className="card-header">LOADING</div>
+      <div className="card-body">
+        <p className="card-text">Loading rating and review text...</p>
+      </div>
+    </div>
+  );
 };
 
 Review.propTypes = {
@@ -264,13 +286,13 @@ Review.propTypes = {
   }),
   reviewId: PropTypes.string.isRequired,
   isListing: PropTypes.bool,
-  showLinkToSong: PropTypes.bool
+  hideUser: PropTypes.bool
 };
 
 Review.defaultProps = {
   currentUser: null,
   isListing: false,
-  showLinkToSong: false
+  hideUser: false
 };
 
 export default Review;
