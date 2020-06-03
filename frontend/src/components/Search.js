@@ -55,6 +55,13 @@ const Search = () => {
     <div>
       <h2>Search</h2>
       <form onSubmit={handleSubmit(doSearch)}>
+        <small className="form-text text-muted mb-2">
+          Search supports artists and songs<br />
+          {
+            "(e.g. try an artist name \"Travis Scott\", a song name \"BALD!\"" +
+            ", or a partial query \"b\" to match both)"
+          }
+        </small>
         <div className="formGroup">
           <label htmlFor="searchTerm">
             <input
