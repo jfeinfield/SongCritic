@@ -1,8 +1,5 @@
 # Spring307-8amMWF-Team7
-TODO: write project description
-
-## Branch Description
-This branch contains demo code of a "roundtrip" with a React.js frontend and Parse backend.
+[![Build Status](https://travis-ci.com/mianuddin/Spring307-8amMWF-Team7.svg?token=ELqm9RWJ6qXXzKaSUrgs&branch=master)](https://travis-ci.com/mianuddin/Spring307-8amMWF-Team7)
 
 ## Tech Stack
 Links to technologies and relevant documentation.
