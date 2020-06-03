@@ -81,6 +81,19 @@ const UpdateSong = (props) => {
               </div>
             )}
           </label>
+          <small className="form-text text-muted">
+            {"Optional: a "}
+            <a href="https://en.wiktionary.org/wiki/hotlink">
+              hotlink
+            </a>
+            {
+              " to an image in a browser-compatible format (e.g. jpg, png, " +
+              "gif, etc.); will be displayed in a square-aspect ratio (i.e." +
+              " 256px x 256px)"
+            }
+            <br />
+            e.g. https://i.imgur.com/P6bxNlh.jpg
+          </small>
         </div>
         <input
           className="btn btn-primary"
