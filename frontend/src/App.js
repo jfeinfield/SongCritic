@@ -133,6 +133,13 @@ function App() {
               >
                 Top Rated
               </NavLink>
+              <NavLink
+                className="nav-item nav-link"
+                activeClassName="active"
+                to="/search"
+              >
+                Search
+              </NavLink>
             </div>
           </div>
           {currentUser ? (
@@ -160,7 +167,6 @@ function App() {
         <Switch>
           <Route exact path="/">
             <>
-              <Search />
               {currentUser && currentUser.get("isArtist")
                     && <SubmitSong currentUser={currentUser} />}
               <RecentReviews currentUser={currentUser}/>
@@ -203,6 +209,9 @@ function App() {
           </Route>
           <Route path="/topSongs">
             <TopSongs />
+          </Route>
+          <Route path="/search">
+            <Search />
           </Route>
           <Route path="*">
             <h2>404 - Page not found!</h2>
