@@ -136,7 +136,9 @@ const SongPage = (props) => {
 };
 
 SongPage.propTypes = {
-  currentUser: PropTypes.instanceOf(Parse.User)
+  currentUser: PropTypes.shape({
+    toPointer: PropTypes.func
+  })
 };
 
 SongPage.defaultProps = {
