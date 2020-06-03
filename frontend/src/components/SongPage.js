@@ -75,7 +75,6 @@ const SongPage = (props) => {
   }, [songId, currentUser]);
 
   const updateReviewsState = async (objectId) => {
-    console.log(objectId);
     setReviews([objectId].concat(reviews));
   }
 
