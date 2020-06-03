@@ -65,13 +65,20 @@ const SongPage = (props) => {
       try {
         const song = await songQuery.get(songId);
         setIsCurrentUserTheArtist(
-          currentUser.toPointer().objectId === song.get("artist").id
+          currentUser !== null &&
+            currentUser.toPointer().objectId === song.get("artist").id
         );
       } catch {
-        // TODO: handle error
+        setFoundSong(false);
+        setFetchingSong(false);
       }
     })();
   }, [songId, currentUser]);
+
+  const updateSongState = (newSongName, newSongArt) => {
+    setSongName(newSongName);
+    setSongArt(newSongArt);
+  };
 
   return (
     <div>
@@ -96,15 +103,10 @@ const SongPage = (props) => {
               songId={songId}
               songName={songName}
               songArt={songArt}
+              handleSongUpdate={updateSongState}
             />
           }
-          {currentUser
-            ? <SubmitReview currentUser={currentUser} songId={songId} />
-            : <div>
-              <h3>Write a Review</h3>
-              <p>Must be signed in to write a review</p>
-            </div>
-          }
+          <SubmitReview currentUser={currentUser} songId={songId} />
           <section>
             <h3>Reviews</h3>
             {reviews.length !== 0

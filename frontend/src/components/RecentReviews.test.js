@@ -91,12 +91,12 @@ it("renders recent reviews", async () => {
   // done in mock above
 
   // Act
-  const {queryByText} = render(<RecentReviews />);
-  await waitForElement(() => queryByText(/Artist:/i));
+  const {queryByText, queryAllByText} = render(<RecentReviews />);
+  await waitForElement(() => queryAllByText(/fakeArtistName/i));
 
   // Assert
-  expect(queryByText(/fakeArtistName/i)).toBeTruthy();
-  expect(queryByText(/fakeAuthorName/i)).toBeTruthy();
+  expect(queryAllByText(/fakeArtistName/i)).toBeTruthy();
+  expect(queryAllByText(/fakeAuthorName/i)).toBeTruthy();
   expect(queryByText(/fakeReviewText/i)).toBeTruthy();
 });
 
@@ -105,9 +105,9 @@ it("renders links for reviews", async () => {
   // done in mock above
 
   // Act
-  const {queryByText} = render(<RecentReviews />);
-  await waitForElement(() => queryByText(/Artist:/i));
+  const {queryAllByText} = render(<RecentReviews />);
+  await waitForElement(() => queryAllByText(/fakeArtistName/i));
 
   // Assert
-  expect(queryByText(/Visit song page for/i)).toBeTruthy();
+  expect(queryAllByText(/Visit/i)).toBeTruthy();
 });

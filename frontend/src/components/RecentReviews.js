@@ -32,7 +32,6 @@ const RecentReviews = (props) => {
           key={r}
           currentUser={currentUser}
           reviewId={r}
-          showLinkToSong
         />
       ))}
     </div>
