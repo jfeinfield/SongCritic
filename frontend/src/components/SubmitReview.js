@@ -66,7 +66,7 @@ const SubmitReview = (props) => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="form-group">
               <label htmlFor="songRating">
-              Rating:
+              Rating (required):
                 <input
                   className={
                     `form-control \
@@ -99,11 +99,17 @@ const SubmitReview = (props) => {
                   Please enter a value less than or equal to 5
                   </div>
                 )}
+                <small className="form-text text-muted">
+                  {
+                    "Ratings are from 0 to 5 inclusive, in increments of 0.5 " +
+                    "(e.g. 2.5)"
+                  }
+                </small>
               </label>
             </div>
             <div className="form-group">
               <label htmlFor="songReview">
-              Review:
+              Review (required):
                 <textarea
                   className={
                     `form-control \
