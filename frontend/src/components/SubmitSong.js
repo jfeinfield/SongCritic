@@ -45,7 +45,7 @@ const SubmitSong = (props) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
           <label htmlFor="songName">
-            Song name:
+            Song name (required):
             <input
               className={
                 `form-control \
@@ -65,7 +65,7 @@ const SubmitSong = (props) => {
         </div>
         <div className="form-group">
           <label htmlFor="songArt">
-            Cover Art:
+            Cover art:
             <input
               className={
                 `form-control \
