@@ -35,37 +35,53 @@ const UpdateSong = (props) => {
     <div>
       <h3>Update Song Details</h3>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor="updateSongName">
-          Song Name:
-          <input
-            defaultValue={songName}
-            type="text"
-            id="updateSongName"
-            name="updateSongName"
-            ref={register({required: true})}
-          />
-        </label>
-        {errors.updateSongName?.type === "required"
-          && <span>This field is required</span>}
-        <br />
-        <label htmlFor="updateSongArt">
-          Cover Art:
-          <input
-            defaultValue={songArt}
-            type="url"
-            id="updateSongArt"
-            name="updateSongArt"
-            ref={
-              register({
-                // eslint-disable-next-line
-                pattern: /(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
-              })
-            }
-          />
-        </label>
-        {errors.updateSongArt?.type === "pattern"
-          && <span>Needs to be a valid link</span>}
-        <br />
+        <div className="form-group">
+          <label htmlFor="updateSongName">
+            Song Name:
+            <input
+              className={
+                `form-control \
+                ${errors.updateSongName ? "is-invalid" : ""}`
+              }
+              defaultValue={songName}
+              type="text"
+              id="updateSongName"
+              name="updateSongName"
+              ref={register({required: true})}
+            />
+            {errors.updateSongName?.type === "required" && (
+              <div className="invalid-feedback">
+                This field is required
+              </div>
+            )}
+          </label>
+        </div>
+        <div className="form-group">
+          <label htmlFor="updateSongArt">
+            Cover Art:
+            <input
+              className={
+                `form-control \
+                ${errors.updateSongArt ? "is-invalid" : ""}`
+              }
+              defaultValue={songArt}
+              type="url"
+              id="updateSongArt"
+              name="updateSongArt"
+              ref={
+                register({
+                  // eslint-disable-next-line
+                  pattern: /(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
+                })
+              }
+            />
+            {errors.updateSongArt?.type === "pattern" && (
+              <div className="invalid-feedback">
+                Needs to be a valid link
+              </div>
+            )}
+          </label>
+        </div>
         <input
           className="btn btn-primary"
           type="submit"
