@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {useForm} from "react-hook-form";
 
 const SignUp = (props) => {
-  const {register, handleSubmit, reset, errors} = useForm();
+  const {register, handleSubmit, errors} = useForm();
   const {
     errorMsg: errorMsgFromParse
   } = props;
@@ -22,32 +22,15 @@ const SignUp = (props) => {
       signUpUsername,
       signUpPassword
     );
-    reset();
   };
 
   return (
-    <div>
-      <h3>Sign Up</h3>
+    <div className="mb-5">
+      <h2>Sign Up</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="form-check">
-          <input
-            className="form-check-input"
-            type="checkbox"
-            id="signUpIsArtist"
-            name="signUpIsArtist"
-            ref={register()}
-          />
-          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-          <label className="form-check-label" htmlFor="signUpIsArtist">
-            I am an artist
-          </label>
-        </div>
-        <small id="artistHelp" className="form-text text-muted">
-          Artists are able to post their songs for the community to review
-        </small>
         <div className="form-group">
           <label htmlFor="signUpDisplayName">
-            Display Name:
+            Display name (required, at least 4 characters):
             <input
               className={
                 `form-control \
@@ -68,11 +51,14 @@ const SignUp = (props) => {
                 This field must contain at least 4 characters
               </div>
             )}
+            <small className="form-text text-muted">
+              This is the name other users will see
+            </small>
           </label>
         </div>
         <div className="form-group">
           <label htmlFor="signUpUsername">
-            Username:
+            Username (required, at least 4 characters):
             <input
               className={
                 `form-control \
@@ -93,11 +79,14 @@ const SignUp = (props) => {
                 This field must contain at least 4 characters
               </div>
             )}
+            <small className="form-text text-muted">
+              This is the name you will use to Log In
+            </small>
           </label>
         </div>
         <div className="form-group">
           <label htmlFor="signUpPassword">
-            Password:
+            Password (required, at least 4 characters):
             <input
               className={
                 `form-control \
@@ -120,13 +109,41 @@ const SignUp = (props) => {
             )}
           </label>
         </div>
+        <div className="form-check my-3">
+          <input
+            className="form-check-input"
+            type="checkbox"
+            id="signUpIsArtist"
+            name="signUpIsArtist"
+            ref={register()}
+          />
+          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+          <label className="form-check-label" htmlFor="signUpIsArtist">
+            I am an artist
+          </label>
+          <small className="form-text text-muted">
+            Artists are able to post their songs for the community to
+            review<br />NOTE: You <strong>cannot</strong> change your account
+            type after signing up
+          </small>
+        </div>
         <input
           className="btn btn-primary"
+          disabled={
+            errors.signUpDisplayName?.type
+            || errors.signUpUsername?.type
+            || errors.signUpPassword?.type
+          }
           type="submit"
           value="Sign Up"
         />
       </form>
-      {errorMsgFromParse !== "" && <p>{errorMsgFromParse}</p>}
+      {errorMsgFromParse !== "" && (
+        <p className="text-danger mt-3">
+          <strong>Error {errorMsgFromParse.split(" ")[0]}</strong><br />
+          {errorMsgFromParse.split(" ").slice(1).join(" ")}
+        </p>
+      )}
     </div>
   );
 };
