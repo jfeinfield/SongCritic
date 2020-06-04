@@ -178,6 +178,8 @@ const Review = (props) => {
                             name="songRating"
                             type="number"
                             step=".5"
+                            min="0"
+                            max="5"
                             ref={
                               register({
                                 required: true,
