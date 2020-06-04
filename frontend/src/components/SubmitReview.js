@@ -9,6 +9,7 @@ import {
 } from "../parseClasses";
 
 const SubmitReview = (props) => {
+  const [submitMsg, setSubmitMsg] = useState("");
   const [submitErrorMsg, setSubmitErrorMsg] = useState("");
 
   const {register, handleSubmit, reset, errors} = useForm();
@@ -21,6 +22,7 @@ const SubmitReview = (props) => {
     const review = new ReviewClass();
     let songQuery;
 
+    setSubmitMsg("");
     setSubmitErrorMsg("");
 
     try {
@@ -40,6 +42,7 @@ const SubmitReview = (props) => {
         props.handleSubmitReview(object.id);
       });
       reset();
+      setSubmitMsg("Review submitted successfully!");
     } catch (error) {
       setSubmitErrorMsg(`${error.code} ${error.message}`);
     }
@@ -59,10 +62,10 @@ const SubmitReview = (props) => {
   };
 
   return (
-    <div>
+    <div className="mb-5">
+      <h3>Write a Review</h3>
       {user ? (
-        <div>
-          <h3>Write a Review</h3>
+        <>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="form-group">
               <label htmlFor="songRating">
@@ -128,18 +131,23 @@ const SubmitReview = (props) => {
             </div>
             <input
               className="btn btn-primary"
+              disabled={
+                errors.songRating?.type
+                || errors.songReview?.type
+              }
               type="submit"
               value="Submit Review"
             />
           </form>
-          {submitErrorMsg !== "" && <p>{submitErrorMsg}</p>}
-        </div>
-      ) : (
-        <div>
-          <h3>Write a Review</h3>
-          <p>Must be signed in to write a review</p>
-        </div>
-      )}
+          {submitMsg !== "" && (
+            <p className="text-success my-3">{submitMsg}</p>
+          )}
+          {submitErrorMsg !== "" && (
+            <p className="text-danger my-3">{submitErrorMsg}</p>
+          )}
+        </>
+      ) : <p>You must be signed in to write a review.</p>
+      }
     </div>
   );
 };
