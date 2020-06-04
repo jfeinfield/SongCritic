@@ -1,26 +1,36 @@
 import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {useForm} from "react-hook-form";
+import {Redirect} from "react-router-dom";
 
 import {Song as SongClass} from "../parseClasses";
 
+import SongPage from "./SongPage";
+
 const SubmitSong = (props) => {
   const [submitSongErrorMsg, setSubmitSongErrorMsg] = useState("");
+  const [songSubmitted, setSongSubmitted] = useState(false);
+  const [songId, setSongId] = useState("");
 
   const {register, handleSubmit, reset, errors} = useForm();
+  const {
+    currentUser: user,
+  } = props;
 
   const saveSong = async (songName, songArt) => {
     const newSong = new SongClass();
 
     setSubmitSongErrorMsg("");
 
-    newSong.set("artist", props.currentUser.toPointer());
+    newSong.set("artist", user.toPointer());
     newSong.set("name", songName);
     newSong.set("art", songArt);
 
     try {
       await newSong.save();
       reset();
+      setSongId(newSong.id);
+      setSongSubmitted(true);
     } catch (error){
       setSubmitSongErrorMsg(`${error.code} ${error.message}`);
     }
@@ -93,6 +103,9 @@ const SubmitSong = (props) => {
           type="submit"
           value="Submit Song"
         />
+        {songSubmitted && <Redirect to={`/song/${songId}`}>
+          <SongPage currentUser={user} />
+        </Redirect>}
         {submitSongErrorMsg !== "" && <p>{submitSongErrorMsg}</p>}
       </form>
     </div>
