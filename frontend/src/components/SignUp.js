@@ -41,7 +41,9 @@ const SignUp = (props) => {
             I am an artist
           </label>
           <small className="form-text text-muted">
-            Artists are able to post their songs for the community to review
+            Artists are able to post their songs for the community to
+            review<br />NOTE: You <strong>cannot</strong> change your account
+            type after signing up
           </small>
         </div>
         <div className="form-group">
