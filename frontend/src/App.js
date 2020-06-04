@@ -223,27 +223,24 @@ function App() {
             </>
           </Route>
           <Route path="/auth">
-            <>
-              <h2>Authentication</h2>
-              {currentUser ? (
-                <Redirect to="/" />
-              ) : (
-                <div className="row">
-                  <div className="col-md-6">
-                    <LogIn
-                      handleLogIn={logIn}
-                      errorMsg={logInErrorMsg}
-                    />
-                  </div>
-                  <div className="col-md-6">
-                    <SignUp
-                      handleSignUp={signUp}
-                      errorMsg={signUpErrorMsg}
-                    />
-                  </div>
+            {currentUser ? (
+              <Redirect to="/" />
+            ) : (
+              <div className="row">
+                <div className="col-md-6">
+                  <LogIn
+                    handleLogIn={logIn}
+                    errorMsg={logInErrorMsg}
+                  />
                 </div>
-              )}
-            </>
+                <div className="col-md-6">
+                  <SignUp
+                    handleSignUp={signUp}
+                    errorMsg={signUpErrorMsg}
+                  />
+                </div>
+              </div>
+            )}
           </Route>
           <Route path="/song/:songId">
             <SongPage currentUser={currentUser} />

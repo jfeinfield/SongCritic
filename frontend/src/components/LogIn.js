@@ -16,7 +16,7 @@ const LogIn = (props) => {
 
   return (
     <div className="mb-5">
-      <h3>Log In</h3>
+      <h2>Log In</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
           <label htmlFor="logInUsername">
@@ -70,6 +70,10 @@ const LogIn = (props) => {
         </div>
         <input
           className="btn btn-primary"
+          disabled={
+            errors.logInUsername?.type
+            || errors.logInPassword?.type
+          }
           type="submit"
           value="Log In"
         />

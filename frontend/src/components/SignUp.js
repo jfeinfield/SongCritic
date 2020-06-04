@@ -26,7 +26,7 @@ const SignUp = (props) => {
 
   return (
     <div className="mb-5">
-      <h3>Sign Up</h3>
+      <h2>Sign Up</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-check mb-3">
           <input
@@ -127,6 +127,11 @@ const SignUp = (props) => {
         </div>
         <input
           className="btn btn-primary"
+          disabled={
+            errors.signUpDisplayName?.type
+            || errors.signUpUsername?.type
+            || errors.signUpPassword?.type
+          }
           type="submit"
           value="Sign Up"
         />

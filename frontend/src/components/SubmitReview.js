@@ -143,7 +143,10 @@ const SubmitReview = (props) => {
             <p className="text-success my-3">{submitMsg}</p>
           )}
           {submitErrorMsg !== "" && (
-            <p className="text-danger my-3">{submitErrorMsg}</p>
+            <p className="text-danger mt-3">
+              <strong>Error {submitErrorMsg.split(" ")[0]}</strong><br />
+              {submitErrorMsg.split(" ").slice(1).join(" ")}
+            </p>
           )}
         </>
       ) : <p>You must be signed in to write a review.</p>

@@ -103,10 +103,19 @@ const SubmitSong = (props) => {
         </div>
         <input
           className="btn btn-primary"
+          disabled={
+            errors.songName?.type
+            || errors.songArt?.type
+          }
           type="submit"
           value="Submit Song"
         />
-        {submitSongErrorMsg !== "" && <p>{submitSongErrorMsg}</p>}
+        {submitSongErrorMsg !== "" && (
+          <p className="text-danger mt-3">
+            <strong>Error {submitSongErrorMsg.split(" ")[0]}</strong><br />
+            {submitSongErrorMsg.split(" ").slice(1).join(" ")}
+          </p>
+        )}
       </form>
     </div>
   );

@@ -238,10 +238,16 @@ const Review = (props) => {
                       </button>
                       <input
                         className="btn btn-primary m-2"
+                        disabled={
+                          errors.songRating?.type
+                          || errors.songReview?.type
+                        }
                         type="submit"
                         value="Update Review"
                       />
-                      {updateError && <p>{updateError}</p>}
+                      {updateError && (
+                        <p className="text-danger my-3">{updateError}</p>
+                      )}
                     </form>
                     <button
                       className="btn btn-danger m-2"
@@ -250,7 +256,9 @@ const Review = (props) => {
                     >
                       Delete Review
                     </button>
-                    {deleteError && <p>{deleteError}</p>}
+                    {deleteError && (
+                      <p className="text-danger my-3">{deleteError}</p>
+                    )}
                   </>
                 ) : (
                   <button

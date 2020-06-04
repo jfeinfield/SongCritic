@@ -109,7 +109,12 @@ const UpdateSong = (props) => {
         />
       </form>
       {msg && <p className="text-success my-3">{msg}</p>}
-      {err && <p className="text-danger my-3">{err}</p>}
+      {err && (
+        <p className="text-danger mt-3">
+          <strong>Error {err.split(" ")[0]}</strong><br />
+          {err.split(" ").slice(1).join(" ")}
+        </p>
+      )}
     </div>
   );
 };
