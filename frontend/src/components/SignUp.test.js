@@ -12,12 +12,18 @@ afterEach(cleanup);
 
 it("shows errors passed from its parent", async () => {
   // Arrange
+  const errorCode = 0;
   const errorMsg = "this is a fake error message";
 
   // Act
   const {
     queryByText
-  } = render(<SignUp handleSignUp={() => {}} errorMsg={errorMsg} />);
+  } = render(
+    <SignUp
+      handleSignUp={() => {}}
+      errorMsg={`${errorCode} ${errorMsg}`}
+    />
+  );
 
   // Assert
   expect(queryByText(errorMsg)).toBeTruthy();

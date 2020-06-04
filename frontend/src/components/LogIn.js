@@ -74,7 +74,12 @@ const LogIn = (props) => {
           value="Log In"
         />
       </form>
-      {errorMsgFromParse !== "" && <p>{errorMsgFromParse}</p>}
+      {errorMsgFromParse !== "" && (
+        <p className="text-danger mt-3">
+          <strong>Error {errorMsgFromParse.split(" ")[0]}</strong><br />
+          {errorMsgFromParse.split(" ").slice(1).join(" ")}
+        </p>
+      )}
     </div>
   );
 };
