@@ -71,25 +71,35 @@ const UserPage = (props) => {
         )
         : <>
           <h1>{username}</h1>
-          {isArtist && <section>
-            <h2>Songs</h2>
-            {songs.length !== 0
-              ? <>
-                {songs.map((song) => (
-                  <p key={song.objectId}>
-                    <Link to={`/song/${song.objectId}`}>{song.name}</Link>
-                  </p>
-                ))}
-              </>
-              : <>
-                {personalPage
-                  ? <p>You have not posted any songs yet.</p>
-                  : <p>{username} has not posted any songs yet.</p>
-                }
-              </>
-            }
-          </section>}
-          <section>
+          {isArtist && (
+            <section className="mb-5">
+              <h2>Songs</h2>
+              {songs.length !== 0
+                ? (
+                  <ul className="list-group">
+                    {songs.map((song) => (
+                      <Link
+                        key={song.objectId}
+                        className="list-group-item list-group-item-action"
+                        to={`/song/${song.objectId}`}
+                      >
+                        {song.name}
+                      </Link>
+                    ))}
+                  </ul>
+                )
+                : (
+                  <>
+                    {personalPage
+                      ? <p>You have not posted any songs yet.</p>
+                      : <p>{username} has not posted any songs yet.</p>
+                    }
+                  </>
+                )
+              }
+            </section>
+          )}
+          <section className="mb-5">
             <h2>Reviews</h2>
             {reviews.length !== 0
               ? <>
