@@ -61,7 +61,14 @@ const UserPage = (props) => {
     <div>
       {!fetchingUser && !foundUser && <Redirect to="/404" />}
       {fetchingUser
-        ? <p>Loading user page...</p>
+        ? (
+          <div className="text-center">
+            <div className="spinner-border text-primary" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+            <p>Loading page for user {userId}...</p>
+          </div>
+        )
         : <>
           <h1>{username}</h1>
           {isArtist && <section>

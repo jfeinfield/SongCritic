@@ -89,7 +89,14 @@ const SongPage = (props) => {
     <div>
       {!fetchingSong && !foundSong && <Redirect to="/404" />}
       {fetchingSong
-        ? <p>Loading song and reviews...</p>
+        ? (
+          <div className="text-center">
+            <div className="spinner-border text-primary" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+            <p>Loading song {songId} and its reviews...</p>
+          </div>
+        )
         : <>
           <h2>{songName}</h2>
           {foundArt && songArt !== "" && (
