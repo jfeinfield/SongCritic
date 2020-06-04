@@ -123,11 +123,12 @@ const Review = (props) => {
         {isListing
           ? (
             <div className="card-body">
-              <Link to={`/user/${reviewObj.authorId}`}>
-                <h5 className="card-title">{reviewObj.author}</h5>
-              </Link>
+              <h5 className="card-title">{reviewObj.author}</h5>
               <p className="card-text">{reviewObj.rating} stars</p>
               <p className="card-text">{reviewObj.review}</p>
+              <Link className="card-link" to={`/user/${reviewObj.authorId}`}>
+                Visit {reviewObj.author}&apos;s page
+              </Link>
             </div>
           ) : (
             <div className="card-body">
