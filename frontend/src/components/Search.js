@@ -14,10 +14,12 @@ const Search = () => {
   const [artistFound, setArtistFound] = useState(false);
   const [songFound, setSongFound] = useState(false);
   const [didSearch, setDidSearch] = useState(false);
+  const [searching, setSearching] = useState(false);
 
   const {register, handleSubmit, errors} = useForm();
 
   const doSearch = async (data) => {
+    setSearching(true);
     const {searchTerm} = data;
     const artistPointers =
       (await new Parse.Query(ArtistClass).find()).map((v) => v.get("user"));
@@ -48,6 +50,7 @@ const Search = () => {
     setSongFound(songQueryResults.length !== 0);
     setArtistResults(artistQueryResults);
     setSongResults(songQueryResults.map((s) => s.toJSON()));
+    setSearching(false);
     setDidSearch(true);
   };
 
@@ -82,23 +85,39 @@ const Search = () => {
           Search
         </button>
       </form>
-      {artistFound && <div>
-        <h3>Artists</h3>
-        {artistResults.map((artist) => (
-          <ul key={artist.objectId}>
-            <li><Link to={`/user/${artist.objectId}`}>{artist.name}</Link></li>
-          </ul>
-        ))}
-      </div>}
-      {songFound && <div>
-        <h3>Songs</h3>
-        {songResults.map((song) => (
-          <ul key={song.objectId} >
-            <li><Link to={`/song/${song.objectId}`}>{song.name}</Link></li>
-          </ul>
-        ))}
-      </div>}
-      {didSearch && !artistFound && !songFound && <div>No results found</div>}
+      {searching
+        ? <>
+          <p>Searching...</p>
+        </>
+        : <>
+          {artistFound && <div>
+            <h3>Artists</h3>
+            {artistResults.map((artist) => (
+              <ul key={artist.objectId}>
+                <li>
+                  <Link to={`/user/${artist.objectId}`}>
+                    {artist.name}
+                  </Link>
+                </li>
+              </ul>
+            ))}
+          </div>}
+          {songFound && <div>
+            <h3>Songs</h3>
+            {songResults.map((song) => (
+              <ul key={song.objectId} >
+                <li>
+                  <Link to={`/song/${song.objectId}`}>
+                    {song.name}
+                  </Link>
+                </li>
+              </ul>
+            ))}
+          </div>}
+          {didSearch && !artistFound && !songFound &&
+            <div>No results found</div>}
+        </>
+      }
     </div>
   );
 };
