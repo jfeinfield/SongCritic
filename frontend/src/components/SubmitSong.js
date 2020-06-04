@@ -50,12 +50,12 @@ const SubmitSong = (props) => {
   };
 
   return (
-    <div>
+    <div className="mb-5">
       <h2>Post a New Song</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
           <label htmlFor="songName">
-            Song name:
+            Song name (required):
             <input
               className={
                 `form-control \
@@ -75,7 +75,7 @@ const SubmitSong = (props) => {
         </div>
         <div className="form-group">
           <label htmlFor="songArt">
-            Cover Art:
+            Cover art:
             <input
               className={
                 `form-control \
@@ -97,16 +97,38 @@ const SubmitSong = (props) => {
               </div>
             )}
           </label>
+          <small className="form-text text-muted">
+            {"Optional: a "}
+            <a href="https://en.wiktionary.org/wiki/hotlink">
+              hotlink
+            </a>
+            {
+              " to an image in a browser-compatible format (e.g. jpg, png, " +
+              "gif, etc.); will be displayed in a square-aspect ratio (i.e." +
+              " 256px x 256px)"
+            }
+            <br />
+            e.g. https://i.imgur.com/P6bxNlh.jpg
+          </small>
         </div>
         <input
           className="btn btn-primary"
+          disabled={
+            errors.songName?.type
+            || errors.songArt?.type
+          }
           type="submit"
           value="Submit Song"
         />
-        {songSubmitted && <Redirect to={`/song/${songId}`}>
-          <SongPage currentUser={user} />
-        </Redirect>}
-        {submitSongErrorMsg !== "" && <p>{submitSongErrorMsg}</p>}
+        {songSubmitted && (
+          <Redirect to={`/song/${songId}`} />
+        )}
+        {submitSongErrorMsg !== "" && (
+          <p className="text-danger mt-3">
+            <strong>Error {submitSongErrorMsg.split(" ")[0]}</strong><br />
+            {submitSongErrorMsg.split(" ").slice(1).join(" ")}
+          </p>
+        )}
       </form>
     </div>
   );

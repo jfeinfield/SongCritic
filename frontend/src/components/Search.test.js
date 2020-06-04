@@ -37,6 +37,7 @@ it("displays no results found if no results found", async () => {
   fireEvent.change(textInput, {target: {value: "song that doesn't exist"}});
   fireEvent.click(getAllByText("Search")[1]);
 
-  await waitForElement(() => queryByText(/No results found/i));
-  expect(queryByText(/No results found/i)).toBeTruthy();
+  await waitForElement(() => queryByText(/No artist results found/i));
+  expect(queryByText(/No artist results found/i)).toBeTruthy();
+  expect(queryByText(/No song results found/i)).toBeTruthy();
 });

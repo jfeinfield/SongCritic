@@ -39,8 +39,14 @@ const SongPage = (props) => {
         setArtistName(artist.get("name"));
 
         const reviewQuery = new Parse.Query(ReviewClass);
-        reviewQuery.equalTo("song",
-          {"__type": "Pointer", "className": "song", "objectId": songId});
+        reviewQuery.equalTo(
+          "song",
+          {
+            "__type": "Pointer",
+            "className": "song",
+            "objectId": songId
+          }
+        );
         reviewQuery.addDescending("updatedAt");
         const reviewArray = await reviewQuery.find();
 
@@ -89,20 +95,35 @@ const SongPage = (props) => {
     <div>
       {!fetchingSong && !foundSong && <Redirect to="/404" />}
       {fetchingSong
-        ? <p>Loading song and reviews...</p>
+        ? (
+          <div className="text-center">
+            <div className="spinner-border text-primary" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+            <p>Loading song {songId} and its reviews...</p>
+          </div>
+        )
         : <>
-          <h2>{songName}</h2>
-          {foundArt && songArt !== "" && (
-            <img
-              src={songArt}
-              alt="album art"
-              height="256"
-              width="256"
-            />
-          )}
-          <br />
-          <strong>by: </strong>
-          <Link to={`/user/${artistId}`}>{artistName}</Link>
+          <div className="mb-5">
+            <h2>{songName}</h2>
+            <p>
+              <strong>
+                by: <Link to={`/user/${artistId}`}>{artistName}</Link>
+              </strong>
+            </p>
+            {foundArt && songArt !== "" && (
+              <div className="my-3">
+                <img
+                  alt="The artist's specified album art could not be displayed."
+                  className="img-thumbnail"
+                  height="256"
+                  src={songArt}
+                  title={`Album art for ${songName}`}
+                  width="256"
+                />
+              </div>
+            )}
+          </div>
           {isCurrentUserTheArtist
             && <UpdateSong
               songId={songId}
@@ -114,8 +135,9 @@ const SongPage = (props) => {
           <SubmitReview
             currentUser={currentUser}
             songId={songId}
-            handleSubmitReview={updateReviewsState} />
-          <section>
+            handleSubmitReview={updateReviewsState}
+          />
+          <section className="mb-5">
             <h3>Reviews</h3>
             {reviews.length !== 0
               ? <>
