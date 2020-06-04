@@ -98,24 +98,26 @@ const SongPage = (props) => {
           </div>
         )
         : <>
-          <h2>{songName}</h2>
-          <p>
-            <strong>
-              by: <Link to={`/user/${artistId}`}>{artistName}</Link>
-            </strong>
-          </p>
-          {foundArt && songArt !== "" && (
-            <div className="my-3">
-              <img
-                alt="The artist's specified album art could not be displayed."
-                className="img-thumbnail"
-                height="256"
-                src={songArt}
-                title={`Album art for ${songName}`}
-                width="256"
-              />
-            </div>
-          )}
+          <div className="mb-5">
+            <h2>{songName}</h2>
+            <p>
+              <strong>
+                by: <Link to={`/user/${artistId}`}>{artistName}</Link>
+              </strong>
+            </p>
+            {foundArt && songArt !== "" && (
+              <div className="my-3">
+                <img
+                  alt="The artist's specified album art could not be displayed."
+                  className="img-thumbnail"
+                  height="256"
+                  src={songArt}
+                  title={`Album art for ${songName}`}
+                  width="256"
+                />
+              </div>
+            )}
+          </div>
           {isCurrentUserTheArtist
             && <UpdateSong
               songId={songId}
@@ -128,7 +130,7 @@ const SongPage = (props) => {
             currentUser={currentUser}
             songId={songId}
             handleSubmitReview={updateReviewsState} />
-          <section>
+          <section className="mb-5">
             <h3>Reviews</h3>
             {reviews.length !== 0
               ? <>
