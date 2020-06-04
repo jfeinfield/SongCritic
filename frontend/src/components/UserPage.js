@@ -68,59 +68,60 @@ const UserPage = (props) => {
             </div>
             <p>Loading page for user {userId}...</p>
           </div>
-        )
-        : <>
-          <h1>{username}</h1>
-          {isArtist && (
+        ) : (
+          <>
+            <h2>{username}</h2>
+            {isArtist && (
+              <section className="mb-5">
+                <h2>Songs</h2>
+                {songs.length !== 0
+                  ? (
+                    <ul className="list-group">
+                      {songs.map((song) => (
+                        <Link
+                          key={song.objectId}
+                          className="list-group-item list-group-item-action"
+                          to={`/song/${song.objectId}`}
+                        >
+                          {song.name}
+                        </Link>
+                      ))}
+                    </ul>
+                  )
+                  : (
+                    <>
+                      {personalPage
+                        ? <p>You have not posted any songs yet.</p>
+                        : <p>{username} has not posted any songs yet.</p>
+                      }
+                    </>
+                  )
+                }
+              </section>
+            )}
             <section className="mb-5">
-              <h2>Songs</h2>
-              {songs.length !== 0
-                ? (
-                  <ul className="list-group">
-                    {songs.map((song) => (
-                      <Link
-                        key={song.objectId}
-                        className="list-group-item list-group-item-action"
-                        to={`/song/${song.objectId}`}
-                      >
-                        {song.name}
-                      </Link>
-                    ))}
-                  </ul>
-                )
-                : (
-                  <>
-                    {personalPage
-                      ? <p>You have not posted any songs yet.</p>
-                      : <p>{username} has not posted any songs yet.</p>
-                    }
-                  </>
-                )
+              <h2>Reviews</h2>
+              {reviews.length !== 0
+                ? <>
+                  {reviews.map((r) => (
+                    <Review
+                      key={r}
+                      currentUser={currentUser}
+                      reviewId={r}
+                      hideUser
+                    />
+                  ))}
+                </>
+                : <>
+                  {personalPage
+                    ? <p>You have not written any reviews yet.</p>
+                    : <p>{username} has not written any reviews yet.</p>
+                  }
+                </>
               }
             </section>
-          )}
-          <section className="mb-5">
-            <h2>Reviews</h2>
-            {reviews.length !== 0
-              ? <>
-                {reviews.map((r) => (
-                  <Review
-                    key={r}
-                    currentUser={currentUser}
-                    reviewId={r}
-                    hideUser
-                  />
-                ))}
-              </>
-              : <>
-                {personalPage
-                  ? <p>You have not written any reviews yet.</p>
-                  : <p>{username} has not written any reviews yet.</p>
-                }
-              </>
-            }
-          </section>
-        </>
+          </>
+        )
       }
     </div>
   );

@@ -57,8 +57,7 @@ const ArtistDir = () => {
                   </div>
                   <p>Fetching artists...</p>
                 </div>
-              )
-              : (
+              ) : (
                 <>
                   <p>
                     There are <span className="text-info">

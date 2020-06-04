@@ -58,8 +58,7 @@ const SongDir = () => {
                   </div>
                   <p>Fetching songs...</p>
                 </div>
-              )
-              : (
+              ) : (
                 <>
                   <p>
                     There are <span className="text-info">{songs.length}</span>
