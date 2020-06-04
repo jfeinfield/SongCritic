@@ -14,10 +14,12 @@ const Search = () => {
   const [artistFound, setArtistFound] = useState(false);
   const [songFound, setSongFound] = useState(false);
   const [didSearch, setDidSearch] = useState(false);
+  const [searching, setSearching] = useState(false);
 
   const {register, handleSubmit, errors} = useForm();
 
   const doSearch = async (data) => {
+    setSearching(true);
     const {searchTerm} = data;
     const artistPointers =
       (await new Parse.Query(ArtistClass).find()).map((v) => v.get("user"));
@@ -48,6 +50,7 @@ const Search = () => {
     setSongFound(songQueryResults.length !== 0);
     setArtistResults(artistQueryResults);
     setSongResults(songQueryResults.map((s) => s.toJSON()));
+    setSearching(false);
     setDidSearch(true);
   };
 
@@ -72,6 +75,7 @@ const Search = () => {
               id="searchTerm"
               name="searchTerm"
               data-testid="searchTerm"
+              placeholder="Enter a song or artist name"
               ref={register({required: true, pattern: /[^\s]/})}
             />
             {errors.searchTerm && (
@@ -89,44 +93,51 @@ const Search = () => {
           Search
         </button>
       </form>
-      <div className="mb-3">
-        {didSearch && <h3>Artist results</h3>}
-        {artistFound && (
-          <ul className="list-group list-group-flush">
-            {artistResults.map((artist) => (
-              <Link
-                key={artist.objectId}
-                className="list-group-item list-group-item-action"
-                to={`/user/${artist.objectId}`}
-              >
-                {artist.name}
-              </Link>
-            ))}
-          </ul>
-        )}
-        {didSearch && !artistFound && (
-          <p>No artist results found</p>
-        )}
-      </div>
-      <div className="mb-3">
-        {didSearch && <h3>Song results</h3>}
-        {songFound && (
-          <ul className="list-group list-group-flush">
-            {songResults.map((song) => (
-              <Link
-                key={song.objectId}
-                className="list-group-item list-group-item-action"
-                to={`/song/${song.objectId}`}
-              >
-                {song.name}
-              </Link>
-            ))}
-          </ul>
-        )}
-        {didSearch && !songFound && (
-          <p>No song results found</p>
-        )}
-      </div>
+      {searching
+        ? <p>Searching...</p>
+        : (
+          <>
+            <div className="mb-3">
+              {didSearch && <h3>Artist results</h3>}
+              {artistFound && (
+                <ul className="list-group list-group-flush">
+                  {artistResults.map((artist) => (
+                    <Link
+                      key={artist.objectId}
+                      className="list-group-item list-group-item-action"
+                      to={`/user/${artist.objectId}`}
+                    >
+                      {artist.name}
+                    </Link>
+                  ))}
+                </ul>
+              )}
+              {didSearch && !artistFound && (
+                <p>No artist results found</p>
+              )}
+            </div>
+            <div className="mb-3">
+              {didSearch && <h3>Song results</h3>}
+              {songFound && (
+                <ul className="list-group list-group-flush">
+                  {songResults.map((song) => (
+                    <Link
+                      key={song.objectId}
+                      className="list-group-item list-group-item-action"
+                      to={`/song/${song.objectId}`}
+                    >
+                      {song.name}
+                    </Link>
+                  ))}
+                </ul>
+              )}
+              {didSearch && !songFound && (
+                <p>No song results found</p>
+              )}
+            </div>
+          </>
+        )
+      }
     </div>
   );
 };
