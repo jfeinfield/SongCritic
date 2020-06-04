@@ -10,22 +10,34 @@ import SongDir from "./SongDir";
 
 jest.mock("parse", () => ({
   Object: {
-    extend: () => (
-      function Song() {
-        return {
-          save: () => Promise.resolve({id: "newId"})
-        };
-      }
-    )
+    extend: (x) => (x)
   },
-  Query: function Query() {
-    return {
-      addAscending: () => ({
-        find: () => Promise.resolve([
-          {toJSON: () => ({name: "test1", objectId: 1})},
-          {toJSON: () => ({name: "test2", objectId: 2})}])
-      })
-    };
+  Query: function Query(type) {
+    switch(type) {
+    case "song":
+      return {
+        addAscending: () => ({
+          find: () => Promise.resolve([
+            {toJSON: () => (
+              {name: "test1", objectId: "1", artist: {objectId: ""}}
+            )},
+            {toJSON: () => (
+              {name: "test2", objectId: "2", artist: {objectId: ""}}
+            )}
+          ])
+        })
+      };
+    case "User":
+      return {
+        get: () => (Promise.resolve({
+          toJSON: () => ({
+            name: "fakeName"
+          }),
+        }))
+      };
+    default:
+      return {};
+    }
   }
 }));
 
@@ -42,13 +54,12 @@ it("displays all songs in the database", async () => {
 });
 
 it("links each song to their song page", async () => {
-  const {queryAllByText, findAllByText} = render(
+  const {queryByText} = render(
     <Router>
       <SongDir />
     </Router>
   );
-  await waitForElement(() => queryAllByText(/test[1-9]/i));
-  const songs = await findAllByText(/test[1-9]/);
-  expect(songs[0].toString()).toBe("http://localhost/song/1");
-  expect(songs[1].toString()).toBe("http://localhost/song/2");
+  await waitForElement(() => queryByText(/available/i));
+  expect(queryByText(/test2/i)).toBeTruthy();
+  expect(queryByText(/test1/i)).toBeTruthy();
 });

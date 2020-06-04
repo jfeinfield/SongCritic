@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {useForm} from "react-hook-form";
 
 const LogIn = (props) => {
-  const {register, handleSubmit, reset, errors} = useForm();
+  const {register, handleSubmit, errors} = useForm();
   const {
     errorMsg: errorMsgFromParse
   } = props;
@@ -12,16 +12,15 @@ const LogIn = (props) => {
     const {logInUsername, logInPassword} = data;
 
     props.handleLogIn(logInUsername, logInPassword);
-    reset();
   };
 
   return (
-    <div>
-      <h3>Log In</h3>
+    <div className="mb-5">
+      <h2>Log In</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
           <label htmlFor="logInUsername">
-            Username:
+            Username (required):
             <input
               className={
                 `form-control \
@@ -46,7 +45,7 @@ const LogIn = (props) => {
         </div>
         <div className="form-group">
           <label htmlFor="logInPassword">
-            Password:
+            Password (required):
             <input
               className={
                 `form-control \
@@ -71,11 +70,20 @@ const LogIn = (props) => {
         </div>
         <input
           className="btn btn-primary"
+          disabled={
+            errors.logInUsername?.type
+            || errors.logInPassword?.type
+          }
           type="submit"
           value="Log In"
         />
       </form>
-      {errorMsgFromParse !== "" && <p>{errorMsgFromParse}</p>}
+      {errorMsgFromParse !== "" && (
+        <p className="text-danger mt-3">
+          <strong>Error {errorMsgFromParse.split(" ")[0]}</strong><br />
+          {errorMsgFromParse.split(" ").slice(1).join(" ")}
+        </p>
+      )}
     </div>
   );
 };

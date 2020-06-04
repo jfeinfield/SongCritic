@@ -61,49 +61,67 @@ const UserPage = (props) => {
     <div>
       {!fetchingUser && !foundUser && <Redirect to="/404" />}
       {fetchingUser
-        ? <p>Loading user page...</p>
-        : <>
-          <h1>{username}</h1>
-          {isArtist && <section>
-            <h2>Songs</h2>
-            {songs.length !== 0
-              ? <>
-                {songs.map((song) => (
-                  <p key={song.objectId}>
-                    <Link to={`/song/${song.objectId}`}>{song.name}</Link>
-                  </p>
-                ))}
-              </>
-              : <>
-                {personalPage
-                  ? <p>You have not posted any songs yet.</p>
-                  : <p>{username} has not posted any songs yet.</p>
+        ? (
+          <div className="text-center">
+            <div className="spinner-border text-primary" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+            <p>Loading page for user {userId}...</p>
+          </div>
+        ) : (
+          <>
+            <h2>{username}</h2>
+            {isArtist && (
+              <section className="mb-5">
+                <h2>Songs</h2>
+                {songs.length !== 0
+                  ? (
+                    <ul className="list-group">
+                      {songs.map((song) => (
+                        <Link
+                          key={song.objectId}
+                          className="list-group-item list-group-item-action"
+                          to={`/song/${song.objectId}`}
+                        >
+                          {song.name}
+                        </Link>
+                      ))}
+                    </ul>
+                  )
+                  : (
+                    <>
+                      {personalPage
+                        ? <p>You have not posted any songs yet.</p>
+                        : <p>{username} has not posted any songs yet.</p>
+                      }
+                    </>
+                  )
                 }
-              </>
-            }
-          </section>}
-          <section>
-            <h2>Reviews</h2>
-            {reviews.length !== 0
-              ? <>
-                {reviews.map((r) => (
-                  <Review
-                    key={r}
-                    currentUser={currentUser}
-                    reviewId={r}
-                    hideUser
-                  />
-                ))}
-              </>
-              : <>
-                {personalPage
-                  ? <p>You have not written any reviews yet.</p>
-                  : <p>{username} has not written any reviews yet.</p>
-                }
-              </>
-            }
-          </section>
-        </>
+              </section>
+            )}
+            <section className="mb-5">
+              <h2>Reviews</h2>
+              {reviews.length !== 0
+                ? <>
+                  {reviews.map((r) => (
+                    <Review
+                      key={r}
+                      currentUser={currentUser}
+                      reviewId={r}
+                      hideUser
+                    />
+                  ))}
+                </>
+                : <>
+                  {personalPage
+                    ? <p>You have not written any reviews yet.</p>
+                    : <p>{username} has not written any reviews yet.</p>
+                  }
+                </>
+              }
+            </section>
+          </>
+        )
       }
     </div>
   );

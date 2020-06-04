@@ -9,6 +9,7 @@ import {
 } from "../parseClasses";
 
 const SubmitReview = (props) => {
+  const [submitMsg, setSubmitMsg] = useState("");
   const [submitErrorMsg, setSubmitErrorMsg] = useState("");
 
   const {register, handleSubmit, reset, errors} = useForm();
@@ -21,6 +22,7 @@ const SubmitReview = (props) => {
     const review = new ReviewClass();
     let songQuery;
 
+    setSubmitMsg("");
     setSubmitErrorMsg("");
 
     try {
@@ -40,6 +42,7 @@ const SubmitReview = (props) => {
         props.handleSubmitReview(object.id);
       });
       reset();
+      setSubmitMsg("Review submitted successfully!");
     } catch (error) {
       setSubmitErrorMsg(`${error.code} ${error.message}`);
     }
@@ -59,14 +62,14 @@ const SubmitReview = (props) => {
   };
 
   return (
-    <div>
+    <div className="mb-5">
+      <h3>Write a Review</h3>
       {user ? (
-        <div>
-          <h3>Write a Review</h3>
+        <>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="form-group">
               <label htmlFor="songRating">
-              Rating:
+              Rating (required):
                 <input
                   className={
                     `form-control \
@@ -99,11 +102,17 @@ const SubmitReview = (props) => {
                   Please enter a value less than or equal to 5
                   </div>
                 )}
+                <small className="form-text text-muted">
+                  {
+                    "Ratings are from 0 to 5 inclusive, in increments of 0.5 " +
+                    "(e.g. 2.5)"
+                  }
+                </small>
               </label>
             </div>
             <div className="form-group">
               <label htmlFor="songReview">
-              Review:
+              Review (required):
                 <textarea
                   className={
                     `form-control \
@@ -122,18 +131,26 @@ const SubmitReview = (props) => {
             </div>
             <input
               className="btn btn-primary"
+              disabled={
+                errors.songRating?.type
+                || errors.songReview?.type
+              }
               type="submit"
               value="Submit Review"
             />
           </form>
-          {submitErrorMsg !== "" && <p>{submitErrorMsg}</p>}
-        </div>
-      ) : (
-        <div>
-          <h3>Write a Review</h3>
-          <p>Must be signed in to write a review</p>
-        </div>
-      )}
+          {submitMsg !== "" && (
+            <p className="text-success my-3">{submitMsg}</p>
+          )}
+          {submitErrorMsg !== "" && (
+            <p className="text-danger mt-3">
+              <strong>Error {submitErrorMsg.split(" ")[0]}</strong><br />
+              {submitErrorMsg.split(" ").slice(1).join(" ")}
+            </p>
+          )}
+        </>
+      ) : <p>You must be signed in to write a review.</p>
+      }
     </div>
   );
 };

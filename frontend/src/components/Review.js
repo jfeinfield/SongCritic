@@ -123,11 +123,12 @@ const Review = (props) => {
         {isListing
           ? (
             <div className="card-body">
-              <Link to={`/user/${reviewObj.authorId}`}>
-                <h5 className="card-title">{reviewObj.author}</h5>
-              </Link>
+              <h5 className="card-title">{reviewObj.author}</h5>
               <p className="card-text">{reviewObj.rating} stars</p>
               <p className="card-text">{reviewObj.review}</p>
+              <Link className="card-link" to={`/user/${reviewObj.authorId}`}>
+                Visit {reviewObj.author}&apos;s page
+              </Link>
             </div>
           ) : (
             <div className="card-body">
@@ -166,7 +167,7 @@ const Review = (props) => {
                     <form onSubmit={handleSubmit(onSubmit)}>
                       <div className="form-group">
                         <label htmlFor="songRating">
-                          Rating:
+                          Rating (required):
                           <input
                             className={
                               `form-control \
@@ -200,11 +201,17 @@ const Review = (props) => {
                               Please enter a value less than or equal to 5
                             </div>
                           )}
+                          <small className="form-text text-muted">
+                            {
+                              "Ratings are from 0 to 5 inclusive, in incremen" +
+                              "ts of 0.5 (e.g. 2.5)"
+                            }
+                          </small>
                         </label>
                       </div>
                       <div className="form-group">
                         <label htmlFor="songReview">
-                          Review:
+                          Review (required):
                           <textarea
                             className={
                               `form-control \
@@ -231,10 +238,16 @@ const Review = (props) => {
                       </button>
                       <input
                         className="btn btn-primary m-2"
+                        disabled={
+                          errors.songRating?.type
+                          || errors.songReview?.type
+                        }
                         type="submit"
                         value="Update Review"
                       />
-                      {updateError && <p>{updateError}</p>}
+                      {updateError && (
+                        <p className="text-danger my-3">{updateError}</p>
+                      )}
                     </form>
                     <button
                       className="btn btn-danger m-2"
@@ -243,7 +256,9 @@ const Review = (props) => {
                     >
                       Delete Review
                     </button>
-                    {deleteError && <p>{deleteError}</p>}
+                    {deleteError && (
+                      <p className="text-danger my-3">{deleteError}</p>
+                    )}
                   </>
                 ) : (
                   <button
@@ -272,9 +287,13 @@ const Review = (props) => {
     );
   return (
     <div className="card bg-light mb-3">
-      <div className="card-header">LOADING</div>
       <div className="card-body">
-        <p className="card-text">Loading rating and review text...</p>
+        <div className="card-text text-center">
+          <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+          <p>Loading rating and review text...</p>
+        </div>
       </div>
     </div>
   );
