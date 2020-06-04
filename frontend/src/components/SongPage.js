@@ -99,17 +99,23 @@ const SongPage = (props) => {
         )
         : <>
           <h2>{songName}</h2>
+          <p>
+            <strong>
+              by: <Link to={`/user/${artistId}`}>{artistName}</Link>
+            </strong>
+          </p>
           {foundArt && songArt !== "" && (
-            <img
-              src={songArt}
-              alt="album art"
-              height="256"
-              width="256"
-            />
+            <div className="my-3">
+              <img
+                alt="The artist's specified album art could not be displayed."
+                className="img-thumbnail"
+                height="256"
+                src={songArt}
+                title={`Album art for ${songName}`}
+                width="256"
+              />
+            </div>
           )}
-          <br />
-          <strong>by: </strong>
-          <Link to={`/user/${artistId}`}>{artistName}</Link>
           {isCurrentUserTheArtist
             && <UpdateSong
               songId={songId}
