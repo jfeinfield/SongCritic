@@ -48,7 +48,7 @@ const TopSongs = () => {
         setSongs(filteredArray.slice(0, 10));
         setFetchingSongs(false);
       } catch (error) {
-        setErrorMsg(error);
+        setErrorMsg(`${error.code} ${error.message}`);
       }
     })();
   }, []);
@@ -56,28 +56,38 @@ const TopSongs = () => {
   return (
     <div>
       {errorMsg !== ""
-        ? <>
-          <p>{errorMsg}</p>
-        </>
-        : <>
-          <h1>Top Songs</h1>
-          {fetchingSongs
-            ? <>
-              <p>Fetching songs...</p>
-            </>
-            : <ol>
-              {songs.map((song) => (
-                <li key={song.id}>
-                  <Link to={`/song/${song.id}`}>
-                    {song.name}
-                  </Link> by <Link
-                    to={`/user/${song.artistId}`}>{song.artistName}
-                  </Link> ({song.avgRating.toFixed(1)} stars)
-                </li>
-              ))}
-            </ol>
-          }
-        </>
+        ? (
+          <p className="text-danger mt-3">
+            <strong>Error {errorMsg.split(" ")[0]}</strong><br />
+            {errorMsg.split(" ").slice(1).join(" ")}
+          </p>
+        ) : (
+          <>
+            <h2>Top Songs</h2>
+            {fetchingSongs
+              ? (
+                <div className="text-center">
+                  <div className="spinner-border text-primary" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </div>
+                  <p>Fetching songs...</p>
+                </div>
+              ) : (
+                <ol>
+                  {songs.map((song) => (
+                    <li key={song.id}>
+                      <Link to={`/song/${song.id}`}>
+                        {song.name}
+                      </Link> by <Link
+                        to={`/user/${song.artistId}`}>{song.artistName}
+                      </Link> ({song.avgRating.toFixed(1)} stars)
+                    </li>
+                  ))}
+                </ol>
+              )
+            }
+          </>
+        )
       }
     </div>
   );

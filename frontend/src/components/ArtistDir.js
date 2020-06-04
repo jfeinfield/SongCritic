@@ -33,7 +33,7 @@ const ArtistDir = () => {
 
         setFetchingArtists(false);
       } catch (error) {
-        setErrorMsg(error);
+        setErrorMsg(`${error.code} ${error.message}`);
       }
     })();
   }, []);
@@ -42,38 +42,46 @@ const ArtistDir = () => {
     <div>
       <h2>Artists</h2>
       {errorMsg !== ""
-        ? <p className="text-danger">{errorMsg}</p>
-        : <>
-          {fetchingArtists
-            ? (
-              <div className="text-center">
-                <div className="spinner-border text-primary" role="status">
-                  <span className="sr-only">Loading...</span>
+        ? (
+          <p className="text-danger mt-3">
+            <strong>Error {errorMsg.split(" ")[0]}</strong><br />
+            {errorMsg.split(" ").slice(1).join(" ")}
+          </p>
+        ) : (
+          <>
+            {fetchingArtists
+              ? (
+                <div className="text-center">
+                  <div className="spinner-border text-primary" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </div>
+                  <p>Fetching artists...</p>
                 </div>
-                <p>Fetching artists...</p>
-              </div>
-            )
-            : (
-              <>
-                <p>
-                  There are <span className="text-info">{artists.length}</span>
-                  {" artists registered on Song Critic."}
-                </p>
-                <ul className="list-group">
-                  {artists.map((artist) => (
-                    <Link
-                      key={artist.id}
-                      className="list-group-item list-group-item-action"
-                      to={`/user/${artist.id}`}
-                    >
-                      {artist.name}
-                    </Link>
-                  ))}
-                </ul>
-              </>
-            )
-          }
-        </>
+              )
+              : (
+                <>
+                  <p>
+                    There are <span className="text-info">
+                      {artists.length}
+                    </span>
+                    {" artists registered on Song Critic."}
+                  </p>
+                  <ul className="list-group">
+                    {artists.map((artist) => (
+                      <Link
+                        key={artist.id}
+                        className="list-group-item list-group-item-action"
+                        to={`/user/${artist.id}`}
+                      >
+                        {artist.name}
+                      </Link>
+                    ))}
+                  </ul>
+                </>
+              )
+            }
+          </>
+        )
       }
     </div>
   );
