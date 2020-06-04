@@ -141,7 +141,7 @@ function App() {
                   activeClassName="active"
                   to={`/user/${currentUser.id}`}
                 >
-                  {currentUser.get("name")}
+                  {currentUser.get("username")}
                 </NavLink>
               )}
               <button
@@ -194,7 +194,9 @@ function App() {
               {currentUser && !currentUser.get("isArtist") && (
                 <div className="jumbotron">
                   <h1 className="display-4">
-                    Hello, {currentUser.get("name")}!
+                    Hi, <Link to={`/user/${currentUser.id}`}>
+                      {currentUser.get("name")}
+                    </Link>!
                   </h1>
                   <p className="lead">
                     Browse the latest reviews below, see our community&apos;s
@@ -209,7 +211,9 @@ function App() {
                 <>
                   <div className="jumbotron">
                     <h1 className="display-4">
-                      Hello, {currentUser.get("name")}!
+                      Hi, <Link to={`/user/${currentUser.id}`}>
+                        {currentUser.get("name")}
+                      </Link>!
                     </h1>
                     <p className="lead">
                       Post one of your songs for the community to review below,
