@@ -63,6 +63,7 @@ const SubmitReview = (props) => {
       });
       reset();
       setSubmitMsg("Review submitted successfully!");
+      setHasReviewed(true);
     } catch (error) {
       setSubmitErrorMsg(`${error.code} ${error.message}`);
     }
@@ -90,6 +91,9 @@ const SubmitReview = (props) => {
           If you have deleted your review, refresh this page to write a new
           review.
         </p>
+        {submitMsg !== "" && (
+          <p className="text-success my-3">{submitMsg}</p>
+        )}
       </div>
     );
   if (!user)
@@ -175,9 +179,6 @@ const SubmitReview = (props) => {
           value="Submit Review"
         />
       </form>
-      {submitMsg !== "" && (
-        <p className="text-success my-3">{submitMsg}</p>
-      )}
       {submitErrorMsg !== "" && (
         <p className="text-danger mt-3">
           <strong>Error {submitErrorMsg.split(" ")[0]}</strong><br />
