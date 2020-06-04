@@ -20,6 +20,11 @@ const SubmitReview = (props) => {
 
   useEffect(() => {
     (async () => {
+      if (!user) {
+        setHasReviewed(false);
+        return;
+      }
+
       const reviewQuery = new Parse.Query(ReviewClass);
       reviewQuery.equalTo(
         "song",
