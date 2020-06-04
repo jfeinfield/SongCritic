@@ -57,13 +57,16 @@ const TopSongs = () => {
     <div>
       {errorMsg !== ""
         ? (
-          <p className="text-danger mt-3">
-            <strong>Error {errorMsg.split(" ")[0]}</strong><br />
-            {errorMsg.split(" ").slice(1).join(" ")}
-          </p>
+          <>
+            <h2>Top Rated Songs</h2>
+            <p className="text-danger mt-3">
+              <strong>Error {errorMsg.split(" ")[0]}</strong><br />
+              {errorMsg.split(" ").slice(1).join(" ")}
+            </p>
+          </>
         ) : (
           <>
-            <h2>Top Songs</h2>
+            <h2>Top {songs.length ? songs.length : ""} Rated Songs</h2>
             {fetchingSongs
               ? (
                 <div className="text-center">
@@ -73,17 +76,36 @@ const TopSongs = () => {
                   <p>Fetching songs...</p>
                 </div>
               ) : (
-                <ol>
-                  {songs.map((song) => (
-                    <li key={song.id}>
-                      <Link to={`/song/${song.id}`}>
-                        {song.name}
-                      </Link> by <Link
-                        to={`/user/${song.artistId}`}>{song.artistName}
-                      </Link> ({song.avgRating.toFixed(1)} stars)
-                    </li>
-                  ))}
-                </ol>
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Song</th>
+                      <th scope="col">Artist</th>
+                      <th scope="col">Avg. Rating (stars)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {songs.map((song, i) => (
+                      <tr key={song.id}>
+                        <th scope="row">{i + 1}</th>
+                        <td>
+                          <Link to={`/song/${song.id}`}>
+                            {song.name}
+                          </Link>
+                        </td>
+                        <td>
+                          <Link
+                            to={`/user/${song.artistId}`}>{song.artistName}
+                          </Link>
+                        </td>
+                        <td>
+                          {song.avgRating.toFixed(2)}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               )
             }
           </>
