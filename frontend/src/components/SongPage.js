@@ -39,8 +39,14 @@ const SongPage = (props) => {
         setArtistName(artist.get("name"));
 
         const reviewQuery = new Parse.Query(ReviewClass);
-        reviewQuery.equalTo("song",
-          {"__type": "Pointer", "className": "song", "objectId": songId});
+        reviewQuery.equalTo(
+          "song",
+          {
+            "__type": "Pointer",
+            "className": "song",
+            "objectId": songId
+          }
+        );
         reviewQuery.addDescending("updatedAt");
         const reviewArray = await reviewQuery.find();
 
@@ -129,7 +135,8 @@ const SongPage = (props) => {
           <SubmitReview
             currentUser={currentUser}
             songId={songId}
-            handleSubmitReview={updateReviewsState} />
+            handleSubmitReview={updateReviewsState}
+          />
           <section className="mb-5">
             <h3>Reviews</h3>
             {reviews.length !== 0
