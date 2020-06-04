@@ -23,25 +23,38 @@ const SongDir = () => {
 
   return (
     <div>
+      <h2>Songs</h2>
       {errorMsg !== ""
-        ? <>
-          <p>{errorMsg}</p>
-        </>
+        ? <p className="text-danger">{errorMsg}</p>
         : <>
-          <h1>Songs</h1>
           {fetchingSongs
-            ? <>
-              <p>Fetching songs...</p>
-            </>
-            : <>
-              {songs.map((song) => {
-                return (
-                  <p key={song.objectId}>
-                    <Link to={`/song/${song.objectId}`}>{song.name}</Link>
-                  </p>
-                );
-              })}
-            </>
+            ? (
+              <div className="text-center">
+                <div className="spinner-border text-primary" role="status">
+                  <span className="sr-only">Loading...</span>
+                </div>
+                <p>Fetching artists...</p>
+              </div>
+            )
+            : (
+              <>
+                <p>
+                  There are <span className="text-info">{songs.length}</span>
+                  {" songs available for review on Song Critic."}
+                </p>
+                <ul className="list-group">
+                  {songs.map((song) => (
+                    <Link
+                      key={song.objectId}
+                      className="list-group-item list-group-item-action"
+                      to={`/song/${song.objectId}`}
+                    >
+                      {song.name}
+                    </Link>
+                  ))}
+                </ul>
+              </>
+            )
           }
         </>
       }

@@ -40,25 +40,38 @@ const ArtistDir = () => {
 
   return (
     <div>
+      <h2>Artists</h2>
       {errorMsg !== ""
-        ? <>
-          <p>{errorMsg}</p>
-        </>
+        ? <p className="text-danger">{errorMsg}</p>
         : <>
-          <h1>Artists</h1>
           {fetchingArtists
-            ? <>
-              <p>Fetching artists...</p>
-            </>
-            : <>
-              {artists.map((artist) => {
-                return (
-                  <p key={artist.id}>
-                    <Link to={`/user/${artist.id}`}>{artist.name}</Link>
-                  </p>
-                );
-              })}
-            </>
+            ? (
+              <div className="text-center">
+                <div className="spinner-border text-primary" role="status">
+                  <span className="sr-only">Loading...</span>
+                </div>
+                <p>Fetching artists...</p>
+              </div>
+            )
+            : (
+              <>
+                <p>
+                  There are <span className="text-info">{artists.length}</span>
+                  {" artists registered on Song Critic."}
+                </p>
+                <ul className="list-group">
+                  {artists.map((artist) => (
+                    <Link
+                      key={artist.id}
+                      className="list-group-item list-group-item-action"
+                      to={`/user/${artist.id}`}
+                    >
+                      {artist.name}
+                    </Link>
+                  ))}
+                </ul>
+              </>
+            )
           }
         </>
       }
