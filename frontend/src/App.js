@@ -103,15 +103,6 @@ function App() {
               >
                 Home
               </NavLink>
-              {currentUser && (
-                <NavLink
-                  className="nav-item nav-link"
-                  activeClassName="active"
-                  to={`/user/${currentUser.id}`}
-                >
-                  Account
-                </NavLink>
-              )}
               <NavLink
                 className="nav-item nav-link"
                 activeClassName="active"
@@ -143,13 +134,24 @@ function App() {
             </div>
           </div>
           {currentUser ? (
-            <button
-              className="btn btn-secondary"
-              onClick={logOut}
-              type="button"
-            >
-              Log Out
-            </button>
+            <div className="navbar-nav">
+              {currentUser && (
+                <NavLink
+                  className="nav-item nav-link mr-3"
+                  activeClassName="active"
+                  to={`/user/${currentUser.id}`}
+                >
+                  {currentUser.get("name")}
+                </NavLink>
+              )}
+              <button
+                className="btn btn-secondary"
+                onClick={logOut}
+                type="button"
+              >
+                Log Out
+              </button>
+            </div>
           ) : (
             <NavLink
               className="nav-item nav-link"
@@ -167,8 +169,56 @@ function App() {
         <Switch>
           <Route exact path="/">
             <>
-              {currentUser && currentUser.get("isArtist")
-                    && <SubmitSong currentUser={currentUser} />}
+              {!currentUser && (
+                <div className="jumbotron">
+                  <h1 className="display-4">
+                    Welcome to our music community!
+                  </h1>
+                  <p className="lead">
+                    Song Critic is the desination for music lovers and creators
+                    to connect with other artists and listeners.
+                  </p>
+                  <p>
+                    Browse the latest reviews below, see our community&apos;s
+                    top songs using the <em>Top Rated</em> link above, or browse
+                    all songs using the <em>Songs</em> or <em>Search</em> links
+                    above.
+                  </p>
+                  <p>
+                    <strong>Create an account</strong> or log in using the link
+                    in the upper right-hand corner
+                    <strong> to post your own songs and reviews!</strong>
+                  </p>
+                </div>
+              )}
+              {currentUser && !currentUser.get("isArtist") && (
+                <div className="jumbotron">
+                  <h1 className="display-4">
+                    Hello, {currentUser.get("name")}!
+                  </h1>
+                  <p className="lead">
+                    Browse the latest reviews below, see our community&apos;s
+                    top songs using the <em>Top Rated</em> link above, or browse
+                    all songs using the <em>Songs</em> or <em>Search</em> links
+                    above and vist any song&apos;s page to write your own
+                    review!
+                  </p>
+                </div>
+              )}
+              {currentUser && currentUser.get("isArtist") && (
+                <>
+                  <div className="jumbotron">
+                    <h1 className="display-4">
+                      Hello, {currentUser.get("name")}!
+                    </h1>
+                    <p className="lead">
+                      Post one of your songs for the community to review below,
+                      or vist any song&apos;s page to write your own review!
+                    </p>
+                  </div>
+                  <SubmitSong currentUser={currentUser} />
+                </>
+              )}
               <RecentReviews currentUser={currentUser}/>
             </>
           </Route>

@@ -40,7 +40,7 @@ const SubmitSong = (props) => {
   };
 
   return (
-    <div>
+    <div className="mb-5">
       <h2>Post a New Song</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
