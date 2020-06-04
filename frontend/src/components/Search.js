@@ -69,6 +69,7 @@ const Search = () => {
               id="searchTerm"
               name="searchTerm"
               data-testid="searchTerm"
+              placeholder="Enter a song or artist name"
               ref={register({required: true, pattern: /[^\s]/})}
             />
             {errors.searchTerm && (
