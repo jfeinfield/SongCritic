@@ -28,24 +28,6 @@ const SignUp = (props) => {
     <div className="mb-5">
       <h2>Sign Up</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="form-check mb-3">
-          <input
-            className="form-check-input"
-            type="checkbox"
-            id="signUpIsArtist"
-            name="signUpIsArtist"
-            ref={register()}
-          />
-          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-          <label className="form-check-label" htmlFor="signUpIsArtist">
-            I am an artist
-          </label>
-          <small className="form-text text-muted">
-            Artists are able to post their songs for the community to
-            review<br />NOTE: You <strong>cannot</strong> change your account
-            type after signing up
-          </small>
-        </div>
         <div className="form-group">
           <label htmlFor="signUpDisplayName">
             Display name (required, at least 4 characters):
@@ -126,6 +108,24 @@ const SignUp = (props) => {
               </div>
             )}
           </label>
+        </div>
+        <div className="form-check my-3">
+          <input
+            className="form-check-input"
+            type="checkbox"
+            id="signUpIsArtist"
+            name="signUpIsArtist"
+            ref={register()}
+          />
+          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+          <label className="form-check-label" htmlFor="signUpIsArtist">
+            I am an artist
+          </label>
+          <small className="form-text text-muted">
+            Artists are able to post their songs for the community to
+            review<br />NOTE: You <strong>cannot</strong> change your account
+            type after signing up
+          </small>
         </div>
         <input
           className="btn btn-primary"
