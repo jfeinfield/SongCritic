@@ -5,8 +5,6 @@ import {Redirect} from "react-router-dom";
 
 import {Song as SongClass} from "../parseClasses";
 
-import SongPage from "./SongPage";
-
 const SubmitSong = (props) => {
   const [submitSongErrorMsg, setSubmitSongErrorMsg] = useState("");
   const [songSubmitted, setSongSubmitted] = useState(false);
