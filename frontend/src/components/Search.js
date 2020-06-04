@@ -84,6 +84,7 @@ const Search = () => {
         </div>
         <button
           className="btn btn-primary"
+          disabled={errors.searchTerm}
           type="submit"
         >
           Search
