@@ -87,37 +87,37 @@ const Search = () => {
         </button>
       </form>
       {searching
-        ? <>
-          <p>Searching...</p>
-        </>
-        : <>
-          {artistFound && <div>
-            <h3>Artists</h3>
-            {artistResults.map((artist) => (
-              <ul key={artist.objectId}>
-                <li>
-                  <Link to={`/user/${artist.objectId}`}>
-                    {artist.name}
-                  </Link>
-                </li>
-              </ul>
-            ))}
-          </div>}
-          {songFound && <div>
-            <h3>Songs</h3>
-            {songResults.map((song) => (
-              <ul key={song.objectId} >
-                <li>
-                  <Link to={`/song/${song.objectId}`}>
-                    {song.name}
-                  </Link>
-                </li>
-              </ul>
-            ))}
-          </div>}
-          {didSearch && !artistFound && !songFound &&
-            <div>No results found</div>}
-        </>
+        ? <p>Searching...</p>
+        : (
+          <>
+            {artistFound && <div>
+              <h3>Artists</h3>
+              {artistResults.map((artist) => (
+                <ul key={artist.objectId}>
+                  <li>
+                    <Link to={`/user/${artist.objectId}`}>
+                      {artist.name}
+                    </Link>
+                  </li>
+                </ul>
+              ))}
+            </div>}
+            {songFound && <div>
+              <h3>Songs</h3>
+              {songResults.map((song) => (
+                <ul key={song.objectId}>
+                  <li>
+                    <Link to={`/song/${song.objectId}`}>
+                      {song.name}
+                    </Link>
+                  </li>
+                </ul>
+              ))}
+            </div>}
+            {didSearch && !artistFound && !songFound &&
+              <div>No results found</div>}
+          </>
+        )
       }
     </div>
   );
