@@ -279,9 +279,13 @@ const Review = (props) => {
     );
   return (
     <div className="card bg-light mb-3">
-      <div className="card-header">LOADING</div>
       <div className="card-body">
-        <p className="card-text">Loading rating and review text...</p>
+        <div className="card-text text-center">
+          <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+          <p>Loading rating and review text...</p>
+        </div>
       </div>
     </div>
   );
