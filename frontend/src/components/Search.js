@@ -55,13 +55,12 @@ const Search = () => {
     <div>
       <h2>Search</h2>
       <form className="mb-5" onSubmit={handleSubmit(doSearch)}>
-        <small className="form-text text-muted mb-2">
+        <p className="mb-2">
           Search supports artists and songs.<br />
-          {
-            "Try an artist name (e.g. \"Travis Scott\"), a song name (e.g. \"" +
-            "BALD!\"), or a partial query to match both (e.g. \"b\")."
-          }
-        </small>
+          Try an artist name (e.g. &quot;Travis Scott&quot;), a song name (e.g.
+            &quot;BALD!&quot;), or a partial query to match both (e.g.
+            &quot;b&quot;)
+        </p>
         <div className="formGroup">
           <label htmlFor="searchTerm">
             <input
@@ -92,22 +91,38 @@ const Search = () => {
       </form>
       <div className="mb-3">
         {didSearch && <h3>Artist results</h3>}
-        {artistFound && artistResults.map((artist) => (
-          <ul key={artist.objectId}>
-            <li><Link to={`/user/${artist.objectId}`}>{artist.name}</Link></li>
+        {artistFound && (
+          <ul className="list-group list-group-flush">
+            {artistResults.map((artist) => (
+              <Link
+                key={artist.objectId}
+                className="list-group-item list-group-item-action"
+                to={`/user/${artist.objectId}`}
+              >
+                {artist.name}
+              </Link>
+            ))}
           </ul>
-        ))}
+        )}
         {didSearch && !artistFound && (
           <p>No artist results found</p>
         )}
       </div>
       <div className="mb-3">
         {didSearch && <h3>Song results</h3>}
-        {songFound && songResults.map((song) => (
-          <ul key={song.objectId} >
-            <li><Link to={`/song/${song.objectId}`}>{song.name}</Link></li>
+        {songFound && (
+          <ul className="list-group list-group-flush">
+            {songResults.map((song) => (
+              <Link
+                key={song.objectId}
+                className="list-group-item list-group-item-action"
+                to={`/song/${song.objectId}`}
+              >
+                {song.name}
+              </Link>
+            ))}
           </ul>
-        ))}
+        )}
         {didSearch && !songFound && (
           <p>No song results found</p>
         )}
