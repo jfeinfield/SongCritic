@@ -12,12 +12,18 @@ afterEach(cleanup);
 
 it("shows errors passed from its parent", async () => {
   // Arrange
+  const errorCode = 0;
   const errorMsg = "this is a fake error message";
 
   // Act
   const {
     queryByText
-  } = render(<SignUp handleSignUp={() => {}} errorMsg={errorMsg} />);
+  } = render(
+    <SignUp
+      handleSignUp={() => {}}
+      errorMsg={`${errorCode} ${errorMsg}`}
+    />
+  );
 
   // Assert
   expect(queryByText(errorMsg)).toBeTruthy();
@@ -67,34 +73,6 @@ it("shows errors if inputs are too short", async () => {
   expect(
     queryAllByText("This field must contain at least 4 characters").length
   ).toBe(3);
-});
-
-it("clears fields upon submit", async () => {
-  // Arrange
-  const displayName = "fakeDisplayName";
-  const username = "fakeUname";
-  const password = "fakePwd";
-
-  // Act
-  const {
-    getByLabelText,
-    queryByText
-  } = render(<SignUp handleSignUp={() => {}} />);
-  const displayNameInput = getByLabelText(/^Display/i);
-  const usernameInput = getByLabelText(/^Username/i);
-  const passwordInput = getByLabelText(/^Password/i);
-  // https://react-hook-form.com/faqs#TestingReactHookForm
-  await act(async () => {
-    await fireEvent.input(displayNameInput, {target: {value: displayName}});
-    await fireEvent.input(usernameInput, {target: {value: username}});
-    await fireEvent.input(passwordInput, {target: {value: password}});
-    await fireEvent.click(queryByText(/Sign Up/, {selector: "input"}));
-  });
-
-  // Assert
-  expect(displayNameInput.value).toBe("");
-  expect(usernameInput.value).toBe("");
-  expect(passwordInput.value).toBe("");
 });
 
 it("calls handleLogIn with the form data", async () => {
