@@ -32,8 +32,11 @@ const UpdateSong = (props) => {
   };
 
   return (
-    <div>
-      <h3>Update Song Details</h3>
+    <div className="mb-5">
+      <h3>Update Your Song</h3>
+      <small className="form-text text-muted mb-3">
+        Only you can see this.
+      </small>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
           <label htmlFor="updateSongName">
@@ -97,12 +100,16 @@ const UpdateSong = (props) => {
         </div>
         <input
           className="btn btn-primary"
+          disabled={
+            errors.updateSongName?.type
+            || errors.updateSongArt?.type
+          }
           type="submit"
           value="Update"
         />
       </form>
-      {msg && <p>{msg}</p>}
-      {err && <p>{err}</p>}
+      {msg && <p className="text-success my-3">{msg}</p>}
+      {err && <p className="text-danger my-3">{err}</p>}
     </div>
   );
 };
