@@ -12,7 +12,6 @@ import SubmitSong from "./SubmitSong";
 
 const mockSongSet = jest.fn();
 const mockSongSave = jest.fn();
-const mockHandleSongSubmit = jest.fn();
 
 jest.mock("parse", () => ({
   Object: {
