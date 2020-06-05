@@ -40,7 +40,7 @@ const SongDir = () => {
   }, []);
 
   return (
-    <div>
+    <div className="mb-5">
       <h2>Songs</h2>
       {errorMsg !== ""
         ? (

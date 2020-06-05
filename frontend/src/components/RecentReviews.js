@@ -25,7 +25,7 @@ const RecentReviews = (props) => {
   }, []);
 
   return (
-    <div>
+    <div className="mb-5">
       <h2>Recent Reviews</h2>
       {recentReviews.map((r) => (
         <Review

@@ -54,7 +54,7 @@ const TopSongs = () => {
   }, []);
 
   return (
-    <div>
+    <div className="mb-5">
       {errorMsg !== ""
         ? (
           <>
