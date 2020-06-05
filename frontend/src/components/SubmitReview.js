@@ -159,7 +159,7 @@ const SubmitReview = (props) => {
         </div>
         <div className="form-group">
           <label htmlFor="songReview">
-          Review (required):
+            Review (required, up to 2048 characters):
             <textarea
               className={
                 `form-control \
@@ -167,11 +167,19 @@ const SubmitReview = (props) => {
               }
               id="songReview"
               name="songReview"
-              ref={register({required: true})}
+              ref={register({
+                required: true,
+                maxLength: 2048
+              })}
             />
             {errors.songReview?.type === "required" && (
               <div className="invalid-feedback">
-              This field is required
+                This field is required
+              </div>
+            )}
+            {errors.songReview?.type === "maxLength" && (
+              <div className="invalid-feedback">
+                This field must contain up to 2048 characters
               </div>
             )}
           </label>
