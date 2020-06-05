@@ -20,8 +20,8 @@ jest.mock("parse", () => ({
       function Song() {
         return {
           // save: () => Promise.resolve({ id: "newId" }),
-          save: () => ({mockSongSave}),
-          set: () => ({mockSongSet}),
+          save: mockSongSave,
+          set: mockSongSet,
         };
       }
     )
