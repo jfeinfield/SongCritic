@@ -23,7 +23,7 @@ jest.mock("parse", () => ({
         };
       }
     )
-  },
+  }
   Query: function Query(className) {
     switch (className) {
     case "song":
