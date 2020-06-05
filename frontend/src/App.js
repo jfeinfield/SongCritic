@@ -162,10 +162,12 @@ function App() {
           )}
         </div>
       </nav>
-      <div>
-        {logOutErrorMsg !== "" && <p>{logOutErrorMsg}</p>}
-      </div>
       <div className="container">
+        {logOutErrorMsg !== "" && (
+          <div className="alert alert-danger" role="alert">
+            {logOutErrorMsg}
+          </div>
+        )}
         <Switch>
           <Route exact path="/">
             <>

@@ -55,7 +55,7 @@ const Search = () => {
   };
 
   return (
-    <div>
+    <div className="mb-5">
       <h2>Search</h2>
       <form className="mb-5" onSubmit={handleSubmit(doSearch)}>
         <p className="mb-2">

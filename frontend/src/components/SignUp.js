@@ -39,7 +39,11 @@ const SignUp = (props) => {
               type="text"
               id="signUpDisplayName"
               name="signUpDisplayName"
-              ref={register({required: true, minLength: 4})}
+              ref={register({
+                required: true,
+                minLength: 4,
+                maxLength: 16
+              })}
             />
             {errors.signUpDisplayName?.type === "required" && (
               <div className="invalid-feedback">
@@ -49,6 +53,11 @@ const SignUp = (props) => {
             {errors.signUpDisplayName?.type === "minLength" && (
               <div className="invalid-feedback">
                 This field must contain at least 4 characters
+              </div>
+            )}
+            {errors.signUpDisplayName?.type === "maxLength" && (
+              <div className="invalid-feedback">
+                This field must contain up to 16 characters
               </div>
             )}
             <small className="form-text text-muted">
@@ -67,7 +76,11 @@ const SignUp = (props) => {
               type="text"
               id="signUpUsername"
               name="signUpUsername"
-              ref={register({required: true, minLength: 4})}
+              ref={register({
+                required: true,
+                minLength: 4,
+                maxLength: 16
+              })}
             />
             {errors.signUpUsername?.type === "required" && (
               <div className="invalid-feedback">
@@ -77,6 +90,11 @@ const SignUp = (props) => {
             {errors.signUpUsername?.type === "minLength" && (
               <div className="invalid-feedback">
                 This field must contain at least 4 characters
+              </div>
+            )}
+            {errors.signUpUsername?.type === "maxLength" && (
+              <div className="invalid-feedback">
+                This field must contain up to 16 characters
               </div>
             )}
             <small className="form-text text-muted">
@@ -95,7 +113,11 @@ const SignUp = (props) => {
               type="password"
               id="signUpPassword"
               name="signUpPassword"
-              ref={register({required: true, minLength: 4})}
+              ref={register({
+                required: true,
+                minLength: 4,
+                maxLength: 128
+              })}
             />
             {errors.signUpPassword?.type === "required" && (
               <div className="invalid-feedback">
@@ -105,6 +127,11 @@ const SignUp = (props) => {
             {errors.signUpPassword?.type === "minLength" && (
               <div className="invalid-feedback">
                 This field must contain at least 4 characters
+              </div>
+            )}
+            {errors.signUpPassword?.type === "maxLength" && (
+              <div className="invalid-feedback">
+                This field must contain up to 128 characters
               </div>
             )}
           </label>

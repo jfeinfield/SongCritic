@@ -40,7 +40,7 @@ const UpdateSong = (props) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
           <label htmlFor="updateSongName">
-            Song name (required):
+            Song name (required, up to 128 characters):
             <input
               className={
                 `form-control \
@@ -50,9 +50,17 @@ const UpdateSong = (props) => {
               type="text"
               id="updateSongName"
               name="updateSongName"
-              ref={register({required: true})}
+              ref={register({
+                required: true,
+                maxLength: 128
+              })}
             />
             {errors.updateSongName?.type === "required" && (
+              <div className="invalid-feedback">
+                This field is required
+              </div>
+            )}
+            {errors.updateSongName?.type === "maxLength" && (
               <div className="invalid-feedback">
                 This field is required
               </div>
@@ -115,6 +123,11 @@ const UpdateSong = (props) => {
           {err.split(" ").slice(1).join(" ")}
         </p>
       )}
+      <small className="form-text text-muted mb-3">
+        Note:<br/>To protect community discussion, songs cannot be removed.
+        <br />Email support for more details
+        at: <a href="mailto:support@localhost">support@localhost</a>
+      </small>
     </div>
   );
 };

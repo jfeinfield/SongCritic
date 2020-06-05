@@ -92,7 +92,7 @@ const SongPage = (props) => {
   };
 
   return (
-    <div>
+    <div className="mb-5">
       {!fetchingSong && !foundSong && <Redirect to="/404" />}
       {fetchingSong
         ? (

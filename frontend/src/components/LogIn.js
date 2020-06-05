@@ -29,7 +29,11 @@ const LogIn = (props) => {
               type="text"
               id="logInUsername"
               name="logInUsername"
-              ref={register({required: true, minLength: 4})}
+              ref={register({
+                required: true,
+                minLength: 4,
+                maxLength: 16
+              })}
             />
             {errors.logInUsername?.type === "required" && (
               <div className="invalid-feedback">
@@ -39,6 +43,11 @@ const LogIn = (props) => {
             {errors.logInUsername?.type === "minLength" && (
               <div className="invalid-feedback">
                 This field must contain at least 4 characters
+              </div>
+            )}
+            {errors.logInUsername?.type === "maxLength" && (
+              <div className="invalid-feedback">
+                This field must contain up to 16 characters
               </div>
             )}
           </label>
@@ -54,7 +63,11 @@ const LogIn = (props) => {
               type="password"
               id="logInPassword"
               name="logInPassword"
-              ref={register({required: true, minLength: 4})}
+              ref={register({
+                required: true,
+                minLength: 4,
+                maxLength: 128
+              })}
             />
             {errors.logInPassword?.type === "required" && (
               <div className="invalid-feedback">
@@ -64,6 +77,11 @@ const LogIn = (props) => {
             {errors.logInPassword?.type === "minLength" && (
               <div className="invalid-feedback">
                 This field must contain at least 4 characters
+              </div>
+            )}
+            {errors.logInPassword?.type === "maxLength" && (
+              <div className="invalid-feedback">
+                This field must contain up to 128 characters
               </div>
             )}
           </label>

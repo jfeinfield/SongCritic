@@ -58,7 +58,7 @@ const UserPage = (props) => {
   }, [userId, currentUser]);
 
   return (
-    <div>
+    <div className="mb-5">
       {!fetchingUser && !foundUser && <Redirect to="/404" />}
       {fetchingUser
         ? (
