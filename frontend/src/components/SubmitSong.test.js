@@ -146,6 +146,6 @@ it("allows specifying no album art", async () => {
 
   // Assert
   expect(mockSongSet.mock.calls.length).toBe(3);
-  expect(mockSongSet.mock.calls[1][1]).toBe(inputCoverArt);
+  expect(mockSongSet.mock.calls[2][1]).toBe(inputCoverArt);
   expect(mockSongSave.mock.calls.length).toBe(1);
 });
