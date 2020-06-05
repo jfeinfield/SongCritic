@@ -41,7 +41,6 @@ afterEach(() => {
   cleanup();
   mockSongSet.mockClear();
   mockSongSave.mockClear();
-  mockHandleSongSubmit.mockClear();
 });
 
 it("show an error if the song name is empty", async () => {
