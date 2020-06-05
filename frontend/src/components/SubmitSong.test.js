@@ -24,7 +24,7 @@ jest.mock("parse", () => ({
       }
     )
   }
-  }
+
 }));
 
 afterEach(() => {
