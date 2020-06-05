@@ -53,7 +53,7 @@ const SubmitSong = (props) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
           <label htmlFor="songName">
-            Song name (required):
+            Song name (required, up to 128 characters):
             <input
               className={
                 `form-control \
@@ -62,11 +62,19 @@ const SubmitSong = (props) => {
               type="text"
               id="songName"
               name="songName"
-              ref={register({required: true})}
+              ref={register({
+                required: true,
+                maxLength: 128
+              })}
             />
             {errors.songName?.type === "required" && (
               <div className="invalid-feedback">
                 This field is required
+              </div>
+            )}
+            {errors.songName?.type === "maxLength" && (
+              <div className="invalid-feedback">
+                This field must contain up to 128 characters
               </div>
             )}
           </label>
