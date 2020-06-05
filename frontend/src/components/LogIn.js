@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {useForm} from "react-hook-form";
 
 const LogIn = (props) => {
-  const {register, handleSubmit, reset, errors} = useForm();
+  const {register, handleSubmit, errors} = useForm();
   const {
     errorMsg: errorMsgFromParse
   } = props;
@@ -12,16 +12,15 @@ const LogIn = (props) => {
     const {logInUsername, logInPassword} = data;
 
     props.handleLogIn(logInUsername, logInPassword);
-    reset();
   };
 
   return (
-    <div>
-      <h3>Log In</h3>
+    <div className="mb-5">
+      <h2>Log In</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
           <label htmlFor="logInUsername">
-            Username:
+            Username (required):
             <input
               className={
                 `form-control \
@@ -30,7 +29,11 @@ const LogIn = (props) => {
               type="text"
               id="logInUsername"
               name="logInUsername"
-              ref={register({required: true, minLength: 4})}
+              ref={register({
+                required: true,
+                minLength: 4,
+                maxLength: 16
+              })}
             />
             {errors.logInUsername?.type === "required" && (
               <div className="invalid-feedback">
@@ -42,11 +45,16 @@ const LogIn = (props) => {
                 This field must contain at least 4 characters
               </div>
             )}
+            {errors.logInUsername?.type === "maxLength" && (
+              <div className="invalid-feedback">
+                This field must contain up to 16 characters
+              </div>
+            )}
           </label>
         </div>
         <div className="form-group">
           <label htmlFor="logInPassword">
-            Password:
+            Password (required):
             <input
               className={
                 `form-control \
@@ -55,7 +63,11 @@ const LogIn = (props) => {
               type="password"
               id="logInPassword"
               name="logInPassword"
-              ref={register({required: true, minLength: 4})}
+              ref={register({
+                required: true,
+                minLength: 4,
+                maxLength: 128
+              })}
             />
             {errors.logInPassword?.type === "required" && (
               <div className="invalid-feedback">
@@ -67,15 +79,29 @@ const LogIn = (props) => {
                 This field must contain at least 4 characters
               </div>
             )}
+            {errors.logInPassword?.type === "maxLength" && (
+              <div className="invalid-feedback">
+                This field must contain up to 128 characters
+              </div>
+            )}
           </label>
         </div>
         <input
           className="btn btn-primary"
+          disabled={
+            errors.logInUsername?.type
+            || errors.logInPassword?.type
+          }
           type="submit"
           value="Log In"
         />
       </form>
-      {errorMsgFromParse !== "" && <p>{errorMsgFromParse}</p>}
+      {errorMsgFromParse !== "" && (
+        <p className="text-danger mt-3">
+          <strong>Error {errorMsgFromParse.split(" ")[0]}</strong><br />
+          {errorMsgFromParse.split(" ").slice(1).join(" ")}
+        </p>
+      )}
     </div>
   );
 };

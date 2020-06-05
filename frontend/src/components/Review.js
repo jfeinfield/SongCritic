@@ -32,7 +32,8 @@ const Review = (props) => {
             author: {objectId: authorId},
             song: {objectId: songId},
             review: ReviewText,
-            rating
+            rating,
+            updatedAt
           } = r.toJSON();
 
           let song = await new Parse.Query(SongClass).get(songId);
@@ -46,7 +47,13 @@ const Review = (props) => {
           let artist = await userQuery.get(song.artist.objectId);
           artist = artist.toJSON();
 
-          const review = {objectId, review: ReviewText, rating, authorId};
+          const review = {
+            objectId,
+            review: ReviewText,
+            rating,
+            authorId,
+            updatedAt
+          };
           review.author = author.name;
           review.song = song.name;
           review.songId = songId;
@@ -78,7 +85,8 @@ const Review = (props) => {
       setReviewObj({
         ...reviewObj,
         review: songReview,
-        rating: songRating
+        rating: songRating,
+        updatedAt: Date.now()
       });
     } catch (error) {
       setUpdateError(`${error.code} ${error.message}`);
@@ -123,39 +131,59 @@ const Review = (props) => {
         {isListing
           ? (
             <div className="card-body">
-              <Link to={`/user/${reviewObj.authorId}`}>
-                <h5 className="card-title">{reviewObj.author}</h5>
-              </Link>
+              <h5 className="card-title">{reviewObj.author}</h5>
+              <p className="card-subtitle mb-2 text-muted">
+                {new Date(reviewObj.updatedAt).toLocaleString()}
+              </p>
               <p className="card-text">{reviewObj.rating} stars</p>
               <p className="card-text">{reviewObj.review}</p>
+              <Link className="card-link" to={`/user/${reviewObj.authorId}`}>
+                Visit the reviewer&apos;s profile
+              </Link>
             </div>
           ) : (
-            <div className="card-body">
-              <h5 className="card-title">{reviewObj.song}</h5>
-              <h6 className="card-subtitle mb-2 text-muted">
-                {reviewObj.artist}
-              </h6>
-              <p className="card-text">
+            <>
+              <div className="card-body">
+                <h5 className="card-title">{reviewObj.song}</h5>
+                <h6 className="card-subtitle mb-2 text-muted">
+                  {reviewObj.artist}
+                </h6>
+              </div>
+              <ul className="list-group list-group-flush">
                 {hideUser || (
-                  <>
-                    <strong>Reviewer:</strong> <em>{reviewObj.author}</em><br />
-                  </>
+                  <li className="list-group-item">
+                    <strong>Reviewer:</strong> <em>{reviewObj.author}</em>
+                  </li>
                 )}
-                <strong>Rating:</strong> {reviewObj.rating}<br />
-                <strong>Review:</strong><br />{reviewObj.review}
-              </p>
-              <Link className="card-link" to={`/song/${reviewObj.songId}`}>
-                Visit {reviewObj.song}
-              </Link>
-              <Link className="card-link" to={`/user/${reviewObj.artistId}`}>
-                Visit {reviewObj.artist}&apos;s page
-              </Link>
-              {hideUser || (
-                <Link className="card-link" to={`/user/${reviewObj.authorId}`}>
-                  Visit {reviewObj.author}&apos;s page
+                <li className="list-group-item">
+                  <strong>
+                    Timestamp:
+                  </strong> {new Date(reviewObj.updatedAt).toLocaleString()}
+                </li>
+                <li className="list-group-item">
+                  <strong>Rating:</strong> {reviewObj.rating} stars
+                </li>
+                <li className="list-group-item">
+                  <strong>Review:</strong><br />{reviewObj.review}
+                </li>
+              </ul>
+              <div className="card-body">
+                <Link className="card-link" to={`/song/${reviewObj.songId}`}>
+                  Visit this song&apos;s page
                 </Link>
-              )}
-            </div>
+                <Link className="card-link" to={`/user/${reviewObj.artistId}`}>
+                  Visit the artist&apos;s profile
+                </Link>
+                {hideUser || (
+                  <Link
+                    className="card-link"
+                    to={`/user/${reviewObj.authorId}`}
+                  >
+                    Visit the reviewer&apos;s profile
+                  </Link>
+                )}
+              </div>
+            </>
           )}
         {isCurrentUserAuthor
           && (
@@ -166,7 +194,7 @@ const Review = (props) => {
                     <form onSubmit={handleSubmit(onSubmit)}>
                       <div className="form-group">
                         <label htmlFor="songRating">
-                          Rating:
+                          Rating (required):
                           <input
                             className={
                               `form-control \
@@ -177,6 +205,8 @@ const Review = (props) => {
                             name="songRating"
                             type="number"
                             step=".5"
+                            min="0"
+                            max="5"
                             ref={
                               register({
                                 required: true,
@@ -200,11 +230,17 @@ const Review = (props) => {
                               Please enter a value less than or equal to 5
                             </div>
                           )}
+                          <small className="form-text text-muted">
+                            {
+                              "Ratings are from 0 to 5 inclusive, in incremen" +
+                              "ts of 0.5 (e.g. 2.5)"
+                            }
+                          </small>
                         </label>
                       </div>
                       <div className="form-group">
                         <label htmlFor="songReview">
-                          Review:
+                          Review (required, up to 2048 characters):
                           <textarea
                             className={
                               `form-control \
@@ -213,11 +249,19 @@ const Review = (props) => {
                             defaultValue={reviewObj.review}
                             id="songReview"
                             name="songReview"
-                            ref={register({required: true})}
+                            ref={register({
+                              required: true,
+                              maxLength: 2048
+                            })}
                           />
                           {errors.songReview?.type === "required" && (
                             <div className="invalid-feedback">
                               This field is required
+                            </div>
+                          )}
+                          {errors.songReview?.type === "maxLength" && (
+                            <div className="invalid-feedback">
+                              This field must contain up to 2048 characters
                             </div>
                           )}
                         </label>
@@ -231,10 +275,16 @@ const Review = (props) => {
                       </button>
                       <input
                         className="btn btn-primary m-2"
+                        disabled={
+                          errors.songRating?.type
+                          || errors.songReview?.type
+                        }
                         type="submit"
                         value="Update Review"
                       />
-                      {updateError && <p>{updateError}</p>}
+                      {updateError && (
+                        <p className="text-danger my-3">{updateError}</p>
+                      )}
                     </form>
                     <button
                       className="btn btn-danger m-2"
@@ -243,7 +293,9 @@ const Review = (props) => {
                     >
                       Delete Review
                     </button>
-                    {deleteError && <p>{deleteError}</p>}
+                    {deleteError && (
+                      <p className="text-danger my-3">{deleteError}</p>
+                    )}
                   </>
                 ) : (
                   <button
@@ -272,9 +324,13 @@ const Review = (props) => {
     );
   return (
     <div className="card bg-light mb-3">
-      <div className="card-header">LOADING</div>
       <div className="card-body">
-        <p className="card-text">Loading rating and review text...</p>
+        <div className="card-text text-center">
+          <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+          <p>Loading rating and review text...</p>
+        </div>
       </div>
     </div>
   );
