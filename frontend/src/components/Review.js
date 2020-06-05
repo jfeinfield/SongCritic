@@ -32,7 +32,8 @@ const Review = (props) => {
             author: {objectId: authorId},
             song: {objectId: songId},
             review: ReviewText,
-            rating
+            rating,
+            updatedAt
           } = r.toJSON();
 
           let song = await new Parse.Query(SongClass).get(songId);
@@ -46,7 +47,13 @@ const Review = (props) => {
           let artist = await userQuery.get(song.artist.objectId);
           artist = artist.toJSON();
 
-          const review = {objectId, review: ReviewText, rating, authorId};
+          const review = {
+            objectId,
+            review: ReviewText,
+            rating,
+            authorId,
+            updatedAt
+          };
           review.author = author.name;
           review.song = song.name;
           review.songId = songId;
@@ -78,7 +85,8 @@ const Review = (props) => {
       setReviewObj({
         ...reviewObj,
         review: songReview,
-        rating: songRating
+        rating: songRating,
+        updatedAt: Date.now()
       });
     } catch (error) {
       setUpdateError(`${error.code} ${error.message}`);
@@ -124,39 +132,58 @@ const Review = (props) => {
           ? (
             <div className="card-body">
               <h5 className="card-title">{reviewObj.author}</h5>
+              <p className="card-subtitle mb-2 text-muted">
+                {new Date(reviewObj.updatedAt).toLocaleString()}
+              </p>
               <p className="card-text">{reviewObj.rating} stars</p>
               <p className="card-text">{reviewObj.review}</p>
               <Link className="card-link" to={`/user/${reviewObj.authorId}`}>
-                Visit {reviewObj.author}&apos;s page
+                Visit the reviewer&apos;s profile
               </Link>
             </div>
           ) : (
-            <div className="card-body">
-              <h5 className="card-title">{reviewObj.song}</h5>
-              <h6 className="card-subtitle mb-2 text-muted">
-                {reviewObj.artist}
-              </h6>
-              <p className="card-text">
+            <>
+              <div className="card-body">
+                <h5 className="card-title">{reviewObj.song}</h5>
+                <h6 className="card-subtitle mb-2 text-muted">
+                  {reviewObj.artist}
+                </h6>
+              </div>
+              <ul className="list-group list-group-flush">
                 {hideUser || (
-                  <>
-                    <strong>Reviewer:</strong> <em>{reviewObj.author}</em><br />
-                  </>
+                  <li className="list-group-item">
+                    <strong>Reviewer:</strong> <em>{reviewObj.author}</em>
+                  </li>
                 )}
-                <strong>Rating:</strong> {reviewObj.rating}<br />
-                <strong>Review:</strong><br />{reviewObj.review}
-              </p>
-              <Link className="card-link" to={`/song/${reviewObj.songId}`}>
-                Visit {reviewObj.song}
-              </Link>
-              <Link className="card-link" to={`/user/${reviewObj.artistId}`}>
-                Visit {reviewObj.artist}&apos;s page
-              </Link>
-              {hideUser || (
-                <Link className="card-link" to={`/user/${reviewObj.authorId}`}>
-                  Visit {reviewObj.author}&apos;s page
+                <li className="list-group-item">
+                  <strong>
+                    Timestamp:
+                  </strong> {new Date(reviewObj.updatedAt).toLocaleString()}
+                </li>
+                <li className="list-group-item">
+                  <strong>Rating:</strong> {reviewObj.rating} stars
+                </li>
+                <li className="list-group-item">
+                  <strong>Review:</strong><br />{reviewObj.review}
+                </li>
+              </ul>
+              <div className="card-body">
+                <Link className="card-link" to={`/song/${reviewObj.songId}`}>
+                  Visit this song&apos;s page
                 </Link>
-              )}
-            </div>
+                <Link className="card-link" to={`/user/${reviewObj.artistId}`}>
+                  Visit the artist&apos;s profile
+                </Link>
+                {hideUser || (
+                  <Link
+                    className="card-link"
+                    to={`/user/${reviewObj.authorId}`}
+                  >
+                    Visit the reviewer&apos;s profile
+                  </Link>
+                )}
+              </div>
+            </>
           )}
         {isCurrentUserAuthor
           && (
